@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.adapter.TvShowAdapter
 import com.dicoding.moviecatalog.callback.TvShowCallback
-import com.dicoding.moviecatalog.data.MovieEntity
+import com.dicoding.moviecatalog.data.movie.MovieEntity
 import com.dicoding.moviecatalog.databinding.FragmentTvShowBinding
 import com.dicoding.moviecatalog.utils.MovieDatabase
 
@@ -31,10 +31,10 @@ class TvShowFragment : Fragment(), TvShowCallback {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            val courses = MovieDatabase.generateMovieDatabase()
+            val tvshow = MovieDatabase.generateTvShowDatabase()
             val adapter = TvShowAdapter(this)
-            adapter.setTvShow(courses)
-            with(fragmentTvShowBinding.rvBookmark) {
+            adapter.setTvShow(tvshow)
+            with(fragmentTvShowBinding.rvTvshow) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 this.adapter = adapter

@@ -3,7 +3,7 @@ package com.dicoding.moviecatalog.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.dicoding.moviecatalog.data.MovieModuleEntity
+import com.dicoding.moviecatalog.data.movie.MovieModuleEntity
 import com.dicoding.moviecatalog.databinding.ItemsMovieListBinding
 
 class DetailMovieAdapter : RecyclerView.Adapter<DetailMovieAdapter.MovieModuleViewHolder>() {

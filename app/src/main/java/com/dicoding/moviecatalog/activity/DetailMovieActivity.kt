@@ -10,7 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.adapter.DetailMovieAdapter
-import com.dicoding.moviecatalog.data.MovieEntity
+import com.dicoding.moviecatalog.data.movie.MovieEntity
 import com.dicoding.moviecatalog.databinding.ActivityDetailMovieBinding
 import com.dicoding.moviecatalog.databinding.ContentDetailMovieBinding
 import com.dicoding.moviecatalog.utils.MovieDatabase

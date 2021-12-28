@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.activity.DetailMovieActivity
-import com.dicoding.moviecatalog.data.MovieEntity
+import com.dicoding.moviecatalog.data.movie.MovieEntity
 import com.dicoding.moviecatalog.databinding.ItemsMovieBinding
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
@@ -38,9 +38,10 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: MovieEntity) {
             with(binding) {
-                tvItemTitle.text = movie.title
-                tvItemDate.text =
-                    itemView.resources.getString(R.string.deadline_date, movie.duration)
+                movieTitle.text = movie.title
+                movieReleaseDate.text = movie.releaseDate
+                movieRatingText.text = movie.rating
+                movieDurationText.text = movie.duration
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailMovieActivity::class.java)
                     intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, movie.movieId)

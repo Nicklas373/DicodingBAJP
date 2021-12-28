@@ -1,4 +1,4 @@
-package com.dicoding.moviecatalog.data
+package com.dicoding.moviecatalog.data.movie
 
 data class MovieModuleEntity(
     var moduleId: String,

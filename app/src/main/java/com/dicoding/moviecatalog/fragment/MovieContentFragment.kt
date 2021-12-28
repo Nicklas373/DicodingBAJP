@@ -5,9 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.dicoding.moviecatalog.R
-import com.dicoding.moviecatalog.data.MovieContentEntity
-import com.dicoding.moviecatalog.data.MovieEntity
+import com.dicoding.moviecatalog.data.movie.MovieContentEntity
 import com.dicoding.moviecatalog.databinding.FragmentMovieContentBinding
 
 class MovieContentFragment : Fragment() {

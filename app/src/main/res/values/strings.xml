@@ -3,12 +3,17 @@
     <string name="title_activity_detail_movie">Detail Movie</string>
     <string name="title">Movie Title</string>
     <string name="description">Movie Description</string>
+    <string name="short_description">Short Description</string>
     <string name="duration">Movie Duration</string>
+    <string name="release_date">Release Date</string>
+    <string name="separate"> | </string>
     <string name="example">Example</string>
     <string name="start_learn">Mulai Belajar</string>
     <string name="list_module">Daftar Modul</string>
     <string name="home">Home</string>
     <string name="bookmark">Bookmark</string>
+    <string name="movie">Movie</string>
+    <string name="tv_show">TV Show</string>
     <string name="menu_bookmark">bookmark</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>

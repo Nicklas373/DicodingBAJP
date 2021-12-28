@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.moviecatalog.adapter.MovieDetailAdapterClickListener
 import com.dicoding.moviecatalog.adapter.MovieListAdapter
 import com.dicoding.moviecatalog.callback.MovieReaderCallback
-import com.dicoding.moviecatalog.data.MovieModuleEntity
+import com.dicoding.moviecatalog.data.movie.MovieModuleEntity
 import com.dicoding.moviecatalog.databinding.FragmentMovieListBinding
 import com.dicoding.moviecatalog.utils.MovieDatabase
 

@@ -9,14 +9,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.activity.DetailMovieActivity
 import com.dicoding.moviecatalog.callback.TvShowCallback
-import com.dicoding.moviecatalog.data.MovieEntity
+import com.dicoding.moviecatalog.data.tvshow.TvShowEntity
 import com.dicoding.moviecatalog.databinding.ItemsTvShowBinding
 
 class TvShowAdapter(private val callback: TvShowCallback) :
     RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
-    private val listTvShow = ArrayList<MovieEntity>()
+    private val listTvShow = ArrayList<TvShowEntity>()
 
-    fun setTvShow(TvShow: List<MovieEntity>?) {
+    fun setTvShow(TvShow: List<TvShowEntity>?) {
         if (TvShow == null) return
         this.listTvShow.clear()
         this.listTvShow.addAll(TvShow)
@@ -29,27 +29,27 @@ class TvShowAdapter(private val callback: TvShowCallback) :
     }
 
     override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
-        val course = listTvShow[position]
-        holder.bind(course)
+        val tvshow = listTvShow[position]
+        holder.bind(tvshow)
     }
 
     override fun getItemCount(): Int = listTvShow.size
 
     inner class TvShowViewHolder(private val binding: ItemsTvShowBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(course: MovieEntity) {
+        fun bind(tvshow: TvShowEntity) {
             with(binding) {
-                tvItemTitle.text = course.title
-                tvItemDate.text =
-                    itemView.resources.getString(R.string.deadline_date, course.duration)
+                tvshowTitle.text = tvshow.title
+                tvshowReleaseDate.text = tvshow.releaseDate
+                tvshowRatingText.text = tvshow.rating
+                tvshowDurationText.text = tvshow.duration
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailMovieActivity::class.java)
-                    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, course.movieId)
+                    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, tvshow.tvShowId)
                     itemView.context.startActivity(intent)
                 }
-                imgShare.setOnClickListener { callback.onShareClick(course) }
                 Glide.with(itemView.context)
-                    .load(course.imagePath)
+                    .load(tvshow.imagePath)
                     .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_loading)
                             .error(R.drawable.ic_error)
