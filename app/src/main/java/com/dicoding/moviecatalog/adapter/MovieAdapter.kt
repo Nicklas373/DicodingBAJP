@@ -9,7 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.activity.DetailMovieActivity
 import com.dicoding.moviecatalog.data.MovieEntity
-import com.dicoding.moviecatalog.databinding.ItemsAcademyBinding
+import com.dicoding.moviecatalog.databinding.ItemsMovieBinding
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     private var listMovies = ArrayList<MovieEntity>()
@@ -22,7 +22,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val itemsAcademyBinding =
-            ItemsAcademyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemsMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MovieViewHolder(itemsAcademyBinding)
     }
 
@@ -34,7 +34,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     override fun getItemCount(): Int = listMovies.size
 
 
-    class MovieViewHolder(private val binding: ItemsAcademyBinding) :
+    class MovieViewHolder(private val binding: ItemsMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: MovieEntity) {
             with(binding) {

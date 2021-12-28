@@ -1,6 +1,5 @@
 package com.dicoding.moviecatalog.utils
 
-import com.dicoding.moviecatalog.data.MovieContentEntity
 import com.dicoding.moviecatalog.data.MovieEntity
 import com.dicoding.moviecatalog.data.MovieModuleEntity
 
@@ -58,67 +57,67 @@ object MovieDatabase {
         return movie
     }
 
-    fun generateMovieDetails(courseId: String): List<MovieModuleEntity> {
+    fun generateMovieDetails(movieId: String): List<MovieModuleEntity> {
 
-        val modules = ArrayList<MovieModuleEntity>()
+        val movieModule = ArrayList<MovieModuleEntity>()
 
-        modules.add(
+        movieModule.add(
             MovieModuleEntity(
-                "{$courseId}m1",
-                courseId,
+                "{$movieId}m1",
+                movieId,
                 "Modul 0 : Introduction",
                 0, false
             )
         )
-        modules.add(
+        movieModule.add(
             MovieModuleEntity(
-                "{$courseId}m2",
-                courseId,
+                "{$movieId}m2",
+                movieId,
                 "Modul 1 : Teori 1",
                 1, false
             )
         )
-        modules.add(
+        movieModule.add(
             MovieModuleEntity(
-                "{$courseId}m3",
-                courseId,
+                "{$movieId}m3",
+                movieId,
                 "Latihan 1",
                 2, false
             )
         )
-        modules.add(
+        movieModule.add(
             MovieModuleEntity(
-                "{$courseId}m4",
-                courseId,
+                "{$movieId}m4",
+                movieId,
                 "Bedah Kode 1",
                 3, false
             )
         )
-        modules.add(
+        movieModule.add(
             MovieModuleEntity(
-                "{$courseId}m5",
-                courseId,
+                "{$movieId}m5",
+                movieId,
                 "Modul 2 : Teori 2",
                 4, false
             )
         )
-        modules.add(
+        movieModule.add(
             MovieModuleEntity(
-                "{$courseId}m6",
-                courseId,
+                "{$movieId}m6",
+                movieId,
                 "Latihan 2",
                 5, false
             )
         )
-        modules.add(
+        movieModule.add(
             MovieModuleEntity(
-                "{$courseId}m7",
-                courseId,
+                "{$movieId}m7",
+                movieId,
                 "Bedah Kode 2",
                 6, false
             )
         )
 
-        return modules
+        return movieModule
     }
 }

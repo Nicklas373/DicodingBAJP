@@ -14,7 +14,7 @@ import com.dicoding.moviecatalog.data.MovieEntity
 import com.dicoding.moviecatalog.databinding.FragmentTvShowBinding
 import com.dicoding.moviecatalog.utils.MovieDatabase
 
-class TvShowFragment : Fragment(), TvShowCallback  {
+class TvShowFragment : Fragment(), TvShowCallback {
 
     lateinit var fragmentTvShowBinding: FragmentTvShowBinding
 

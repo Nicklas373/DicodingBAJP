@@ -10,9 +10,10 @@ import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.activity.DetailMovieActivity
 import com.dicoding.moviecatalog.callback.TvShowCallback
 import com.dicoding.moviecatalog.data.MovieEntity
-import com.dicoding.moviecatalog.databinding.ItemsBookmarkBinding
+import com.dicoding.moviecatalog.databinding.ItemsTvShowBinding
 
-class TvShowAdapter(private val callback: TvShowCallback) : RecyclerView.Adapter<TvShowAdapter.CourseViewHolder>() {
+class TvShowAdapter(private val callback: TvShowCallback) :
+    RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
     private val listTvShow = ArrayList<MovieEntity>()
 
     fun setTvShow(TvShow: List<MovieEntity>?) {
@@ -21,23 +22,26 @@ class TvShowAdapter(private val callback: TvShowCallback) : RecyclerView.Adapter
         this.listTvShow.addAll(TvShow)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
-        val itemsBookmarkBinding = ItemsBookmarkBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CourseViewHolder(itemsBookmarkBinding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
+        val itemsTvShowBinding =
+            ItemsTvShowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TvShowViewHolder(itemsTvShowBinding)
     }
 
-    override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
         val course = listTvShow[position]
         holder.bind(course)
     }
 
     override fun getItemCount(): Int = listTvShow.size
 
-    inner class CourseViewHolder(private val binding: ItemsBookmarkBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TvShowViewHolder(private val binding: ItemsTvShowBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(course: MovieEntity) {
             with(binding) {
                 tvItemTitle.text = course.title
-                tvItemDate.text = itemView.resources.getString(R.string.deadline_date, course.duration)
+                tvItemDate.text =
+                    itemView.resources.getString(R.string.deadline_date, course.duration)
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailMovieActivity::class.java)
                     intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, course.movieId)
@@ -48,7 +52,8 @@ class TvShowAdapter(private val callback: TvShowCallback) : RecyclerView.Adapter
                     .load(course.imagePath)
                     .apply(
                         RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error))
+                            .error(R.drawable.ic_error)
+                    )
                     .into(imgPoster)
             }
         }

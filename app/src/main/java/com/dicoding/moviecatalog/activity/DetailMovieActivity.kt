@@ -38,13 +38,13 @@ class DetailMovieActivity : AppCompatActivity() {
 
         val extras = intent.extras
         if (extras != null) {
-            val courseId = extras.getString(EXTRA_MOVIE)
-            if (courseId != null) {
-                val modules = MovieDatabase.generateMovieDetails(courseId)
-                adapter.setModules(modules)
-                for (course in MovieDatabase.generateMovieDatabase()) {
-                    if (course.movieId == courseId) {
-                        populateCourse(course)
+            val movieId = extras.getString(EXTRA_MOVIE)
+            if (movieId != null) {
+                val movieModule = MovieDatabase.generateMovieDetails(movieId)
+                adapter.setMovieModule(movieModule)
+                for (movie in MovieDatabase.generateMovieDatabase()) {
+                    if (movie.movieId == movieId) {
+                        populateMovie(movie)
                     }
                 }
             }
@@ -61,14 +61,14 @@ class DetailMovieActivity : AppCompatActivity() {
         }
     }
 
-    private fun populateCourse(courseEntity: MovieEntity) {
-        movieDetailBinding.textTitle.text = courseEntity.title
-        movieDetailBinding.textDescription.text = courseEntity.description
+    private fun populateMovie(movieEntity: MovieEntity) {
+        movieDetailBinding.textTitle.text = movieEntity.title
+        movieDetailBinding.textDescription.text = movieEntity.description
         movieDetailBinding.textDate.text =
-            resources.getString(R.string.deadline_date, courseEntity.duration)
+            resources.getString(R.string.deadline_date, movieEntity.duration)
 
         Glide.with(this)
-            .load(courseEntity.imagePath)
+            .load(movieEntity.imagePath)
             .transform(RoundedCorners(20))
             .apply(
                 RequestOptions.placeholderOf(R.drawable.ic_loading)
@@ -78,7 +78,7 @@ class DetailMovieActivity : AppCompatActivity() {
 
         movieDetailBinding.btnStart.setOnClickListener {
             val intent = Intent(this@DetailMovieActivity, MovieReaderActivity::class.java)
-            intent.putExtra(MovieReaderActivity.EXTRA_MOVIE_ID, courseEntity.movieId)
+            intent.putExtra(MovieReaderActivity.EXTRA_MOVIE_ID, movieEntity.movieId)
             startActivity(intent)
         }
     }

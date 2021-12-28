@@ -6,30 +6,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.moviecatalog.data.MovieModuleEntity
 import com.dicoding.moviecatalog.databinding.ItemsMovieListBinding
 
-class DetailMovieAdapter : RecyclerView.Adapter<DetailMovieAdapter.ModuleViewHolder>() {
+class DetailMovieAdapter : RecyclerView.Adapter<DetailMovieAdapter.MovieModuleViewHolder>() {
 
-    private val listModules = ArrayList<MovieModuleEntity>()
+    private val listMovieModules = ArrayList<MovieModuleEntity>()
 
-    fun setModules(modules: List<MovieModuleEntity>?) {
-        if (modules == null) return
-        this.listModules.clear()
-        this.listModules.addAll(modules)
+    fun setMovieModule(movieModule: List<MovieModuleEntity>?) {
+        if (movieModule == null) return
+        this.listMovieModules.clear()
+        this.listMovieModules.addAll(movieModule)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModuleViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieModuleViewHolder {
         val itemMovieListBinding =
             ItemsMovieListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ModuleViewHolder(itemMovieListBinding)
+        return MovieModuleViewHolder(itemMovieListBinding)
     }
 
-    override fun onBindViewHolder(viewHolder: ModuleViewHolder, position: Int) {
-        val module = listModules[position]
-        viewHolder.bind(module)
+    override fun onBindViewHolder(viewHolder: MovieModuleViewHolder, position: Int) {
+        val movieModule = listMovieModules[position]
+        viewHolder.bind(movieModule)
     }
 
-    override fun getItemCount(): Int = listModules.size
+    override fun getItemCount(): Int = listMovieModules.size
 
-    inner class ModuleViewHolder(private val binding: ItemsMovieListBinding) :
+    inner class MovieModuleViewHolder(private val binding: ItemsMovieListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(module: MovieModuleEntity) {
             binding.textModuleTitle.text = module.title

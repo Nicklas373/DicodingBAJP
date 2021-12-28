@@ -14,7 +14,7 @@ class SectionPagerAdapter(private val mContext: Context, fm: FragmentManager) :
 
     companion object {
         @StringRes
-        private val TAB_TITLES = intArrayOf(R.string.home, R.string.bookmark)
+        private val TAB_TITLES = intArrayOf(R.string.movie, R.string.tv_show)
     }
 
     override fun getItem(position: Int): Fragment =
