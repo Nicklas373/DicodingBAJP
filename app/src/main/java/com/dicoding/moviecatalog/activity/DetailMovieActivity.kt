@@ -1,8 +1,8 @@
 package com.dicoding.moviecatalog.activity
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -13,7 +13,7 @@ import com.dicoding.moviecatalog.adapter.DetailMovieAdapter
 import com.dicoding.moviecatalog.data.movie.MovieEntity
 import com.dicoding.moviecatalog.databinding.ActivityDetailMovieBinding
 import com.dicoding.moviecatalog.databinding.ContentDetailMovieBinding
-import com.dicoding.moviecatalog.utils.MovieDatabase
+import com.dicoding.moviecatalog.viewmodel.DetailMovieViewModel
 
 class DetailMovieActivity : AppCompatActivity() {
 
@@ -34,38 +34,70 @@ class DetailMovieActivity : AppCompatActivity() {
 
         setSupportActionBar(activityMovieDetailBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        val adapter = DetailMovieAdapter()
 
+        val adapter = DetailMovieAdapter()
+        val viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.NewInstanceFactory()
+        )[DetailMovieViewModel::class.java]
         val extras = intent.extras
         if (extras != null) {
             val movieId = extras.getString(EXTRA_MOVIE)
             if (movieId != null) {
-                val movieModule = MovieDatabase.generateMovieDetails(movieId)
-                adapter.setMovieModule(movieModule)
-                for (movie in MovieDatabase.generateMovieDatabase()) {
-                    if (movie.movieId == movieId) {
-                        populateMovie(movie)
-                    }
+                if (movieId == "1") {
+                    val cast = viewModel.getCastMovie1()
+                    adapter.setMovieModule(cast)
+                } else if (movieId == "2") {
+                    val cast = viewModel.getCastMovie2()
+                    adapter.setMovieModule(cast)
+                } else if (movieId == "3") {
+                    val cast = viewModel.getCastMovie3()
+                    adapter.setMovieModule(cast)
+                } else if (movieId == "4") {
+                    val cast = viewModel.getCastMovie4()
+                    adapter.setMovieModule(cast)
+                } else if (movieId == "5") {
+                    val cast = viewModel.getCastMovie5()
+                    adapter.setMovieModule(cast)
+                } else if (movieId == "5") {
+                    val cast = viewModel.getCastMovie5()
+                    adapter.setMovieModule(cast)
+                } else if (movieId == "6") {
+                    val cast = viewModel.getCastMovie6()
+                    adapter.setMovieModule(cast)
+                } else if (movieId == "7") {
+                    val cast = viewModel.getCastMovie7()
+                    adapter.setMovieModule(cast)
+                } else if (movieId == "8") {
+                    val cast = viewModel.getCastMovie8()
+                    adapter.setMovieModule(cast)
+                } else if (movieId == "9") {
+                    val cast = viewModel.getCastMovie9()
+                    adapter.setMovieModule(cast)
+                } else if (movieId == "10") {
+                    val cast = viewModel.getCastMovie10()
+                    adapter.setMovieModule(cast)
                 }
+                viewModel.setSelectedMovie(movieId)
+                populateMovie(viewModel.getMovie())
             }
         }
 
-        with(movieDetailBinding.rvModule) {
-            isNestedScrollingEnabled = false
-            layoutManager = LinearLayoutManager(this@DetailMovieActivity)
-            setHasFixedSize(true)
-            this.adapter = adapter
-            val dividerItemDecoration =
-                DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL)
-            addItemDecoration(dividerItemDecoration)
-        }
+        movieDetailBinding.rvCast.isNestedScrollingEnabled = false
+        movieDetailBinding.rvCast.layoutManager = LinearLayoutManager(this)
+        movieDetailBinding.rvCast.setHasFixedSize(true)
+        movieDetailBinding.rvCast.adapter = adapter
+        val dividerItemDecoration =
+            DividerItemDecoration(movieDetailBinding.rvCast.context, DividerItemDecoration.VERTICAL)
+        movieDetailBinding.rvCast.addItemDecoration(dividerItemDecoration)
     }
 
     private fun populateMovie(movieEntity: MovieEntity) {
-        movieDetailBinding.textTitle.text = movieEntity.title
-        movieDetailBinding.textDescription.text = movieEntity.description
-        movieDetailBinding.textDate.text =
-            resources.getString(R.string.deadline_date, movieEntity.duration)
+        movieDetailBinding.movieTitleText.text = movieEntity.title
+        movieDetailBinding.movieReleaseDate.text = movieEntity.releaseDate
+        movieDetailBinding.movieDurationText.text = movieEntity.duration
+        movieDetailBinding.movieRatingText.text = movieEntity.rating
+        movieDetailBinding.descText.text = movieEntity.description
 
         Glide.with(this)
             .load(movieEntity.imagePath)
@@ -75,11 +107,5 @@ class DetailMovieActivity : AppCompatActivity() {
                     .error(R.drawable.ic_error)
             )
             .into(movieDetailBinding.imagePoster)
-
-        movieDetailBinding.btnStart.setOnClickListener {
-            val intent = Intent(this@DetailMovieActivity, MovieReaderActivity::class.java)
-            intent.putExtra(MovieReaderActivity.EXTRA_MOVIE_ID, movieEntity.movieId)
-            startActivity(intent)
-        }
     }
 }

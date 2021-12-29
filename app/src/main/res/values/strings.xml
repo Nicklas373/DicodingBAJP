@@ -6,8 +6,11 @@
     <string name="short_description">Short Description</string>
     <string name="duration">Movie Duration</string>
     <string name="release_date">Release Date</string>
+    <string name="genre">Genre</string>
     <string name="separate"> | </string>
     <string name="example">Example</string>
+    <string name="top_cast">Top Cast</string>
+    <string name="cast_list">Cast List</string>
     <string name="start_learn">Mulai Belajar</string>
     <string name="list_module">Daftar Modul</string>
     <string name="home">Home</string>

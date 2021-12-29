@@ -5,18 +5,22 @@
       <map>
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/drawable/ic_baseline_broken_image_24.xml" value="0.18072916666666666" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/drawable/ic_baseline_star_24.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/activity_detail_movie.xml" value="0.16" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/drawable/ic_share_blue.xml" value="0.18177083333333333" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/activity_detail_movie.xml" value="0.4" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/activity_main.xml" value="0.16458333333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/activity_movie_reader.xml" value="0.16458333333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/content_detail_movie.xml" value="0.264" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/fragment_movie.xml" value="0.264" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/fragment_movie_content.xml" value="0.16458333333333333" />
-        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/fragment_movie_list.xml" value="0.16458333333333333" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/fragment_movie_list.xml" value="0.2" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/fragment_tv_show.xml" value="0.2" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/items_academy.xml" value="0.16458333333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/items_bookmark.xml" value="0.176" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/items_cast_list.xml" value="0.39100346020761245" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/items_cast_list_customs.xml" value="0.14947916666666666" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/items_module_list.xml" value="0.16458333333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/items_movie.xml" value="0.4" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/items_movie_list.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/items_movie_list_customs.xml" value="0.16458333333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/items_tv_show.xml" value="0.264" />
       </map>
