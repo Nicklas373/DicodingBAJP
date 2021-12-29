@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.moviecatalog.adapter.MovieAdapter
 import com.dicoding.moviecatalog.databinding.FragmentMovieBinding
-import com.dicoding.moviecatalog.utils.MovieDatabase
+import com.dicoding.moviecatalog.viewmodel.MovieViewModel
 
 class MovieFragment : Fragment() {
 
@@ -27,7 +28,11 @@ class MovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
-            val movie = MovieDatabase.generateMovieDatabase()
+            val viewModel = ViewModelProvider(
+                this,
+                ViewModelProvider.NewInstanceFactory()
+            )[MovieViewModel::class.java]
+            val movie = viewModel.getMovie()
             val movieAdapter = MovieAdapter()
             movieAdapter.setMovies(movie)
             with(fragmentMovieBinding.rvMovie) {
