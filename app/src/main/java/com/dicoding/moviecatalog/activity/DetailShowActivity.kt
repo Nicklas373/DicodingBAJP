@@ -12,14 +12,15 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.adapter.DetailMovieAdapter
-import com.dicoding.moviecatalog.callback.TvShowCallback
+import com.dicoding.moviecatalog.adapter.DetailTvShowAdapter
+import com.dicoding.moviecatalog.callback.ShareCallback
 import com.dicoding.moviecatalog.data.movie.MovieEntity
 import com.dicoding.moviecatalog.data.tvshow.TvShowEntity
 import com.dicoding.moviecatalog.databinding.ActivityDetailShowBinding
 import com.dicoding.moviecatalog.databinding.ContentDetailShowBinding
 import com.dicoding.moviecatalog.viewmodel.DetailMovieViewModel
 
-class DetailShowActivity : AppCompatActivity(), TvShowCallback {
+class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
     companion object {
         const val SHOW_ID = "show_id"
@@ -42,6 +43,7 @@ class DetailShowActivity : AppCompatActivity(), TvShowCallback {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val adapter = DetailMovieAdapter()
+        val adapter2 = DetailTvShowAdapter()
         val viewModel = ViewModelProvider(
             this,
             ViewModelProvider.NewInstanceFactory()
@@ -92,6 +94,40 @@ class DetailShowActivity : AppCompatActivity(), TvShowCallback {
             } else if (showId.equals("TvShow")) {
                 val tvShowId = extras.getString(EXTRA_TV_SHOW)
                 if (tvShowId != null) {
+                    if (tvShowId == "1") {
+                        val cast = viewModel.getCastTvShow1()
+                        adapter2.setTvShowCastList(cast)
+                    } else if (tvShowId == "2") {
+                        val cast = viewModel.getCastTvShow2()
+                        adapter2.setTvShowCastList(cast)
+                    } else if (tvShowId == "3") {
+                        val cast = viewModel.getCastTvShow3()
+                        adapter2.setTvShowCastList(cast)
+                    } else if (tvShowId == "4") {
+                        val cast = viewModel.getCastTvShow4()
+                        adapter2.setTvShowCastList(cast)
+                    } else if (tvShowId == "5") {
+                        val cast = viewModel.getCastTvShow5()
+                        adapter2.setTvShowCastList(cast)
+                    } else if (tvShowId == "5") {
+                        val cast = viewModel.getCastTvShow5()
+                        adapter2.setTvShowCastList(cast)
+                    } else if (tvShowId == "6") {
+                        val cast = viewModel.getCastTvShow6()
+                        adapter2.setTvShowCastList(cast)
+                    } else if (tvShowId == "7") {
+                        val cast = viewModel.getCastTvShow7()
+                        adapter2.setTvShowCastList(cast)
+                    } else if (tvShowId == "8") {
+                        val cast = viewModel.getCastTvShow8()
+                        adapter2.setTvShowCastList(cast)
+                    } else if (tvShowId == "9") {
+                        val cast = viewModel.getCastTvShow9()
+                        adapter2.setTvShowCastList(cast)
+                    } else if (tvShowId == "10") {
+                        val cast = viewModel.getCastTvShow10()
+                        adapter2.setTvShowCastList(cast)
+                    }
                     viewModel.setSelectedTvShow(tvShowId)
                     populateTvShow(viewModel.getTvShow())
                 }
@@ -101,7 +137,14 @@ class DetailShowActivity : AppCompatActivity(), TvShowCallback {
         movieDetailBinding.rvCast.isNestedScrollingEnabled = false
         movieDetailBinding.rvCast.layoutManager = LinearLayoutManager(this)
         movieDetailBinding.rvCast.setHasFixedSize(true)
-        movieDetailBinding.rvCast.adapter = adapter
+        if (extras != null) {
+            val showId = extras.getString(SHOW_ID)
+            if (showId.equals("Movie")) {
+                movieDetailBinding.rvCast.adapter = adapter
+            } else if (showId.equals("TvShow")) {
+                movieDetailBinding.rvCast.adapter = adapter2
+            }
+        }
         val dividerItemDecoration =
             DividerItemDecoration(movieDetailBinding.rvCast.context, DividerItemDecoration.VERTICAL)
         movieDetailBinding.rvCast.addItemDecoration(dividerItemDecoration)
@@ -135,7 +178,7 @@ class DetailShowActivity : AppCompatActivity(), TvShowCallback {
             )
             .into(movieDetailBinding.imagePoster)
 
-        movieDetailBinding.imgShare.setOnClickListener{
+        movieDetailBinding.imgShare.setOnClickListener {
             onShareClick(movieEntity)
         }
     }
@@ -146,6 +189,18 @@ class DetailShowActivity : AppCompatActivity(), TvShowCallback {
         movieDetailBinding.movieDurationText.text = tvShowEntity.duration
         movieDetailBinding.movieRatingText.text = tvShowEntity.rating
         movieDetailBinding.descText.text = tvShowEntity.description
+        movieDetailBinding.movieEpisodeText.text = tvShowEntity.episode + " " + tvShowEntity.season
+
+        if (tvShowEntity.genre1.equals("Null")) {
+            movieDetailBinding.cvGenre1.visibility = View.INVISIBLE
+        } else {
+            movieDetailBinding.movieGenre1Text.text = tvShowEntity.genre1
+        }
+        if (tvShowEntity.genre2.equals("Null")) {
+            movieDetailBinding.cvGenre2.visibility = View.INVISIBLE
+        } else {
+            movieDetailBinding.movieGenre2Text.text = tvShowEntity.genre2
+        }
 
         Glide.with(this)
             .load(tvShowEntity.imagePath)

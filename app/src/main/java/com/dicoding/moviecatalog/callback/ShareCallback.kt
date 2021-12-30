@@ -2,6 +2,6 @@ package com.dicoding.moviecatalog.callback
 
 import com.dicoding.moviecatalog.data.movie.MovieEntity
 
-interface TvShowCallback {
+interface ShareCallback {
     fun onShareClick(movie: MovieEntity)
 }

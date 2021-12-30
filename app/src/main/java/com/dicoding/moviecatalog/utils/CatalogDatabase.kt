@@ -1,7 +1,8 @@
 package com.dicoding.moviecatalog.utils
 
-import com.dicoding.moviecatalog.data.movie.CastEntity
+import com.dicoding.moviecatalog.data.movie.MovieCastEntity
 import com.dicoding.moviecatalog.data.movie.MovieEntity
+import com.dicoding.moviecatalog.data.tvshow.TvShowCastEntity
 import com.dicoding.moviecatalog.data.tvshow.TvShowEntity
 
 object CatalogDatabase {
@@ -143,320 +144,320 @@ object CatalogDatabase {
         return movie
     }
 
-    fun generateCastListMovie1(): List<CastEntity> {
+    fun generateCastListTvShow1(): List<TvShowCastEntity> {
 
-        val castList = ArrayList<CastEntity>()
+        val castList = ArrayList<TvShowCastEntity>()
 
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "1",
-                "Jackson Maine",
-                "Bradley Cooper",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/DPnessSsWqVXRbKm93PtMjB4Us.jpg"
+                "Oliver Queen",
+                "Stephen Amell",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/gN8cpnUaPIzWhVufahmzV0dwOgp.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "2",
-                "Ally Campana",
-                "Lady Gaga",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/h1LMnPxOzhgXc9QDCOcd6wdxoBh.jpg"
+                "John Diggle",
+                "David Ramsey",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/bZWO7WfBYI8iojTFozzqN2X3RWL.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "3",
-                "Bobby Maine",
-                "Sam Elliott",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/1K2IvGXFbKsgkExuUsRvy4F0c9e.jpg"
+                "Felicity Smoak",
+                "Emily Bett Rickards",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/3d9BB4P1hnnTXXxL8v1USCU0Eop.jpg"
             )
         )
 
         return castList
     }
 
-    fun generateCastListMovie2(): List<CastEntity> {
+    fun generateCastListTvShow2(): List<TvShowCastEntity> {
 
-        val castList = ArrayList<CastEntity>()
+        val castList = ArrayList<TvShowCastEntity>()
 
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "1",
-                "Alita",
-                "Rosa Salazar",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iJfsx7u76qWonJm6sKGwYPbNWDR.jpg"
+                "Crazy Jane",
+                "Diane Guerrero",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5LXvRYdxKLWROAD2KDSXzRNNSdE.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "2",
-                "Dr. Dyson Ido",
-                "Christoph Waltz",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/2Hhztd4mUEV9Y25rfkXDwzL9QI9.jpg"
+                "Rita Farr",
+                "April Bowlby",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/c5Yk2tqApmbmKXHoPbYQauXssED.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "3",
-                "Chiren",
-                "Jennifer Connelly",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/3oYDftEbM3YgBiHYcbbIPRNZrTL.jpg"
+                "Victor Stone",
+                "Joivan Wade",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/7tPro9hPR54m3zbLIfypsDDUDCI.jpg"
             )
         )
 
         return castList
     }
 
-    fun generateCastListMovie3(): List<CastEntity> {
+    fun generateCastListTvShow3(): List<TvShowCastEntity> {
 
-        val castList = ArrayList<CastEntity>()
+        val castList = ArrayList<TvShowCastEntity>()
 
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "1",
-                "Arthur Curry / Aquaman",
-                "Jason Momoa",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/6dEFBpZH8C8OijsynkSajQT99Pb.jpg"
+                "Peter Griffin",
+                "Seth MacFarlane",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/8oQJqM51Z0Qtdb7sE6ZfX1peNCB.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "2",
-                "Mera",
-                "Amber Heard",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/ik0cfqudGTYBBRKF0x4gl2rSUQx.jpg"
+                "Lois Griffin",
+                "Alex Borstein",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/evbCnRe5Yfuy0B41PONLTIcvbem.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "3",
-                "Nuidis Vulko",
-                "Willem Dafoe",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/ui8e4sgZAwMPi3hzEO53jyBJF9B.jpg"
+                "Chris Griffin (voice)",
+                "Seth Green",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/l4No5Eu6j0U80hCIkaSn17AOWrj.jpg"
             )
         )
 
         return castList
     }
 
-    fun generateCastListMovie4(): List<CastEntity> {
+    fun generateCastListTvShow4(): List<TvShowCastEntity> {
 
-        val castList = ArrayList<CastEntity>()
+        val castList = ArrayList<TvShowCastEntity>()
 
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "1",
-                "Freddie Mercury",
-                "Rami Malek",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/2OuFzCbMibXGouG79tG1U4BLPbe.jpg"
+                "Barry Allen / Flash",
+                "John Wesley Shipp",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/pL60jl0QdKx9oESZqRzA3kiXXbs.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "2",
-                "Brian May",
-                "Gwilym Lee",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/bHSmjJLJyrg5Q0tC0W2FFreuOnO.jpg"
+                "Christina 'Tina' McGee",
+                "Amanda Pays",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/ryDAKAA5bR8dqB7rDp7pDvTqT7z.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "3",
-                "Roger Taylor",
-                "Ben Hardy",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/s8UEIomgY5AaEmPHkcPAScp68Fw.jpg"
+                "Julio Mendez",
+                "Alex Désert",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iz5fLxrOTKYUkpUmGXgVfCfIZxn.jpg"
             )
         )
 
         return castList
     }
 
-    fun generateCastListMovie5(): List<CastEntity> {
+    fun generateCastListTvShow5(): List<TvShowCastEntity> {
 
-        val castList = ArrayList<CastEntity>()
+        val castList = ArrayList<TvShowCastEntity>()
 
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "1",
-                "Nels Coxman",
-                "Liam Neeson",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/bboldwqSC6tdw2iL6631c98l2Mn.jpg"
+                "James Gordon",
+                "Ben McKenzie",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/2jlwhOXKakL6gk365u4gPkTtHHi.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "2",
-                "Grace Coxman",
-                "Laura Dern",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/2Ryt0SsExqWrLTzBu6sZcbLwoDJ.jpg"
+                "Harvey Bullock",
+                "Donal Logue",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5Rj850yVkIqsgCihtZLbkNSHbFb.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "3",
-                "Kim Dash",
-                "Emmy Rossum",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/aJ8bzA1WJOBFx0Ppdo1fLMiNxLh.jpg"
+                "Bruce Wayne",
+                "David Mazouz",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/jc9RQJQTRWi5lrob8DCSt1sW5N0.jpg"
             )
         )
 
         return castList
     }
 
-    fun generateCastListMovie6(): List<CastEntity> {
+    fun generateCastListTvShow6(): List<TvShowCastEntity> {
 
-        val castList = ArrayList<CastEntity>()
+        val castList = ArrayList<TvShowCastEntity>()
 
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "1",
-                "Adonis Creed",
-                "Michael B. Jordan",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/hz9AOUWZ2zzS0dpPJ1yQv2grA35.jpg"
+                "Meredith Grey",
+                "Ellen Pompeo",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/yPd4G2RcjXQPNWkKUPbWh5v1flC.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "2",
-                "Robert (Rocky) Balboa Sr.",
-                "Sylvester Stallone",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/qDRGPAcQoW8Wuig9bvoLpHwf1gU.jpg"
+                "Richard Webber",
+                "James Pickens Jr.",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/83Ynxlv3jV4ahkOiAEfunM7Rez2.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "3",
-                "Ivan Drago",
-                "Dolph Lundgren",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/jDLOU3Ay59NxLH8QDm5hcVTaKuC.jpg"
+                "Miranda Bailey",
+                "Chandra Wilson",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iddDcaysDQ6IVMUjJ97Bv3lTBCu.jpg"
             )
         )
 
         return castList
     }
 
-    fun generateCastListMovie7(): List<CastEntity> {
+    fun generateCastListTvShow7(): List<TvShowCastEntity> {
 
-        val castList = ArrayList<CastEntity>()
+        val castList = ArrayList<TvShowCastEntity>()
 
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "1",
-                "Newt Scamander",
-                "Eddie Redmayne",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/fSvG7qzoBBnJUmgtIuMgrK3EQPN.jpg"
+                "Hanna",
+                "Esme Creed-Miles",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/4S3D3TqS847CFLdPyKT9WSlhPmz.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "2",
                 "Porpentina 'Tina' Goldstein",
-                "Katherine Waterston",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5xndFxJuB2QYmtoYwl1MFtFHM24.jpg"
+                "Mireille Enos",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/zza8XezUz4I5Is55H2totMbGLeG.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "3",
-                "Jacob Kowalski",
-                "Dan Fogler",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/zJWbLEjfbDthBMucq9M6L4GJXL3.jpg"
+                "John Carmichael",
+                "Dermot Mulroney",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5gJszOF45KMPB5tmAbKdK0qgQBx.jpg"
             )
         )
 
         return castList
     }
 
-    fun generateCastListMovie8(): List<CastEntity> {
+    fun generateCastListTvShow8(): List<TvShowCastEntity> {
 
-        val castList = ArrayList<CastEntity>()
+        val castList = ArrayList<TvShowCastEntity>()
 
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "1",
-                "Patricia",
-                "James McAvoy",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/u4REKbm3zhFI2J5tVyqRovGRYUJ.jpg"
+                "Danny Rand",
+                "Finn Jones",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/rKzzQ7oc80xDYDmZykBjmXWt0VZ.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "2",
-                "David Dunn",
-                "Bruce Willis",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/caX3KtMU42EP3VLRFFBwqIIrch5.jpg"
+                "Colleen Wing",
+                "Jessica Henwick",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/wVToQAASq6nAcAEBg5qOU9K8JkU.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "3",
-                "Elijah Price",
-                "Samuel L. Jackson",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/yYpPvzdEKud48En8wbtGXs4C9Kk.jpg"
+                "Joy Meachum",
+                "Jessica Stroup",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/sr01O3bY7fjZ3OaR9grC4gJAWeM.jpg"
             )
         )
 
         return castList
     }
 
-    fun generateCastListMovie9(): List<CastEntity> {
+    fun generateCastListTvShow9(): List<TvShowCastEntity> {
 
-        val castList = ArrayList<CastEntity>()
+        val castList = ArrayList<TvShowCastEntity>()
 
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "1",
-                "Hiccup (voice)",
-                "Jay Baruchel",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/aDfqAMsPzIZvvj1ymivsKjRAfyv.jpg"
+                "Leroy Jethro Gibbs",
+                "Mark Harmon",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/lMqKPig7zBoGfou7wWf88sZEGHo.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "2",
-                "Astrid (voice)",
-                "America Ferrera",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/7F84Lh2lKpvkM3EiOvqqvlOmw93.jpg"
+                "Donald Mallard",
+                "David McCallum",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/47no2X4533Ehk2VO3BvVqUBqMUd.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "3",
-                "Grimmel (voice)",
-                "F. Murray Abraham",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/p2RYVGdrcP0m70BkkiKcwyrDeim.jpg"
+                "Timothy McGee",
+                "Sean Murray",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/r1kuDqWZbPR35Y2Ab7wQi72fgVk.jpg"
             )
         )
 
         return castList
     }
 
-    fun generateCastListMovie10(): List<CastEntity> {
+    fun generateCastListTvShow10(): List<TvShowCastEntity> {
 
-        val castList = ArrayList<CastEntity>()
+        val castList = ArrayList<TvShowCastEntity>()
 
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "1",
-                "Tony Stark",
-                "Robert Downey Jr.",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg"
+                "Archie Andrews",
+                "K.J. Apa",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/idpwm8ZdFnndjeQ3mKleF20hvRo.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "2",
-                "Thor Odinson",
-                "Chris Hemsworth",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/jpurJ9jAcLCYjgHHfYF32m3zJYm.jpg"
+                "Betty Cooper",
+                "Lili Reinhart",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/snsJrpxQq019fj3P7FUJJA0izdM.jpg"
             )
         )
         castList.add(
-            CastEntity(
+            TvShowCastEntity(
                 "3",
-                "Bruce Banner",
-                "Mark Ruffalo",
-                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/z3dvKqMNDQWk3QLxzumloQVR0pv.jpg"
+                "Veronica Lodge",
+                "Camila Mendes",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/a9RYVaY64cGmQoQJC8AcedYwUNR.jpg"
             )
         )
 
@@ -472,6 +473,10 @@ object CatalogDatabase {
                 "1",
                 "Arrow",
                 "Spoiled billionaire playboy Oliver Queen is missing and presumed dead when his yacht is lost at sea. He returns five years later a changed man, determined to clean up the city as a hooded vigilante armed with a bow.",
+                "Crime",
+                "Drama",
+                "10 Episodes",
+                "Season 8",
                 "42 Minute",
                 "October 10, 2012",
                 "https://raw.githubusercontent.com/Nicklas373/DicodingBAJP-Asset/main/tv_shows/poster_arrow.jpg",
@@ -483,6 +488,10 @@ object CatalogDatabase {
                 "2",
                 "Doom Patrol",
                 "The Doom Patrol’s members each suffered horrible accidents that gave them superhuman abilities — but also left them scarred and disfigured. Traumatized and downtrodden, the team found purpose through The Chief, who brought them together to investigate the weirdest phenomena in existence — and to protect Earth from what they find.",
+                "Sci-Fi",
+                "Drama",
+                "10 Episodes",
+                "Season 3",
                 "49 Minute",
                 "February 15, 2019",
                 "https://raw.githubusercontent.com/Nicklas373/DicodingBAJP-Asset/main/tv_shows/poster_doom_patrol.jpg",
@@ -494,7 +503,11 @@ object CatalogDatabase {
                 "3",
                 "Family Guy",
                 "Sick, twisted, politically incorrect and Freakin' Sweet animated series featuring the adventures of the dysfunctional Griffin family. Bumbling Peter and long-suffering Lois have three kids. Stewie (a brilliant but sadistic baby bent on killing his mother and taking over the world), Meg (the oldest, and is the most unpopular girl in town) and Chris (the middle kid, he's not very bright but has a passion for movies). The final member of the family is Brian - a talking dog and much more than a pet, he keeps Stewie in check whilst sipping Martinis and sorting through his own life issues.",
-                "49 Minute",
+                "Animation",
+                "Comedy",
+                "20 Episodes",
+                "Season 20",
+                "22 Minute",
                 "January 31, 1999",
                 "https://raw.githubusercontent.com/Nicklas373/DicodingBAJP-Asset/main/tv_shows/poster_family_guy.jpg",
                 "7.1"
@@ -505,6 +518,10 @@ object CatalogDatabase {
                 "4",
                 "The Flash",
                 "When a bolt of lightening crashes through a police crime lab, a mix of electrically charged substances bathes chemist Barry Allen, transforming him into the fastest man alive--The Flash.",
+                "Action",
+                "Crime",
+                "22 Episodes",
+                "Season 1",
                 "45 Minute",
                 "September 20, 1990",
                 "https://raw.githubusercontent.com/Nicklas373/DicodingBAJP-Asset/main/tv_shows/poster_flash.jpg",
@@ -516,6 +533,10 @@ object CatalogDatabase {
                 "5",
                 "Gotham",
                 "Everyone knows the name Commissioner Gordon. He is one of the crime world's greatest foes, a man whose reputation is synonymous with law and order. But what is known of Gordon's story and his rise from rookie detective to Police Commissioner? What did it take to navigate the multiple layers of corruption that secretly ruled Gotham City, the spawning ground of the world's most iconic villains? And what circumstances created them – the larger-than-life personas who would become Catwoman, The Penguin, The Riddler, Two-Face and The Joker?",
+                "Drama",
+                "Crime",
+                "12 Episodes",
+                "Season 5",
                 "43 Minute",
                 "September 22, 2014",
                 "https://raw.githubusercontent.com/Nicklas373/DicodingBAJP-Asset/main/tv_shows/poster_gotham.jpg",
@@ -527,6 +548,10 @@ object CatalogDatabase {
                 "6",
                 "Grey's Anatomy",
                 "Follows the personal and professional lives of a group of doctors at Seattle’s Grey Sloan Memorial Hospital.",
+                "Drama",
+                "Null",
+                "11 Episodes",
+                "Season 18",
                 "43 Minute",
                 "March 27, 2005",
                 "https://raw.githubusercontent.com/Nicklas373/DicodingBAJP-Asset/main/tv_shows/poster_grey_anatomy.jpg",
@@ -538,6 +563,10 @@ object CatalogDatabase {
                 "7",
                 "Hanna",
                 "This thriller and coming-of-age drama follows the journey of an extraordinary young girl as she evades the relentless pursuit of an off-book CIA agent and tries to unearth the truth behind who she is. Based on the 2011 Joe Wright film.",
+                "Action",
+                "Adventure",
+                "6 Episodes",
+                "Season 3",
                 "50 Minute",
                 "March 28, 2019",
                 "https://raw.githubusercontent.com/Nicklas373/DicodingBAJP-Asset/main/tv_shows/poster_hanna.jpg",
@@ -549,6 +578,10 @@ object CatalogDatabase {
                 "8",
                 "Marvel's Iron Fist",
                 "Danny Rand resurfaces 15 years after being presumed dead. Now, with the power of the Iron Fist, he seeks to reclaim his past and fulfill his destiny.",
+                "Action",
+                "Adventure",
+                "10 Episodes",
+                "Season 2",
                 "55 Minute",
                 "March 17, 2017",
                 "https://raw.githubusercontent.com/Nicklas373/DicodingBAJP-Asset/main/tv_shows/poster_iron_fist.jpg",
@@ -560,6 +593,10 @@ object CatalogDatabase {
                 "9",
                 "NCIS",
                 "From murder and espionage to terrorism and stolen submarines, a team of special agents investigates any crime that has a shred of evidence connected to Navy and Marine Corps personnel, regardless of rank or position.",
+                "Crime",
+                "Action",
+                "16 Episodes",
+                "Season 19",
                 "55 Minute",
                 "September 23, 2003",
                 "https://raw.githubusercontent.com/Nicklas373/DicodingBAJP-Asset/main/tv_shows/poster_ncis.jpg",
@@ -571,6 +608,10 @@ object CatalogDatabase {
                 "10",
                 "Riverdale",
                 "Set in the present, the series offers a bold, subversive take on Archie, Betty, Veronica and their friends, exploring the surreality of small-town life, the darkness and weirdness bubbling beneath Riverdale’s wholesome facade.",
+                "Mystery",
+                "Drama",
+                "7 Episodes",
+                "Season 6",
                 "45 Minute",
                 "January 26, 2017",
                 "https://raw.githubusercontent.com/Nicklas373/DicodingBAJP-Asset/main/tv_shows/poster_riverdale.jpg",
@@ -581,4 +622,323 @@ object CatalogDatabase {
         return tvShow
     }
 
+    fun generateCastListMovie1(): List<MovieCastEntity> {
+
+        val castList = ArrayList<MovieCastEntity>()
+
+        castList.add(
+            MovieCastEntity(
+                "1",
+                "Jackson Maine",
+                "Bradley Cooper",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/DPnessSsWqVXRbKm93PtMjB4Us.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "2",
+                "Ally Campana",
+                "Lady Gaga",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/h1LMnPxOzhgXc9QDCOcd6wdxoBh.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "3",
+                "Bobby Maine",
+                "Sam Elliott",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/1K2IvGXFbKsgkExuUsRvy4F0c9e.jpg"
+            )
+        )
+
+        return castList
+    }
+
+    fun generateCastListMovie2(): List<MovieCastEntity> {
+
+        val castList = ArrayList<MovieCastEntity>()
+
+        castList.add(
+            MovieCastEntity(
+                "1",
+                "Alita",
+                "Rosa Salazar",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/iJfsx7u76qWonJm6sKGwYPbNWDR.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "2",
+                "Dr. Dyson Ido",
+                "Christoph Waltz",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/2Hhztd4mUEV9Y25rfkXDwzL9QI9.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "3",
+                "Chiren",
+                "Jennifer Connelly",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/3oYDftEbM3YgBiHYcbbIPRNZrTL.jpg"
+            )
+        )
+
+        return castList
+    }
+
+    fun generateCastListMovie3(): List<MovieCastEntity> {
+
+        val castList = ArrayList<MovieCastEntity>()
+
+        castList.add(
+            MovieCastEntity(
+                "1",
+                "Arthur Curry / Aquaman",
+                "Jason Momoa",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/6dEFBpZH8C8OijsynkSajQT99Pb.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "2",
+                "Mera",
+                "Amber Heard",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/ik0cfqudGTYBBRKF0x4gl2rSUQx.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "3",
+                "Nuidis Vulko",
+                "Willem Dafoe",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/ui8e4sgZAwMPi3hzEO53jyBJF9B.jpg"
+            )
+        )
+
+        return castList
+    }
+
+    fun generateCastListMovie4(): List<MovieCastEntity> {
+
+        val castList = ArrayList<MovieCastEntity>()
+
+        castList.add(
+            MovieCastEntity(
+                "1",
+                "Freddie Mercury",
+                "Rami Malek",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/2OuFzCbMibXGouG79tG1U4BLPbe.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "2",
+                "Brian May",
+                "Gwilym Lee",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/bHSmjJLJyrg5Q0tC0W2FFreuOnO.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "3",
+                "Roger Taylor",
+                "Ben Hardy",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/s8UEIomgY5AaEmPHkcPAScp68Fw.jpg"
+            )
+        )
+
+        return castList
+    }
+
+    fun generateCastListMovie5(): List<MovieCastEntity> {
+
+        val castList = ArrayList<MovieCastEntity>()
+
+        castList.add(
+            MovieCastEntity(
+                "1",
+                "Nels Coxman",
+                "Liam Neeson",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/bboldwqSC6tdw2iL6631c98l2Mn.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "2",
+                "Grace Coxman",
+                "Laura Dern",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/2Ryt0SsExqWrLTzBu6sZcbLwoDJ.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "3",
+                "Kim Dash",
+                "Emmy Rossum",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/aJ8bzA1WJOBFx0Ppdo1fLMiNxLh.jpg"
+            )
+        )
+
+        return castList
+    }
+
+    fun generateCastListMovie6(): List<MovieCastEntity> {
+
+        val castList = ArrayList<MovieCastEntity>()
+
+        castList.add(
+            MovieCastEntity(
+                "1",
+                "Adonis Creed",
+                "Michael B. Jordan",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/hz9AOUWZ2zzS0dpPJ1yQv2grA35.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "2",
+                "Robert (Rocky) Balboa Sr.",
+                "Sylvester Stallone",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/qDRGPAcQoW8Wuig9bvoLpHwf1gU.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "3",
+                "Ivan Drago",
+                "Dolph Lundgren",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/jDLOU3Ay59NxLH8QDm5hcVTaKuC.jpg"
+            )
+        )
+
+        return castList
+    }
+
+    fun generateCastListMovie7(): List<MovieCastEntity> {
+
+        val castList = ArrayList<MovieCastEntity>()
+
+        castList.add(
+            MovieCastEntity(
+                "1",
+                "Newt Scamander",
+                "Eddie Redmayne",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/fSvG7qzoBBnJUmgtIuMgrK3EQPN.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "2",
+                "Porpentina 'Tina' Goldstein",
+                "Katherine Waterston",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5xndFxJuB2QYmtoYwl1MFtFHM24.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "3",
+                "Jacob Kowalski",
+                "Dan Fogler",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/zJWbLEjfbDthBMucq9M6L4GJXL3.jpg"
+            )
+        )
+
+        return castList
+    }
+
+    fun generateCastListMovie8(): List<MovieCastEntity> {
+
+        val castList = ArrayList<MovieCastEntity>()
+
+        castList.add(
+            MovieCastEntity(
+                "1",
+                "Patricia",
+                "James McAvoy",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/u4REKbm3zhFI2J5tVyqRovGRYUJ.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "2",
+                "David Dunn",
+                "Bruce Willis",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/caX3KtMU42EP3VLRFFBwqIIrch5.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "3",
+                "Elijah Price",
+                "Samuel L. Jackson",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/yYpPvzdEKud48En8wbtGXs4C9Kk.jpg"
+            )
+        )
+
+        return castList
+    }
+
+    fun generateCastListMovie9(): List<MovieCastEntity> {
+
+        val castList = ArrayList<MovieCastEntity>()
+
+        castList.add(
+            MovieCastEntity(
+                "1",
+                "Hiccup (voice)",
+                "Jay Baruchel",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/aDfqAMsPzIZvvj1ymivsKjRAfyv.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "2",
+                "Astrid (voice)",
+                "America Ferrera",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/7F84Lh2lKpvkM3EiOvqqvlOmw93.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "3",
+                "Grimmel (voice)",
+                "F. Murray Abraham",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/p2RYVGdrcP0m70BkkiKcwyrDeim.jpg"
+            )
+        )
+
+        return castList
+    }
+
+    fun generateCastListMovie10(): List<MovieCastEntity> {
+
+        val castList = ArrayList<MovieCastEntity>()
+
+        castList.add(
+            MovieCastEntity(
+                "1",
+                "Tony Stark",
+                "Robert Downey Jr.",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "2",
+                "Thor Odinson",
+                "Chris Hemsworth",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/jpurJ9jAcLCYjgHHfYF32m3zJYm.jpg"
+            )
+        )
+        castList.add(
+            MovieCastEntity(
+                "3",
+                "Bruce Banner",
+                "Mark Ruffalo",
+                "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/z3dvKqMNDQWk3QLxzumloQVR0pv.jpg"
+            )
+        )
+
+        return castList
+    }
 }

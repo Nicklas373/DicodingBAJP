@@ -6,34 +6,34 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.moviecatalog.R
-import com.dicoding.moviecatalog.data.movie.MovieCastEntity
+import com.dicoding.moviecatalog.data.tvshow.TvShowCastEntity
 import com.dicoding.moviecatalog.databinding.ItemsCastListBinding
 
-class DetailMovieAdapter : RecyclerView.Adapter<DetailMovieAdapter.MovieModuleViewHolder>() {
+class DetailTvShowAdapter : RecyclerView.Adapter<DetailTvShowAdapter.TvShowCastViewHolder>() {
 
-    private val listMovieModules = ArrayList<MovieCastEntity>()
+    private val listTvShowCastList = ArrayList<TvShowCastEntity>()
 
-    fun setMovieModule(movieModule: List<MovieCastEntity>) {
-        this.listMovieModules.clear()
-        this.listMovieModules.addAll(movieModule)
+    fun setTvShowCastList(tvShowCast: List<TvShowCastEntity>) {
+        this.listTvShowCastList.clear()
+        this.listTvShowCastList.addAll(tvShowCast)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieModuleViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowCastViewHolder {
         val itemCastListBinding =
             ItemsCastListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MovieModuleViewHolder(itemCastListBinding)
+        return TvShowCastViewHolder(itemCastListBinding)
     }
 
-    override fun onBindViewHolder(viewHolder: MovieModuleViewHolder, position: Int) {
-        val movieModule = listMovieModules[position]
-        viewHolder.bind(movieModule)
+    override fun onBindViewHolder(viewHolder: TvShowCastViewHolder, position: Int) {
+        val tvShowCastList = listTvShowCastList[position]
+        viewHolder.bind(tvShowCastList)
     }
 
-    override fun getItemCount(): Int = listMovieModules.size
+    override fun getItemCount(): Int = listTvShowCastList.size
 
-    inner class MovieModuleViewHolder(private val binding: ItemsCastListBinding) :
+    inner class TvShowCastViewHolder(private val binding: ItemsCastListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(cast: MovieCastEntity) {
+        fun bind(cast: TvShowCastEntity) {
             binding.castRealName.text = cast.castRealName
             binding.castName.text = cast.castMovieName
             Glide.with(itemView.context)

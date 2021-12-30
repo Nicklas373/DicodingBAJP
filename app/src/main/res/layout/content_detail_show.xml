@@ -13,8 +13,8 @@
         android:layout_width="170dp"
         android:layout_height="270dp"
         android:src="@color/teal_200"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -22,11 +22,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:textSize="25sp"
-        android:textStyle="bold"
         android:ellipsize="end"
         android:gravity="start"
         android:maxLines="4"
+        android:textSize="25sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/image_poster"
         app:layout_constraintTop_toTopOf="parent"
@@ -39,9 +39,9 @@
         android:layout_marginStart="10dp"
         android:contentDescription="@string/rating"
         android:src="@drawable/ic_baseline_calendar_month_24"
+        app:layout_constraintBottom_toBottomOf="@id/view"
         app:layout_constraintStart_toEndOf="@id/image_poster"
-        app:layout_constraintTop_toBottomOf="@+id/movie_title_text"
-        app:layout_constraintBottom_toBottomOf="@id/view"/>
+        app:layout_constraintTop_toBottomOf="@+id/movie_title_text" />
 
     <TextView
         android:id="@+id/movie_release_date"
@@ -51,10 +51,10 @@
         android:layout_marginEnd="10dp"
         android:gravity="start"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/calendar_img"
-        app:layout_constraintTop_toBottomOf="@+id/movie_title_text"
         app:layout_constraintBottom_toBottomOf="@id/view"
         app:layout_constraintEnd_toStartOf="@id/img_share"
+        app:layout_constraintStart_toEndOf="@id/calendar_img"
+        app:layout_constraintTop_toBottomOf="@+id/movie_title_text"
         tools:text="@string/release_date" />
 
     <View
@@ -74,9 +74,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:cardBackgroundColor="@color/design_default_color_primary"
+        app:layout_constraintEnd_toStartOf="@id/cv_genre_2"
         app:layout_constraintStart_toStartOf="@id/calendar_img"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toStartOf="@id/cv_genre_2">
+        app:layout_constraintTop_toBottomOf="@+id/view">
 
         <TextView
             android:id="@+id/movie_genre_1_text"
@@ -84,8 +84,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:text="@string/genre"
             android:textAlignment="center"
@@ -96,22 +96,22 @@
         android:id="@+id/cv_genre_2"
         android:layout_width="90dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
         app:cardBackgroundColor="@color/design_default_color_primary"
-        app:layout_constraintStart_toEndOf="@id/cv_genre_1"
         app:layout_constraintEnd_toEndOf="@id/view"
+        app:layout_constraintStart_toEndOf="@id/cv_genre_1"
         app:layout_constraintTop_toBottomOf="@+id/view">
 
         <TextView
             android:id="@+id/movie_genre_2_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
             android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:text="@string/genre"
             android:textAlignment="center"
             android:textColor="@color/white" />
@@ -126,10 +126,10 @@
         android:contentDescription="@string/rating"
         android:gravity="start"
         android:src="@drawable/ic_baseline_star_24"
-        app:layout_constraintStart_toEndOf="@+id/image_poster"
-        app:layout_constraintTop_toBottomOf="@+id/cv_genre_1"
+        app:layout_constraintBottom_toTopOf="@id/movie_duration_img"
         app:layout_constraintEnd_toStartOf="@id/movie_rating_text"
-        app:layout_constraintBottom_toTopOf="@id/movie_duration_img"/>
+        app:layout_constraintStart_toEndOf="@+id/image_poster"
+        app:layout_constraintTop_toBottomOf="@+id/cv_genre_1" />
 
     <TextView
         android:id="@+id/movie_rating_text"
@@ -139,9 +139,9 @@
         android:layout_marginTop="20dp"
         android:gravity="start"
         android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/movie_duration_text"
         app:layout_constraintStart_toEndOf="@+id/movie_rating"
         app:layout_constraintTop_toBottomOf="@+id/cv_genre_2"
-        app:layout_constraintBottom_toTopOf="@id/movie_duration_text"
         tools:text="@string/rating" />
 
     <ImageView
@@ -153,10 +153,10 @@
         android:contentDescription="@string/duration"
         android:gravity="start"
         android:src="@drawable/ic_baseline_access_time_24"
-        app:layout_constraintStart_toEndOf="@+id/image_poster"
-        app:layout_constraintTop_toBottomOf="@+id/movie_rating"
+        app:layout_constraintBottom_toTopOf="@id/movie_episode_img"
         app:layout_constraintEnd_toStartOf="@id/movie_duration_text"
-        app:layout_constraintBottom_toTopOf="@id/movie_episode_img"/>
+        app:layout_constraintStart_toEndOf="@+id/image_poster"
+        app:layout_constraintTop_toBottomOf="@+id/movie_rating" />
 
     <TextView
         android:id="@+id/movie_duration_text"
@@ -166,9 +166,9 @@
         android:layout_marginTop="10dp"
         android:gravity="start"
         android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/movie_episode_text"
         app:layout_constraintStart_toEndOf="@+id/movie_duration_img"
         app:layout_constraintTop_toBottomOf="@+id/movie_rating_text"
-        app:layout_constraintBottom_toTopOf="@id/movie_episode_text"
         tools:text="@string/duration" />
 
     <ImageButton
@@ -177,9 +177,9 @@
         android:layout_height="24dp"
         android:layout_marginStart="10dp"
         android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/movie_release_date"
         app:layout_constraintTop_toTopOf="@id/movie_release_date"
-        app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_share_blue"
         tools:ignore="ContentDescription" />
 
@@ -192,9 +192,9 @@
         android:contentDescription="@string/episode"
         android:gravity="start"
         android:src="@drawable/ic_baseline_local_movies_24"
+        app:layout_constraintEnd_toStartOf="@id/movie_episode_text"
         app:layout_constraintStart_toEndOf="@+id/image_poster"
-        app:layout_constraintTop_toBottomOf="@+id/movie_duration_img"
-        app:layout_constraintEnd_toStartOf="@id/movie_episode_text"/>
+        app:layout_constraintTop_toBottomOf="@+id/movie_duration_img" />
 
     <TextView
         android:id="@+id/movie_episode_text"
@@ -217,9 +217,9 @@
         android:textColor="@color/teal_700"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/desc_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_poster"
-        app:layout_constraintBottom_toTopOf="@id/desc_text"/>
+        app:layout_constraintTop_toBottomOf="@+id/image_poster" />
 
     <TextView
         android:id="@+id/desc_text"
@@ -227,10 +227,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@id/cast_list_module"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/desc_title"
-        app:layout_constraintBottom_toTopOf="@id/cast_list_module"
         tools:text="@string/description" />
 
     <TextView
