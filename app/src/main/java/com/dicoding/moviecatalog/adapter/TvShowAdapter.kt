@@ -7,12 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.moviecatalog.R
-import com.dicoding.moviecatalog.activity.DetailMovieActivity
-import com.dicoding.moviecatalog.callback.TvShowCallback
+import com.dicoding.moviecatalog.activity.DetailShowActivity
 import com.dicoding.moviecatalog.data.tvshow.TvShowEntity
 import com.dicoding.moviecatalog.databinding.ItemsTvShowBinding
 
-class TvShowAdapter(private val callback: TvShowCallback) :
+class TvShowAdapter :
     RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
     private val listTvShow = ArrayList<TvShowEntity>()
 
@@ -44,8 +43,9 @@ class TvShowAdapter(private val callback: TvShowCallback) :
                 tvshowRatingText.text = tvshow.rating
                 tvshowDurationText.text = tvshow.duration
                 itemView.setOnClickListener {
-                    val intent = Intent(itemView.context, DetailMovieActivity::class.java)
-                    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, tvshow.tvShowId)
+                    val intent = Intent(itemView.context, DetailShowActivity::class.java)
+                    intent.putExtra(DetailShowActivity.SHOW_ID, "TvShow")
+                    intent.putExtra(DetailShowActivity.EXTRA_TV_SHOW, tvshow.tvShowId)
                     itemView.context.startActivity(intent)
                 }
                 Glide.with(itemView.context)

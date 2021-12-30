@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.moviecatalog.R
-import com.dicoding.moviecatalog.activity.DetailMovieActivity
+import com.dicoding.moviecatalog.activity.DetailShowActivity
 import com.dicoding.moviecatalog.data.movie.MovieEntity
 import com.dicoding.moviecatalog.databinding.ItemsMovieBinding
 
@@ -43,8 +43,9 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
                 movieRatingText.text = movie.rating
                 movieDurationText.text = movie.duration
                 itemView.setOnClickListener {
-                    val intent = Intent(itemView.context, DetailMovieActivity::class.java)
-                    intent.putExtra(DetailMovieActivity.EXTRA_MOVIE, movie.movieId)
+                    val intent = Intent(itemView.context, DetailShowActivity::class.java)
+                    intent.putExtra(DetailShowActivity.SHOW_ID, "Movie")
+                    intent.putExtra(DetailShowActivity.EXTRA_MOVIE, movie.movieId)
                     itemView.context.startActivity(intent)
                 }
                 Glide.with(itemView.context)

@@ -4,18 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.adapter.TvShowAdapter
-import com.dicoding.moviecatalog.callback.TvShowCallback
-import com.dicoding.moviecatalog.data.movie.MovieEntity
 import com.dicoding.moviecatalog.databinding.FragmentTvShowBinding
 import com.dicoding.moviecatalog.viewmodel.TvShowViewModel
 
-class TvShowFragment : Fragment(), TvShowCallback {
+class TvShowFragment : Fragment() {
 
     lateinit var fragmentTvShowBinding: FragmentTvShowBinding
 
@@ -37,25 +33,13 @@ class TvShowFragment : Fragment(), TvShowCallback {
                 ViewModelProvider.NewInstanceFactory()
             )[TvShowViewModel::class.java]
             val TvShow = viewModel.getTvShow()
-            val adapter = TvShowAdapter(this)
+            val adapter = TvShowAdapter()
             adapter.setTvShow(TvShow)
             with(fragmentTvShowBinding.rvTvshow) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 this.adapter = adapter
             }
-        }
-    }
-
-    override fun onShareClick(movie: MovieEntity) {
-        if (activity != null) {
-            val mimeType = "text/plain"
-            ShareCompat.IntentBuilder
-                .from(requireActivity())
-                .setType(mimeType)
-                .setChooserTitle("Bagikan aplikasi ini sekarang.")
-                .setText(resources.getString(R.string.share_text, movie.title))
-                .startChooser()
         }
     }
 }

@@ -14,18 +14,15 @@
         android:theme="@style/Theme.MovieCatalog"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".activity.DetailMovieActivity"
+            android:name=".activity.DetailShowActivity"
             android:exported="false"
-            android:label="@string/title_activity_detail_movie"
+            android:label="@string/title_activity_detail"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.MovieCatalog.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-        <activity
-            android:name=".activity.MovieReaderActivity"
-            android:exported="false" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">

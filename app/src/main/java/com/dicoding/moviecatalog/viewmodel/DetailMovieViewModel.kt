@@ -3,13 +3,19 @@ package com.dicoding.moviecatalog.viewmodel
 import androidx.lifecycle.ViewModel
 import com.dicoding.moviecatalog.data.movie.CastEntity
 import com.dicoding.moviecatalog.data.movie.MovieEntity
+import com.dicoding.moviecatalog.data.tvshow.TvShowEntity
 import com.dicoding.moviecatalog.utils.CatalogDatabase
 
 class DetailMovieViewModel : ViewModel() {
     private lateinit var movieId: String
+    private lateinit var tvShowId: String
 
     fun setSelectedMovie(movieId: String) {
         this.movieId = movieId
+    }
+
+    fun setSelectedTvShow(tvShowId: String) {
+        this.tvShowId = tvShowId
     }
 
     fun getMovie(): MovieEntity {
@@ -21,6 +27,17 @@ class DetailMovieViewModel : ViewModel() {
             }
         }
         return movie
+    }
+
+    fun getTvShow(): TvShowEntity {
+        lateinit var tvShow: TvShowEntity
+        val tvShowEntities = CatalogDatabase.generateTvShowDatabase()
+        for (tvShowEntity in tvShowEntities) {
+            if (tvShowEntity.tvShowId == tvShowId) {
+                tvShow = tvShowEntity
+            }
+        }
+        return tvShow
     }
 
     fun getCastMovie1(): List<CastEntity> = CatalogDatabase.generateCastListMovie1()
