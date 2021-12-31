@@ -2,7 +2,8 @@
     <string name="app_name">Movie Catalog</string>
     <string name="title_activity_detail">Detail</string>
     <string name="title">Title</string>
-    <string name="description">Description</string>
+    <string name="description">Overview</string>
+    <string name="synopsis">Synopsis</string>
     <string name="short_description">Short Description</string>
     <string name="duration">Duration</string>
     <string name="release_date">Release Date</string>
@@ -14,5 +15,6 @@
     <string name="episode">Episode</string>
     <string name="as">As</string>
     <string name="share">Share</string>
+    <string name="share_title">Share :</string>
     <string name="separate"> | </string>
 </resources>

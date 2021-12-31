@@ -54,39 +54,17 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             if (showId.equals("Movie")) {
                 val movieId = extras.getString(EXTRA_MOVIE)
                 if (movieId != null) {
-                    if (movieId == "1") {
-                        val cast = viewModel.getCastMovie1()
-                        adapter.setMovieModule(cast)
-                    } else if (movieId == "2") {
-                        val cast = viewModel.getCastMovie2()
-                        adapter.setMovieModule(cast)
-                    } else if (movieId == "3") {
-                        val cast = viewModel.getCastMovie3()
-                        adapter.setMovieModule(cast)
-                    } else if (movieId == "4") {
-                        val cast = viewModel.getCastMovie4()
-                        adapter.setMovieModule(cast)
-                    } else if (movieId == "5") {
-                        val cast = viewModel.getCastMovie5()
-                        adapter.setMovieModule(cast)
-                    } else if (movieId == "5") {
-                        val cast = viewModel.getCastMovie5()
-                        adapter.setMovieModule(cast)
-                    } else if (movieId == "6") {
-                        val cast = viewModel.getCastMovie6()
-                        adapter.setMovieModule(cast)
-                    } else if (movieId == "7") {
-                        val cast = viewModel.getCastMovie7()
-                        adapter.setMovieModule(cast)
-                    } else if (movieId == "8") {
-                        val cast = viewModel.getCastMovie8()
-                        adapter.setMovieModule(cast)
-                    } else if (movieId == "9") {
-                        val cast = viewModel.getCastMovie9()
-                        adapter.setMovieModule(cast)
-                    } else if (movieId == "10") {
-                        val cast = viewModel.getCastMovie10()
-                        adapter.setMovieModule(cast)
+                    when (movieId) {
+                        "1" -> adapter.setMovieModule(viewModel.getCastMovie1())
+                        "2" -> adapter.setMovieModule(viewModel.getCastMovie2())
+                        "3" -> adapter.setMovieModule(viewModel.getCastMovie3())
+                        "4" -> adapter.setMovieModule(viewModel.getCastMovie4())
+                        "5" -> adapter.setMovieModule(viewModel.getCastMovie5())
+                        "6" -> adapter.setMovieModule(viewModel.getCastMovie6())
+                        "7" -> adapter.setMovieModule(viewModel.getCastMovie7())
+                        "8" -> adapter.setMovieModule(viewModel.getCastMovie8())
+                        "9" -> adapter.setMovieModule(viewModel.getCastMovie9())
+                        "10" -> adapter.setMovieModule(viewModel.getCastMovie10())
                     }
                     viewModel.setSelectedMovie(movieId)
                     populateMovie(viewModel.getMovie())
@@ -94,40 +72,19 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             } else if (showId.equals("TvShow")) {
                 val tvShowId = extras.getString(EXTRA_TV_SHOW)
                 if (tvShowId != null) {
-                    if (tvShowId == "1") {
-                        val cast = viewModel.getCastTvShow1()
-                        adapter2.setTvShowCastList(cast)
-                    } else if (tvShowId == "2") {
-                        val cast = viewModel.getCastTvShow2()
-                        adapter2.setTvShowCastList(cast)
-                    } else if (tvShowId == "3") {
-                        val cast = viewModel.getCastTvShow3()
-                        adapter2.setTvShowCastList(cast)
-                    } else if (tvShowId == "4") {
-                        val cast = viewModel.getCastTvShow4()
-                        adapter2.setTvShowCastList(cast)
-                    } else if (tvShowId == "5") {
-                        val cast = viewModel.getCastTvShow5()
-                        adapter2.setTvShowCastList(cast)
-                    } else if (tvShowId == "5") {
-                        val cast = viewModel.getCastTvShow5()
-                        adapter2.setTvShowCastList(cast)
-                    } else if (tvShowId == "6") {
-                        val cast = viewModel.getCastTvShow6()
-                        adapter2.setTvShowCastList(cast)
-                    } else if (tvShowId == "7") {
-                        val cast = viewModel.getCastTvShow7()
-                        adapter2.setTvShowCastList(cast)
-                    } else if (tvShowId == "8") {
-                        val cast = viewModel.getCastTvShow8()
-                        adapter2.setTvShowCastList(cast)
-                    } else if (tvShowId == "9") {
-                        val cast = viewModel.getCastTvShow9()
-                        adapter2.setTvShowCastList(cast)
-                    } else if (tvShowId == "10") {
-                        val cast = viewModel.getCastTvShow10()
-                        adapter2.setTvShowCastList(cast)
+                    when (tvShowId) {
+                        "1" -> adapter2.setTvShowCastList(viewModel.getCastTvShow1())
+                        "2" -> adapter2.setTvShowCastList(viewModel.getCastTvShow2())
+                        "3" -> adapter2.setTvShowCastList(viewModel.getCastTvShow3())
+                        "4" -> adapter2.setTvShowCastList(viewModel.getCastTvShow4())
+                        "5" -> adapter2.setTvShowCastList(viewModel.getCastTvShow5())
+                        "6" -> adapter2.setTvShowCastList(viewModel.getCastTvShow6())
+                        "7" -> adapter2.setTvShowCastList(viewModel.getCastTvShow7())
+                        "8" -> adapter2.setTvShowCastList(viewModel.getCastTvShow8())
+                        "9" -> adapter2.setTvShowCastList(viewModel.getCastTvShow9())
+                        "10" -> adapter2.setTvShowCastList(viewModel.getCastTvShow10())
                     }
+
                     viewModel.setSelectedTvShow(tvShowId)
                     populateTvShow(viewModel.getTvShow())
                 }
@@ -156,15 +113,17 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         movieDetailBinding.movieDurationText.text = movieEntity.duration
         movieDetailBinding.movieRatingText.text = movieEntity.rating
         movieDetailBinding.descText.text = movieEntity.description
-        if (movieEntity.genre1.equals("Null")) {
+        if (movieEntity.genre1 == "Null") {
             movieDetailBinding.cvGenre1.visibility = View.INVISIBLE
         } else {
             movieDetailBinding.movieGenre1Text.text = movieEntity.genre1
+            genreColoringGenre1(movieEntity.genre1)
         }
-        if (movieEntity.genre2.equals("Null")) {
+        if (movieEntity.genre2 == "Null") {
             movieDetailBinding.cvGenre2.visibility = View.INVISIBLE
         } else {
             movieDetailBinding.movieGenre2Text.text = movieEntity.genre2
+            genreColoringGenre2(movieEntity.genre2)
         }
         movieDetailBinding.movieEpisodeImg.visibility = View.INVISIBLE
         movieDetailBinding.movieEpisodeText.visibility = View.INVISIBLE
@@ -179,7 +138,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             .into(movieDetailBinding.imagePoster)
 
         movieDetailBinding.imgShare.setOnClickListener {
-            onShareClick(movieEntity)
+            onShareClickMovie(movieEntity)
         }
     }
 
@@ -189,17 +148,21 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         movieDetailBinding.movieDurationText.text = tvShowEntity.duration
         movieDetailBinding.movieRatingText.text = tvShowEntity.rating
         movieDetailBinding.descText.text = tvShowEntity.description
-        movieDetailBinding.movieEpisodeText.text = tvShowEntity.episode + " " + tvShowEntity.season
+        val season: String =
+            tvShowEntity.episode + " | " + tvShowEntity.season
+        movieDetailBinding.movieEpisodeText.text = season
 
-        if (tvShowEntity.genre1.equals("Null")) {
+        if (tvShowEntity.genre1 == "Null") {
             movieDetailBinding.cvGenre1.visibility = View.INVISIBLE
         } else {
             movieDetailBinding.movieGenre1Text.text = tvShowEntity.genre1
+            genreColoringGenre1(tvShowEntity.genre1)
         }
-        if (tvShowEntity.genre2.equals("Null")) {
+        if (tvShowEntity.genre2 == "Null") {
             movieDetailBinding.cvGenre2.visibility = View.INVISIBLE
         } else {
             movieDetailBinding.movieGenre2Text.text = tvShowEntity.genre2
+            genreColoringGenre2(tvShowEntity.genre2)
         }
 
         Glide.with(this)
@@ -210,15 +173,73 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
                     .error(R.drawable.ic_error)
             )
             .into(movieDetailBinding.imagePoster)
+
+        movieDetailBinding.imgShare.setOnClickListener {
+            onShareClickTvShow(tvShowEntity)
+        }
     }
 
-    override fun onShareClick(movie: MovieEntity) {
+    override fun onShareClickMovie(movie: MovieEntity) {
         val mimeType = "text/plain"
         ShareCompat.IntentBuilder
             .from(this)
             .setType(mimeType)
-            .setChooserTitle("Bagikan movie ini sekarang.")
-            .setText(resources.getString(R.string.share) + " " + movieDetailBinding.movieTitleText.text)
+            .setChooserTitle("Share this Movie")
+            .setText(
+                resources.getString(R.string.share_title) + " " + movieDetailBinding.movieTitleText.text + " " + resources.getString(
+                    R.string.separate
+                ) + " " + movieDetailBinding.movieReleaseDate.text
+            )
             .startChooser()
+    }
+
+    override fun onShareClickTvShow(tvShow: TvShowEntity) {
+        val mimeType = "text/plain"
+        ShareCompat.IntentBuilder
+            .from(this)
+            .setType(mimeType)
+            .setChooserTitle("Share this TV Show")
+            .setText(
+                resources.getString(R.string.share_title) + " " + movieDetailBinding.movieTitleText.text + " " + resources.getString(
+                    R.string.separate
+                ) + " " + movieDetailBinding.movieReleaseDate.text
+            )
+            .startChooser()
+    }
+
+    private fun genreColoringGenre1(genre1: String) {
+        when (genre1) {
+            "Drama" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.red))
+            "Romance" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.red))
+            "Action" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.blue))
+            "Adventure" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.green))
+            "Music" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.orange))
+            "Crime" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.purple))
+            "Fantasy" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.red))
+            "Thriller" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.dark_green))
+            "Family" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.blue))
+            "Animation" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.red))
+            "Sci-Fi" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.silver))
+            "Comedy" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.yellow))
+            "Mystery" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.green))
+        }
+    }
+
+    private fun genreColoringGenre2(genre2: String) {
+        when (genre2) {
+            "Drama" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.red))
+            "Romance" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.red))
+            "Action" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.blue))
+            "Adventure" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.green))
+            "Music" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.orange))
+            "Crime" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.purple))
+            "Fantasy" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.red))
+            "Thriller" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.dark_green))
+            "Family" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.blue))
+            "Animation" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.red))
+            "Sci-Fi" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.silver))
+            "Comedy" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.yellow))
+            "Mystery" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.green))
+        }
     }
 }

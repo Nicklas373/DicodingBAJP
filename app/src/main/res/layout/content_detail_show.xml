@@ -47,7 +47,8 @@
         android:id="@+id/movie_release_date"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="3dp"
         android:layout_marginEnd="10dp"
         android:gravity="start"
         android:textSize="14sp"
@@ -62,7 +63,7 @@
         android:layout_height="2dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:background="@color/teal_700"
+        android:background="@color/dark_red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/image_poster"
         app:layout_constraintTop_toBottomOf="@id/movie_release_date" />
@@ -86,8 +87,9 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:text="@string/genre"
-            android:textAlignment="center"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textAlignment="center" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -110,8 +112,9 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:text="@string/genre"
-            android:textAlignment="center"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textAlignment="center" />
     </androidx.cardview.widget.CardView>
 
     <ImageView
@@ -132,7 +135,9 @@
         android:id="@+id/movie_rating_text"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
+        android:textStyle="bold"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
         android:gravity="start"
         android:textSize="14sp"
         app:layout_constraintTop_toTopOf="@id/movie_rating"
@@ -158,8 +163,10 @@
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
         android:gravity="start"
         android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="@id/movie_duration_img"
         app:layout_constraintStart_toEndOf="@id/movie_duration_img"
         tools:text="@string/duration" />
@@ -193,6 +200,8 @@
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:textStyle="bold"
         android:gravity="start"
         android:textSize="14sp"
         app:layout_constraintTop_toTopOf="@id/movie_episode_img"
@@ -204,8 +213,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="@string/description"
-        android:textColor="@color/teal_700"
+        android:text="@string/synopsis"
+        android:textColor="@color/dark_red"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/desc_text"
@@ -222,7 +231,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/desc_title"
-        tools:text="@string/description" />
+        tools:text="@string/synopsis" />
 
     <TextView
         android:id="@+id/cast_list_module"
@@ -230,7 +239,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="@string/cast_list"
-        android:textColor="@color/teal_700"
+        android:textColor="@color/dark_red"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
