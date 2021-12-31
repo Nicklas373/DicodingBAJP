@@ -25,7 +25,7 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/activity_main.xml" value="0.16458333333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/activity_movie_reader.xml" value="0.16458333333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/content_detail_movie.xml" value="0.264" />
-        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/content_detail_show.xml" value="0.536" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/content_detail_show.xml" value="0.264" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/fragment_movie.xml" value="0.2" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/fragment_movie_content.xml" value="0.16458333333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/fragment_movie_list.xml" value="0.2" />
@@ -39,12 +39,10 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/items_movie_list.xml" value="0.16354166666666667" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/items_movie_list_customs.xml" value="0.16458333333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/layout/items_tv_show.xml" value="0.264" />
-        <entry key="..\:/Users/Nickl/StudioProjects/DicodingBAJP/app/src/main/res/layout/activity_detail_show.xml" value="0.21927083333333333" />
-        <entry key="..\:/Users/Nickl/StudioProjects/DicodingBAJP/app/src/main/res/layout/content_detail_show.xml" value="0.33280632411067196" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

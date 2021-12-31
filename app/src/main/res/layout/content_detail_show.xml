@@ -47,12 +47,11 @@
         android:id="@+id/movie_release_date"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="20dp"
         android:layout_marginEnd="10dp"
         android:gravity="start"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@id/view"
-        app:layout_constraintEnd_toStartOf="@id/img_share"
         app:layout_constraintStart_toEndOf="@id/calendar_img"
         app:layout_constraintTop_toBottomOf="@+id/movie_title_text"
         tools:text="@string/release_date" />
@@ -74,7 +73,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:cardBackgroundColor="@color/design_default_color_primary"
-        app:layout_constraintEnd_toStartOf="@id/cv_genre_2"
         app:layout_constraintStart_toStartOf="@id/calendar_img"
         app:layout_constraintTop_toBottomOf="@+id/view">
 
@@ -96,10 +94,9 @@
         android:id="@+id/cv_genre_2"
         android:layout_width="90dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="10dp"
         app:cardBackgroundColor="@color/design_default_color_primary"
-        app:layout_constraintEnd_toEndOf="@id/view"
         app:layout_constraintStart_toEndOf="@id/cv_genre_1"
         app:layout_constraintTop_toBottomOf="@+id/view">
 
@@ -136,12 +133,10 @@
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
         android:gravity="start"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/movie_duration_text"
-        app:layout_constraintStart_toEndOf="@+id/movie_rating"
-        app:layout_constraintTop_toBottomOf="@+id/cv_genre_2"
+        app:layout_constraintTop_toTopOf="@id/movie_rating"
+        app:layout_constraintStart_toEndOf="@id/movie_rating"
         tools:text="@string/rating" />
 
     <ImageView
@@ -163,12 +158,10 @@
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:gravity="start"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/movie_episode_text"
-        app:layout_constraintStart_toEndOf="@+id/movie_duration_img"
-        app:layout_constraintTop_toBottomOf="@+id/movie_rating_text"
+        app:layout_constraintTop_toTopOf="@id/movie_duration_img"
+        app:layout_constraintStart_toEndOf="@id/movie_duration_img"
         tools:text="@string/duration" />
 
     <ImageButton
@@ -177,8 +170,7 @@
         android:layout_height="24dp"
         android:layout_marginStart="10dp"
         android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/movie_release_date"
+        app:layout_constraintEnd_toEndOf="@id/view"
         app:layout_constraintTop_toTopOf="@id/movie_release_date"
         app:srcCompat="@drawable/ic_share_blue"
         tools:ignore="ContentDescription" />
@@ -201,11 +193,10 @@
         android:layout_width="wrap_content"
         android:layout_height="24dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:gravity="start"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/movie_episode_img"
-        app:layout_constraintTop_toBottomOf="@+id/movie_duration_text"
+        app:layout_constraintTop_toTopOf="@id/movie_episode_img"
+        app:layout_constraintStart_toEndOf="@id/movie_episode_img"
         tools:text="@string/episode" />
 
     <TextView
