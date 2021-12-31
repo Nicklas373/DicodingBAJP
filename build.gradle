@@ -25,6 +25,7 @@ ext {
     materialVersion = '1.2.1'
     recyclerViewVersion = '1.2.1'
     glideVersion = '4.11.0'
+    androidXTestVersion = '1.2.0'
 }
 
 task clean(type: Delete) {
