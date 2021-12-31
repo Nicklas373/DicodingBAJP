@@ -87,9 +87,9 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:text="@string/genre"
+            android:textAlignment="center"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textAlignment="center" />
+            android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -112,9 +112,9 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:text="@string/genre"
+            android:textAlignment="center"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textAlignment="center" />
+            android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
     <ImageView
@@ -135,13 +135,13 @@
         android:id="@+id/movie_rating_text"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
-        android:textStyle="bold"
         android:layout_marginStart="10dp"
         android:layout_marginTop="2dp"
         android:gravity="start"
         android:textSize="14sp"
-        app:layout_constraintTop_toTopOf="@id/movie_rating"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/movie_rating"
+        app:layout_constraintTop_toTopOf="@id/movie_rating"
         tools:text="@string/rating" />
 
     <ImageView
@@ -167,8 +167,8 @@
         android:gravity="start"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@id/movie_duration_img"
         app:layout_constraintStart_toEndOf="@id/movie_duration_img"
+        app:layout_constraintTop_toTopOf="@id/movie_duration_img"
         tools:text="@string/duration" />
 
     <ImageButton
@@ -201,11 +201,11 @@
         android:layout_height="24dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="2dp"
-        android:textStyle="bold"
         android:gravity="start"
         android:textSize="14sp"
-        app:layout_constraintTop_toTopOf="@id/movie_episode_img"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/movie_episode_img"
+        app:layout_constraintTop_toTopOf="@id/movie_episode_img"
         tools:text="@string/episode" />
 
     <TextView
