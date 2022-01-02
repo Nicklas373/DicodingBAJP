@@ -81,6 +81,8 @@ class MainActivityTest {
         onView(withId(R.id.image_poster)).check(matches(withContentDescription(dummyTvShow[0].imagePath)))
         onView(withId(R.id.movie_rating_text)).check(matches(isDisplayed()))
         onView(withId(R.id.movie_rating_text)).check(matches(withText(dummyTvShow[0].rating)))
+        onView(withId(R.id.movie_episode_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.movie_episode_text)).check(matches(withText(dummyTvShow[0].episode + " | " + dummyTvShow[0].season)))
         onView(withId(R.id.movie_duration_text)).check(matches(isDisplayed()))
         onView(withId(R.id.movie_duration_text)).check(matches(withText(dummyTvShow[0].duration)))
         onView(withId(R.id.desc_text)).check(matches(isDisplayed()))
