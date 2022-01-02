@@ -137,6 +137,8 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             )
             .into(movieDetailBinding.imagePoster)
 
+        movieDetailBinding.imagePoster.contentDescription = movieEntity.imagePath
+
         movieDetailBinding.imgShare.setOnClickListener {
             onShareClickMovie(movieEntity)
         }
@@ -173,6 +175,8 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
                     .error(R.drawable.ic_error)
             )
             .into(movieDetailBinding.imagePoster)
+
+        movieDetailBinding.imagePoster.contentDescription = tvShowEntity.imagePath
 
         movieDetailBinding.imgShare.setOnClickListener {
             onShareClickTvShow(tvShowEntity)

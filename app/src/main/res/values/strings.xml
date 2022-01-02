@@ -17,4 +17,5 @@
     <string name="share">Share</string>
     <string name="share_title">Share :</string>
     <string name="separate"> | </string>
+    <string name="image_content">Image</string>
 </resources>

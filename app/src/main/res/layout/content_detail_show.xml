@@ -12,10 +12,10 @@
         android:id="@+id/image_poster"
         android:layout_width="170dp"
         android:layout_height="270dp"
+        android:contentDescription="@string/image_content"
         android:src="@color/teal_200"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/movie_title_text"

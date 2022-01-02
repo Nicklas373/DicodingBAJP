@@ -47,6 +47,14 @@ class MainActivityTest {
         onView(withId(R.id.movie_title_text)).check(matches(withText(dummyMovie[0].title)))
         onView(withId(R.id.movie_release_date)).check(matches(isDisplayed()))
         onView(withId(R.id.movie_release_date)).check(matches(withText(dummyMovie[0].releaseDate)))
+        onView(withId(R.id.image_poster)).check(matches(isDisplayed()))
+        onView(withId(R.id.image_poster)).check(matches(withContentDescription(dummyMovie[0].imagePath)))
+        onView(withId(R.id.movie_rating_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.movie_rating_text)).check(matches(withText(dummyMovie[0].rating)))
+        onView(withId(R.id.movie_duration_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.movie_duration_text)).check(matches(withText(dummyMovie[0].duration)))
+        onView(withId(R.id.desc_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.desc_text)).check(matches(withText(dummyMovie[0].description)))
         onView(withId(R.id.rv_cast)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_cast)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
@@ -69,6 +77,14 @@ class MainActivityTest {
         onView(withId(R.id.movie_title_text)).check(matches(withText(dummyTvShow[0].title)))
         onView(withId(R.id.movie_release_date)).check(matches(isDisplayed()))
         onView(withId(R.id.movie_release_date)).check(matches(withText(dummyTvShow[0].releaseDate)))
+        onView(withId(R.id.image_poster)).check(matches(isDisplayed()))
+        onView(withId(R.id.image_poster)).check(matches(withContentDescription(dummyTvShow[0].imagePath)))
+        onView(withId(R.id.movie_rating_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.movie_rating_text)).check(matches(withText(dummyTvShow[0].rating)))
+        onView(withId(R.id.movie_duration_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.movie_duration_text)).check(matches(withText(dummyTvShow[0].duration)))
+        onView(withId(R.id.desc_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.desc_text)).check(matches(withText(dummyTvShow[0].description)))
         onView(withId(R.id.rv_cast)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_cast)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
@@ -117,4 +133,5 @@ class MainActivityTest {
         onView(withId(R.id.img_share)).check(matches(isClickable()))
         onView(withId(R.id.img_share)).perform(click())
     }
+
 }
