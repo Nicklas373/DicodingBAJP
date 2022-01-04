@@ -13,14 +13,15 @@ import com.dicoding.moviecatalog.viewmodel.TvShowViewModel
 
 class TvShowFragment : Fragment() {
 
-    lateinit var fragmentTvShowBinding: FragmentTvShowBinding
+    private var _binding: FragmentTvShowBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentTvShowBinding = FragmentTvShowBinding.inflate(inflater, container, false)
-        return fragmentTvShowBinding.root
+        _binding = FragmentTvShowBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,13 +32,15 @@ class TvShowFragment : Fragment() {
                 this,
                 ViewModelProvider.NewInstanceFactory()
             )[TvShowViewModel::class.java]
-            val TvShow = viewModel.getTvShow()
+            val tvShow = viewModel.getTvShow()
             val adapter = TvShowAdapter()
-            adapter.setTvShow(TvShow)
-            with(fragmentTvShowBinding.rvTvshow) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                this.adapter = adapter
+            adapter.setTvShow(tvShow)
+            _binding?.let {
+                with(it.rvTvshow) {
+                    layoutManager = LinearLayoutManager(context)
+                    setHasFixedSize(true)
+                    this.adapter = adapter
+                }
             }
         }
     }

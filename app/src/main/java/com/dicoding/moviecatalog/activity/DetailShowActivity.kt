@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,12 +22,6 @@ import com.dicoding.moviecatalog.databinding.ContentDetailShowBinding
 import com.dicoding.moviecatalog.viewmodel.DetailMovieViewModel
 
 class DetailShowActivity : AppCompatActivity(), ShareCallback {
-
-    companion object {
-        const val SHOW_ID = "show_id"
-        const val EXTRA_MOVIE = "extra_movie"
-        const val EXTRA_TV_SHOW = "extra_tvshow"
-    }
 
     private lateinit var movieDetailBinding: ContentDetailShowBinding
 
@@ -108,25 +103,27 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
     }
 
     private fun populateMovie(movieEntity: MovieEntity) {
-        movieDetailBinding.movieTitleText.text = movieEntity.title
-        movieDetailBinding.movieReleaseDate.text = movieEntity.releaseDate
-        movieDetailBinding.movieDurationText.text = movieEntity.duration
-        movieDetailBinding.movieRatingText.text = movieEntity.rating
-        movieDetailBinding.descText.text = movieEntity.description
-        if (movieEntity.genre1 == "Null") {
-            movieDetailBinding.cvGenre1.visibility = View.INVISIBLE
-        } else {
-            movieDetailBinding.movieGenre1Text.text = movieEntity.genre1
-            genreColoringGenre1(movieEntity.genre1)
+        movieDetailBinding.apply {
+            movieTitleText.text = movieEntity.title
+            movieReleaseDate.text = movieEntity.releaseDate
+            movieDurationText.text = movieEntity.duration
+            movieRatingText.text = movieEntity.rating
+            descText.text = movieEntity.description
+            if (movieEntity.genre1 == "Null") {
+                cvGenre1.visibility = View.INVISIBLE
+            } else {
+                movieGenre1Text.text = movieEntity.genre1
+                genreColoringGenre1(movieEntity.genre1)
+            }
+            if (movieEntity.genre2 == "Null") {
+                cvGenre2.visibility = View.INVISIBLE
+            } else {
+                movieGenre2Text.text = movieEntity.genre2
+                genreColoringGenre2(movieEntity.genre2)
+            }
+            movieEpisodeImg.visibility = View.INVISIBLE
+            movieEpisodeText.visibility = View.INVISIBLE
         }
-        if (movieEntity.genre2 == "Null") {
-            movieDetailBinding.cvGenre2.visibility = View.INVISIBLE
-        } else {
-            movieDetailBinding.movieGenre2Text.text = movieEntity.genre2
-            genreColoringGenre2(movieEntity.genre2)
-        }
-        movieDetailBinding.movieEpisodeImg.visibility = View.INVISIBLE
-        movieDetailBinding.movieEpisodeText.visibility = View.INVISIBLE
 
         Glide.with(this)
             .load(movieEntity.imagePath)
@@ -138,33 +135,34 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             .into(movieDetailBinding.imagePoster)
 
         movieDetailBinding.imagePoster.contentDescription = movieEntity.imagePath
-
         movieDetailBinding.imgShare.setOnClickListener {
             onShareClickMovie(movieEntity)
         }
     }
 
     private fun populateTvShow(tvShowEntity: TvShowEntity) {
-        movieDetailBinding.movieTitleText.text = tvShowEntity.title
-        movieDetailBinding.movieReleaseDate.text = tvShowEntity.releaseDate
-        movieDetailBinding.movieDurationText.text = tvShowEntity.duration
-        movieDetailBinding.movieRatingText.text = tvShowEntity.rating
-        movieDetailBinding.descText.text = tvShowEntity.description
-        val season: String =
-            tvShowEntity.episode + " | " + tvShowEntity.season
-        movieDetailBinding.movieEpisodeText.text = season
+        movieDetailBinding.apply {
+            movieTitleText.text = tvShowEntity.title
+            movieReleaseDate.text = tvShowEntity.releaseDate
+            movieDurationText.text = tvShowEntity.duration
+            movieRatingText.text = tvShowEntity.rating
+            descText.text = tvShowEntity.description
+            val season: String =
+                tvShowEntity.episode + " | " + tvShowEntity.season
+            movieEpisodeText.text = season
 
-        if (tvShowEntity.genre1 == "Null") {
-            movieDetailBinding.cvGenre1.visibility = View.INVISIBLE
-        } else {
-            movieDetailBinding.movieGenre1Text.text = tvShowEntity.genre1
-            genreColoringGenre1(tvShowEntity.genre1)
-        }
-        if (tvShowEntity.genre2 == "Null") {
-            movieDetailBinding.cvGenre2.visibility = View.INVISIBLE
-        } else {
-            movieDetailBinding.movieGenre2Text.text = tvShowEntity.genre2
-            genreColoringGenre2(tvShowEntity.genre2)
+            if (tvShowEntity.genre1 == "Null") {
+                cvGenre1.visibility = View.INVISIBLE
+            } else {
+                movieGenre1Text.text = tvShowEntity.genre1
+                genreColoringGenre1(tvShowEntity.genre1)
+            }
+            if (tvShowEntity.genre2 == "Null") {
+                cvGenre2.visibility = View.INVISIBLE
+            } else {
+                movieGenre2Text.text = tvShowEntity.genre2
+                genreColoringGenre2(tvShowEntity.genre2)
+            }
         }
 
         Glide.with(this)
@@ -213,37 +211,186 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
     private fun genreColoringGenre1(genre1: String) {
         when (genre1) {
-            "Drama" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.red))
-            "Romance" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.red))
-            "Action" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.blue))
-            "Adventure" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.green))
-            "Music" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.orange))
-            "Crime" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.purple))
-            "Fantasy" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.red))
-            "Thriller" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.dark_green))
-            "Family" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.blue))
-            "Animation" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.red))
-            "Sci-Fi" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.silver))
-            "Comedy" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.yellow))
-            "Mystery" -> movieDetailBinding.cvGenre1.setCardBackgroundColor(resources.getColor(R.color.green))
+            drama -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.red
+                )
+            )
+            romance -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.red
+                )
+            )
+            action -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.blue
+                )
+            )
+            adventure -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.green
+                )
+            )
+            music -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.orange
+                )
+            )
+            crime -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.purple
+                )
+            )
+            fantasy -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.red
+                )
+            )
+            thriller -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.dark_green
+                )
+            )
+            family -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.blue
+                )
+            )
+            animation -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.red
+                )
+            )
+            sciFi -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.silver
+                )
+            )
+            comedy -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.yellow
+                )
+            )
+            mystery -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.green
+                )
+            )
         }
     }
 
     private fun genreColoringGenre2(genre2: String) {
         when (genre2) {
-            "Drama" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.red))
-            "Romance" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.red))
-            "Action" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.blue))
-            "Adventure" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.green))
-            "Music" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.orange))
-            "Crime" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.purple))
-            "Fantasy" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.red))
-            "Thriller" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.dark_green))
-            "Family" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.blue))
-            "Animation" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.red))
-            "Sci-Fi" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.silver))
-            "Comedy" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.yellow))
-            "Mystery" -> movieDetailBinding.cvGenre2.setCardBackgroundColor(resources.getColor(R.color.green))
+            drama -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.red
+                )
+            )
+            romance -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.red
+                )
+            )
+            action -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.blue
+                )
+            )
+            adventure -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.green
+                )
+            )
+            music -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.orange
+                )
+            )
+            crime -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.purple
+                )
+            )
+            fantasy -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.red
+                )
+            )
+            thriller -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.dark_green
+                )
+            )
+            family -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.blue
+                )
+            )
+            animation -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.red
+                )
+            )
+            sciFi -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.silver
+                )
+            )
+            comedy -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.yellow
+                )
+            )
+            mystery -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.green
+                )
+            )
         }
+    }
+
+    companion object {
+        const val SHOW_ID = "show_id"
+        const val EXTRA_MOVIE = "extra_movie"
+        const val EXTRA_TV_SHOW = "extra_tvshow"
+        const val drama = "Drama"
+        const val romance = "Romance"
+        const val action = "Action"
+        const val adventure = "Adventure"
+        const val music = "Music"
+        const val crime = "Crime"
+        const val fantasy = "Fantasy"
+        const val thriller = "Thriller"
+        const val family = "Family"
+        const val animation = "Animation"
+        const val sciFi = "Sci-Fi"
+        const val comedy = "Comedy"
+        const val mystery = "Mystery"
     }
 }

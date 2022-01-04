@@ -13,15 +13,16 @@ import com.dicoding.moviecatalog.viewmodel.MovieViewModel
 
 class MovieFragment : Fragment() {
 
-    private lateinit var fragmentMovieBinding: FragmentMovieBinding
+    private var _binding: FragmentMovieBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentMovieBinding = FragmentMovieBinding.inflate(layoutInflater, container, false)
-        return fragmentMovieBinding.root
+        _binding = FragmentMovieBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,12 +35,18 @@ class MovieFragment : Fragment() {
             val movie = viewModel.getMovie()
             val movieAdapter = MovieAdapter()
             movieAdapter.setMovies(movie)
-            with(fragmentMovieBinding.rvMovie) {
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = movieAdapter
+            _binding?.let {
+                with(it.rvMovie) {
+                    layoutManager = LinearLayoutManager(context)
+                    setHasFixedSize(true)
+                    adapter = movieAdapter
+                }
             }
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

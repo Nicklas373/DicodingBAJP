@@ -1,15 +1,15 @@
 package com.dicoding.moviecatalog.data.tvshow
 
 data class TvShowEntity(
-    var tvShowId: String,
-    var title: String,
-    var description: String,
-    var genre1: String,
-    var genre2: String,
-    var episode: String,
-    var season: String,
-    var duration: String,
-    var releaseDate: String,
-    var imagePath: String,
-    var rating: String
+    val tvShowId: String,
+    val title: String,
+    val description: String,
+    val genre1: String,
+    val genre2: String,
+    val episode: String,
+    val season: String,
+    val duration: String,
+    val releaseDate: String,
+    val imagePath: String,
+    val rating: String
 )
