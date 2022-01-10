@@ -1,0 +1,22 @@
+{
+  "tvShowCast": [
+    {
+      "castId": "1",
+      "castMovieName": "James Gordon",
+      "castRealName": "Ben McKenzie",
+	  "castImage": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/2jlwhOXKakL6gk365u4gPkTtHHi.jpg"
+    },
+    {
+      "castId": "2",
+      "castMovieName": "Harvey Bullock",
+      "castRealName": "Donal Logue",
+	  "castImage": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/5Rj850yVkIqsgCihtZLbkNSHbFb.jpg"
+    },
+    {
+      "castId": "3",
+      "castMovieName": "Bruce Wayne",
+      "castRealName": "David Mazouz",
+	  "castImage": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/jc9RQJQTRWi5lrob8DCSt1sW5N0.jpg"
+    }
+  ]
+}

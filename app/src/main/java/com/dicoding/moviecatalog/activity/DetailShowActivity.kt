@@ -20,6 +20,7 @@ import com.dicoding.moviecatalog.data.tvshow.TvShowEntity
 import com.dicoding.moviecatalog.databinding.ActivityDetailShowBinding
 import com.dicoding.moviecatalog.databinding.ContentDetailShowBinding
 import com.dicoding.moviecatalog.viewmodel.DetailMovieViewModel
+import com.dicoding.moviecatalog.viewmodel.ViewModelFactory
 
 class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
@@ -39,9 +40,9 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
         val adapter = DetailMovieAdapter()
         val adapter2 = DetailTvShowAdapter()
+        val factory = ViewModelFactory.getInstance(this)
         val viewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.NewInstanceFactory()
+            this, factory
         )[DetailMovieViewModel::class.java]
         val extras = intent.extras
         if (extras != null) {
@@ -49,37 +50,14 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             if (showId.equals("Movie")) {
                 val movieId = extras.getString(EXTRA_MOVIE)
                 if (movieId != null) {
-                    when (movieId) {
-                        "1" -> adapter.setMovieModule(viewModel.getCastMovie1())
-                        "2" -> adapter.setMovieModule(viewModel.getCastMovie2())
-                        "3" -> adapter.setMovieModule(viewModel.getCastMovie3())
-                        "4" -> adapter.setMovieModule(viewModel.getCastMovie4())
-                        "5" -> adapter.setMovieModule(viewModel.getCastMovie5())
-                        "6" -> adapter.setMovieModule(viewModel.getCastMovie6())
-                        "7" -> adapter.setMovieModule(viewModel.getCastMovie7())
-                        "8" -> adapter.setMovieModule(viewModel.getCastMovie8())
-                        "9" -> adapter.setMovieModule(viewModel.getCastMovie9())
-                        "10" -> adapter.setMovieModule(viewModel.getCastMovie10())
-                    }
+                    adapter.setMovieModule(viewModel.getCastMovie(movieId))
                     viewModel.setSelectedMovie(movieId)
                     populateMovie(viewModel.getMovie())
                 }
             } else if (showId.equals("TvShow")) {
                 val tvShowId = extras.getString(EXTRA_TV_SHOW)
                 if (tvShowId != null) {
-                    when (tvShowId) {
-                        "1" -> adapter2.setTvShowCastList(viewModel.getCastTvShow1())
-                        "2" -> adapter2.setTvShowCastList(viewModel.getCastTvShow2())
-                        "3" -> adapter2.setTvShowCastList(viewModel.getCastTvShow3())
-                        "4" -> adapter2.setTvShowCastList(viewModel.getCastTvShow4())
-                        "5" -> adapter2.setTvShowCastList(viewModel.getCastTvShow5())
-                        "6" -> adapter2.setTvShowCastList(viewModel.getCastTvShow6())
-                        "7" -> adapter2.setTvShowCastList(viewModel.getCastTvShow7())
-                        "8" -> adapter2.setTvShowCastList(viewModel.getCastTvShow8())
-                        "9" -> adapter2.setTvShowCastList(viewModel.getCastTvShow9())
-                        "10" -> adapter2.setTvShowCastList(viewModel.getCastTvShow10())
-                    }
-
+                    adapter2.setTvShowCastList(viewModel.getCastTvShow(tvShowId))
                     viewModel.setSelectedTvShow(tvShowId)
                     populateTvShow(viewModel.getTvShow())
                 }

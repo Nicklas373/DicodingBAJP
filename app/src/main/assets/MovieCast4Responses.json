@@ -1,0 +1,22 @@
+{
+  "movieCast": [
+    {
+      "castId": "1",
+      "castMovieName": "Freddie Mercury",
+      "castRealName": "Rami Malek",
+	  "castImage": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/2OuFzCbMibXGouG79tG1U4BLPbe.jpg"
+    },
+    {
+      "castId": "2",
+      "castMovieName": "Brian May",
+      "castRealName": "Gwilym Lee",
+	  "castImage": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/bHSmjJLJyrg5Q0tC0W2FFreuOnO.jpg"
+    },
+    {
+      "castId": "3",
+      "castMovieName": "Roger Taylor",
+      "castRealName": "Ben Hardy",
+	  "castImage": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/s8UEIomgY5AaEmPHkcPAScp68Fw.jpg"
+    }
+  ]
+}

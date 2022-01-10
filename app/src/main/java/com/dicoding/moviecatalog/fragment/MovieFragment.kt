@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.moviecatalog.adapter.MovieAdapter
 import com.dicoding.moviecatalog.databinding.FragmentMovieBinding
 import com.dicoding.moviecatalog.viewmodel.MovieViewModel
+import com.dicoding.moviecatalog.viewmodel.ViewModelFactory
 
 class MovieFragment : Fragment() {
 
@@ -28,9 +29,9 @@ class MovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (activity != null) {
+            val factory = ViewModelFactory.getInstance(requireActivity())
             val viewModel = ViewModelProvider(
-                this,
-                ViewModelProvider.NewInstanceFactory()
+                this, factory
             )[MovieViewModel::class.java]
             val movie = viewModel.getMovie()
             val movieAdapter = MovieAdapter()

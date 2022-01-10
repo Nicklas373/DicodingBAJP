@@ -1,0 +1,22 @@
+{
+  "movieCast": [
+    {
+      "castId": "1",
+      "castMovieName": "Arthur Curry / Aquaman",
+      "castRealName": "Jason Momoa",
+	  "castImage": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/6dEFBpZH8C8OijsynkSajQT99Pb.jpg"
+    },
+    {
+      "castId": "2",
+      "castMovieName": "Mera",
+      "castRealName": "Amber Heard",
+	  "castImage": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/ik0cfqudGTYBBRKF0x4gl2rSUQx.jpg"
+    },
+    {
+      "castId": "3",
+      "castMovieName": "Nuidis Vulko",
+      "castRealName": "Willem Dafoe",
+	  "castImage": "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/ui8e4sgZAwMPi3hzEO53jyBJF9B.jpg"
+    }
+  ]
+}

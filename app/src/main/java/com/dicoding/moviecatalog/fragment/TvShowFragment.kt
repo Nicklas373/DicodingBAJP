@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.moviecatalog.adapter.TvShowAdapter
 import com.dicoding.moviecatalog.databinding.FragmentTvShowBinding
 import com.dicoding.moviecatalog.viewmodel.TvShowViewModel
+import com.dicoding.moviecatalog.viewmodel.ViewModelFactory
 
 class TvShowFragment : Fragment() {
 
@@ -28,9 +29,9 @@ class TvShowFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
+            val factory = ViewModelFactory.getInstance(requireActivity())
             val viewModel = ViewModelProvider(
-                this,
-                ViewModelProvider.NewInstanceFactory()
+                this, factory
             )[TvShowViewModel::class.java]
             val tvShow = viewModel.getTvShow()
             val adapter = TvShowAdapter()
