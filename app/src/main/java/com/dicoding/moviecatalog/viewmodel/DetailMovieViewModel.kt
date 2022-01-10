@@ -24,7 +24,8 @@ class DetailMovieViewModel(private val movieRepository: Repository) : ViewModel(
     fun getCastMovie(movieId: String): List<MovieCastEntity> =
         movieRepository.getAllMoviesByCast(movieId)
 
-    fun getTvShow(): TvShowEntity =movieRepository.getTvShowWithCast(tvShowId)
+    fun getTvShow(): TvShowEntity = movieRepository.getTvShowWithCast(tvShowId)
 
-    fun getCastTvShow(tvShowId: String): List<TvShowCastEntity> = movieRepository.getAllTvShowByCast(tvShowId)
+    fun getCastTvShow(tvShowId: String): List<TvShowCastEntity> =
+        movieRepository.getAllTvShowByCast(tvShowId)
 }
