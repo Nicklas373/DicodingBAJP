@@ -50,16 +50,30 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             if (showId.equals("Movie")) {
                 val movieId = extras.getString(EXTRA_MOVIE)
                 if (movieId != null) {
-                    adapter.setMovieModule(viewModel.getCastMovie(movieId))
+                    hideStaticUI()
+                    movieDetailBinding.progressBar.visibility = View.VISIBLE
                     viewModel.setSelectedMovie(movieId)
-                    populateMovie(viewModel.getMovie())
+                    viewModel.getCastMovie(movieId).observe(this, { movie ->
+                        movieDetailBinding.progressBar.visibility = View.GONE
+                        showStaticUI()
+                        adapter.setMovieModule(movie)
+                        adapter.notifyDataSetChanged()
+                    })
+                    viewModel.getMovie().observe(this, { movie -> populateMovie(movie) })
                 }
             } else if (showId.equals("TvShow")) {
                 val tvShowId = extras.getString(EXTRA_TV_SHOW)
                 if (tvShowId != null) {
-                    adapter2.setTvShowCastList(viewModel.getCastTvShow(tvShowId))
+                    hideStaticUI()
+                    movieDetailBinding.progressBar.visibility = View.VISIBLE
                     viewModel.setSelectedTvShow(tvShowId)
-                    populateTvShow(viewModel.getTvShow())
+                    viewModel.getCastTvShow(tvShowId).observe(this, { tvShow ->
+                        movieDetailBinding.progressBar.visibility = View.GONE
+                        showStaticUI()
+                        adapter2.setTvShowCastList(tvShow)
+                        adapter2.notifyDataSetChanged()
+                    })
+                    viewModel.getTvShow().observe(this, { tvShow -> populateTvShow(tvShow) })
                 }
             }
         }
@@ -350,6 +364,38 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
                     R.color.green
                 )
             )
+        }
+    }
+
+    private fun hideStaticUI() {
+        movieDetailBinding.apply {
+            imagePoster.visibility = View.GONE
+            movieEpisodeImg.visibility = View.GONE
+            view.visibility = View.GONE
+            imgShare.visibility = View.GONE
+            cvGenre1.visibility = View.GONE
+            cvGenre2.visibility = View.GONE
+            calendarImg.visibility = View.GONE
+            movieDurationImg.visibility = View.GONE
+            movieRating.visibility = View.GONE
+            descTitle.visibility = View.GONE
+            castListModule.visibility = View.GONE
+        }
+    }
+
+    private fun showStaticUI() {
+        movieDetailBinding.apply {
+            imagePoster.visibility = View.VISIBLE
+            movieEpisodeImg.visibility = View.VISIBLE
+            view.visibility = View.VISIBLE
+            imgShare.visibility = View.VISIBLE
+            cvGenre1.visibility = View.VISIBLE
+            cvGenre2.visibility = View.VISIBLE
+            calendarImg.visibility = View.VISIBLE
+            movieDurationImg.visibility = View.VISIBLE
+            movieRating.visibility = View.VISIBLE
+            descTitle.visibility = View.VISIBLE
+            castListModule.visibility = View.VISIBLE
         }
     }
 

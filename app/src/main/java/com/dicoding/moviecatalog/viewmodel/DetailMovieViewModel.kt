@@ -1,5 +1,6 @@
 package com.dicoding.moviecatalog.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.dicoding.moviecatalog.data.movie.MovieCastEntity
 import com.dicoding.moviecatalog.data.movie.MovieEntity
@@ -19,13 +20,13 @@ class DetailMovieViewModel(private val movieRepository: Repository) : ViewModel(
         this.tvShowId = tvShowId
     }
 
-    fun getMovie(): MovieEntity = movieRepository.getMovieWithCast(movieId)
+    fun getMovie(): LiveData<MovieEntity> = movieRepository.getMovieWithCast(movieId)
 
-    fun getCastMovie(movieId: String): List<MovieCastEntity> =
+    fun getCastMovie(movieId: String): LiveData<List<MovieCastEntity>> =
         movieRepository.getAllMoviesByCast(movieId)
 
-    fun getTvShow(): TvShowEntity = movieRepository.getTvShowWithCast(tvShowId)
+    fun getTvShow(): LiveData<TvShowEntity> = movieRepository.getTvShowWithCast(tvShowId)
 
-    fun getCastTvShow(tvShowId: String): List<TvShowCastEntity> =
+    fun getCastTvShow(tvShowId: String): LiveData<List<TvShowCastEntity>> =
         movieRepository.getAllTvShowByCast(tvShowId)
 }

@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/content_detail_show.xml" value="0.12708333333333333" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/fragment_tv_show.xml" value="0.12708333333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.16302083333333334" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/drawable/bg_button.xml" value="0.16302083333333334" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/drawable/bg_button_disable.xml" value="0.16302083333333334" />

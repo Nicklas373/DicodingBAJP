@@ -1,9 +1,10 @@
-package com.dicoding.moviecatalog.data.movie.source
+package com.dicoding.moviecatalog.viewmodel.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dicoding.moviecatalog.data.movie.MovieCastEntity
 import com.dicoding.moviecatalog.data.movie.MovieEntity
+import com.dicoding.moviecatalog.data.movie.source.DataSource
 import com.dicoding.moviecatalog.data.movie.source.remote.RemoteDataSource
 import com.dicoding.moviecatalog.data.movie.source.remote.response.CastMovieResponse
 import com.dicoding.moviecatalog.data.movie.source.remote.response.CastTvShowResponse
@@ -12,17 +13,8 @@ import com.dicoding.moviecatalog.data.movie.source.remote.response.TvShowRespons
 import com.dicoding.moviecatalog.data.tvshow.TvShowCastEntity
 import com.dicoding.moviecatalog.data.tvshow.TvShowEntity
 
-class Repository private constructor(private val remoteDataSource: RemoteDataSource) :
+class FakeRepositoryTest(private val remoteDataSource: RemoteDataSource) :
     DataSource {
-
-    companion object {
-        @Volatile
-        private var instance: Repository? = null
-        fun getInstance(remoteData: RemoteDataSource): Repository =
-            instance ?: synchronized(this) {
-                instance ?: Repository(remoteData).apply { instance = this }
-            }
-    }
 
     override fun getAllMovies(): LiveData<List<MovieEntity>> {
         val movieResults = MutableLiveData<List<MovieEntity>>()
