@@ -27,12 +27,11 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val course = listMovies[position]
-        holder.bind(course)
+        val movieList = listMovies[position]
+        holder.bind(movieList)
     }
 
     override fun getItemCount(): Int = listMovies.size
-
 
     class MovieViewHolder(private val binding: ItemsMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {

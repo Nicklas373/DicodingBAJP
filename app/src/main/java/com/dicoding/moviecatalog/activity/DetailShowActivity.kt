@@ -402,6 +402,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
     companion object {
         const val SHOW_ID = "show_id"
         const val EXTRA_MOVIE = "extra_movie"
+        const val EXTRA_MOVIE_API = "extra_movie_api"
         const val EXTRA_TV_SHOW = "extra_tvshow"
         const val drama = "Drama"
         const val romance = "Romance"
