@@ -117,6 +117,22 @@
             android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="180dp"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@id/view"
+        app:layout_constraintTop_toBottomOf="@id/view">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_genre_api"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            tools:listitem="@layout/items_genre_api" />
+    </HorizontalScrollView>
+
     <ImageView
         android:id="@+id/movie_rating"
         android:layout_width="24dp"
@@ -171,17 +187,6 @@
         app:layout_constraintTop_toTopOf="@id/movie_duration_img"
         tools:text="@string/duration" />
 
-    <ImageButton
-        android:id="@+id/img_share"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_marginStart="10dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="@id/view"
-        app:layout_constraintTop_toTopOf="@id/movie_release_date"
-        app:srcCompat="@drawable/ic_share_blue"
-        tools:ignore="ContentDescription" />
-
     <ImageView
         android:id="@+id/movie_episode_img"
         android:layout_width="24dp"
@@ -207,6 +212,70 @@
         app:layout_constraintStart_toEndOf="@id/movie_episode_img"
         app:layout_constraintTop_toTopOf="@id/movie_episode_img"
         tools:text="@string/episode" />
+
+    <ImageView
+        android:id="@+id/movie_revenue_img"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/revenue_usd"
+        android:gravity="start"
+        android:src="@drawable/ic_baseline_attach_money_24"
+        app:layout_constraintBottom_toTopOf="@id/movie_language_img"
+        app:layout_constraintEnd_toStartOf="@id/movie_revenue_text"
+        app:layout_constraintStart_toEndOf="@+id/image_poster"
+        app:layout_constraintTop_toBottomOf="@+id/movie_rating" />
+
+    <TextView
+        android:id="@+id/movie_revenue_text"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:gravity="start"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/movie_revenue_img"
+        app:layout_constraintTop_toTopOf="@id/movie_revenue_img"
+        tools:text="@string/Revenue" />
+
+    <ImageView
+        android:id="@+id/movie_language_img"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/language"
+        android:gravity="start"
+        android:src="@drawable/ic_baseline_language_24"
+        app:layout_constraintEnd_toStartOf="@id/movie_language_text"
+        app:layout_constraintStart_toEndOf="@+id/image_poster"
+        app:layout_constraintTop_toBottomOf="@+id/movie_revenue_img" />
+
+    <TextView
+        android:id="@+id/movie_language_text"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:gravity="start"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/movie_language_img"
+        app:layout_constraintTop_toTopOf="@id/movie_language_img"
+        tools:text="@string/language" />
+
+    <ImageButton
+        android:id="@+id/img_share"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="@id/view"
+        app:layout_constraintTop_toTopOf="@id/movie_release_date"
+        app:srcCompat="@drawable/ic_share_blue"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/desc_title"

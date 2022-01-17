@@ -74,12 +74,15 @@ class MovieFragment : Fragment() {
         val listReview = ArrayList<MovieListResponse>()
         for (movieList in movieListApi) {
             val movieApi = MovieListResponse(
+                movieList.movieId,
                 movieList.overview,
                 movieList.originalTitle,
                 movieList.releaseDate,
                 movieList.voteAverage,
                 movieList.title,
-                movieList.posterPath
+                movieList.posterPath,
+                movieList.revenue,
+                movieList.originalLanguage
             )
             listReview.add(movieApi)
         }

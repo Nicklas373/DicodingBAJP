@@ -3,9 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/content_detail_show.xml" value="0.12708333333333333" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/drawable/ic_baseline_access_time_24.xml" value="0.26614583333333336" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/drawable/ic_baseline_attach_money_24.xml" value="0.26614583333333336" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/drawable/ic_baseline_bookmark_24.xml" value="0.26614583333333336" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/drawable/ic_baseline_language_24.xml" value="0.26614583333333336" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/activity_detail_show.xml" value="0.2" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/content_detail_show.xml" value="0.4" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/fragment_movie.xml" value="0.4" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/fragment_tv_show.xml" value="0.12708333333333333" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/items_cast_list.xml" value="0.1" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/items_genre_api.xml" value="0.4" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/items_movie.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/items_tv_show.xml" value="0.1328125" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.16302083333333334" />

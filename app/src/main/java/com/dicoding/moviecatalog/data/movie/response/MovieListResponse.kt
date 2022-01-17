@@ -22,5 +22,11 @@ data class MovieListResponse(
     val title: String,
 
     @field:SerializedName("poster_path")
-    val posterPath: String
+    val posterPath: String,
+
+    @field:SerializedName("revenue")
+    val revenue: Int,
+
+    @field:SerializedName("original_language")
+    val originalLanguage: String
 )

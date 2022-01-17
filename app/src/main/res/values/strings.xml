@@ -16,7 +16,10 @@
     <string name="as">As</string>
     <string name="share">Share</string>
     <string name="share_title">Share :</string>
+    <string name="Revenue">Revenue</string>
+    <string name="language">Language</string>
     <string name="separate"> | </string>
+    <string name="revenue_usd">$</string>
     <string name="image_content">Image</string>
     <string name="on_failure">Fail!</string>
     <string name="movieDb_static_image">https://image.tmdb.org/t/p/original/</string>
