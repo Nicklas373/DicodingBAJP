@@ -35,7 +35,6 @@ import kotlin.collections.ArrayList
 class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
     private lateinit var movieDetailBinding: ContentDetailShowBinding
-    private val movieGenreAdapter = ArrayList<MovieGenreListResponse>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +50,6 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
         val adapter = DetailMovieAdapter()
         val adapter2 = DetailTvShowAdapter()
-        val adapter3 = MovieGenreApiAdapter(movieGenreAdapter)
         val factory = ViewModelFactory.getInstance(this)
         val viewModel = ViewModelProvider(
             this, factory
@@ -60,87 +58,54 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         if (extras != null) {
             val showId = extras.getString(SHOW_ID)
             val movieIdDb = extras.getString(EXTRA_MOVIE_DB)
-            val movieId = extras.getString(EXTRA_MOVIE)
+            val tvShowIdDb = extras.getString(EXTRA_TV_SHOW)
             val movieIdApi = extras.getString(EXTRA_MOVIE_API)
+            val genreApi = extras.getString(EXTRA_GENRE_API)
             if (showId.equals("Movie")) {
-                if (movieId != null) {
+                if (movieIdDb != null) {
                     hideStaticUI()
                     movieDetailBinding.progressBar.visibility = View.VISIBLE
-                    viewModel.setSelectedMovie(movieId)
-                    viewModel.getCastMovie(movieId).observe(this, { movie ->
+                    viewModel.setSelectedMovie(movieIdDb)
+                    viewModel.getCastMovie(movieIdDb).observe(this, { movie ->
                         movieDetailBinding.progressBar.visibility = View.GONE
+                        showStaticUIMovieDB()
                         adapter.setMovieModule(movie)
                         adapter.notifyDataSetChanged()
-                        showStaticUIDB()
                     })
                     viewModel.getMovie().observe(this, { movie -> populateMovie(movie) })
+                } else {
+                    if (movieIdApi != null) {
+                        hideStaticUI()
+                        movieDetailBinding.progressBar.visibility = View.VISIBLE
+                        viewModel.setSelectedMovie(movieIdApi)
+                        if (genreApi != null) {
+                            viewModel.getCastMovie(genreApi).observe(this, { movieGenreApi ->
+                                showStaticUIMovieAPI()
+                                movieDetailBinding.progressBar.visibility = View.GONE
+                                adapter.setMovieModule(movieGenreApi)
+                                adapter.notifyDataSetChanged()
+                            })
+                        }
+                        viewModel.movieDetailList.observe(this, { movieIdApiVM ->
+                            setMovieData(movieIdApiVM)
+                        })
+                        viewModel.movieGenreList.observe(this, { movieIdGenreVM ->
+                            setMovieGenreData(movieIdGenreVM)
+                        })
+                    }
                 }
             } else if (showId.equals("TvShow")) {
                 val tvShowId = extras.getString(EXTRA_TV_SHOW)
+                hideStaticUI()
                 if (tvShowId != null) {
-                    hideStaticUI()
                     movieDetailBinding.progressBar.visibility = View.VISIBLE
                     viewModel.setSelectedTvShow(tvShowId)
                     viewModel.getCastTvShow(tvShowId).observe(this, { tvShow ->
                         movieDetailBinding.progressBar.visibility = View.GONE
                         adapter2.setTvShowCastList(tvShow)
                         adapter2.notifyDataSetChanged()
-                        showStaticUIDB()
                     })
                     viewModel.getTvShow().observe(this, { tvShow -> populateTvShow(tvShow) })
-                    movieDetailBinding.rvCast.adapter = adapter2
-                }
-            }
-
-            viewModel.movieDetailList.observe(this, { movieDetailId ->
-                hideStaticUI()
-                movieDetailBinding.progressBar.visibility = View.VISIBLE
-                if (movieIdApi != null) {
-                    movieDetailBinding.progressBar.visibility = View.GONE
-                    setMovieData(movieDetailId)
-                    showStaticUIAPI()
-                }
-            })
-
-            viewModel.movieGenreList.observe(this, { movieGenreId ->
-                hideStaticUI()
-                movieDetailBinding.progressBar.visibility = View.VISIBLE
-                if (movieIdApi != null) {
-                    movieDetailBinding.progressBar.visibility = View.GONE
-                    setMovieGenreData(movieGenreId)
-                    adapter3.notifyDataSetChanged()
-                    showStaticUIAPI()
-                }
-            })
-
-            if (movieIdApi != null) {
-                viewModel.getMovieListDetails(movieIdApi)
-                viewModel.getMovieGenreListDetails(movieIdApi)
-                if (showId.equals("Movie")) {
-                    if (movieIdDb != null) {
-                        hideStaticUI()
-                        movieDetailBinding.progressBar.visibility = View.VISIBLE
-                        viewModel.getCastMovie(movieIdDb).observe(this, { movie ->
-                            movieDetailBinding.progressBar.visibility = View.GONE
-                            movieDetailBinding.rvCast.adapter = adapter
-                            adapter.setMovieModule(movie)
-                            adapter.notifyDataSetChanged()
-                            showStaticUIAPI()
-                        })
-                    }
-                } else if (showId.equals("TvShow")) {
-                    val tvShowId = extras.getString(EXTRA_TV_SHOW)
-                    if (tvShowId != null) {
-                        hideStaticUI()
-                        movieDetailBinding.progressBar.visibility = View.VISIBLE
-                        viewModel.getCastTvShow(tvShowId).observe(this, { tvShow ->
-                            movieDetailBinding.progressBar.visibility = View.GONE
-                            movieDetailBinding.rvCast.adapter = adapter2
-                            adapter2.setTvShowCastList(tvShow)
-                            adapter2.notifyDataSetChanged()
-                            showStaticUIAPI()
-                        })
-                    }
                 }
             }
         }
@@ -153,8 +118,25 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             showLoading(it)
         })
 
+        if (extras != null) {
+            val movieIdApi = extras.getString(EXTRA_MOVIE_API)
+            if (movieIdApi != null) {
+                viewModel.getMovieListDetails(movieIdApi)
+                viewModel.getMovieGenreListDetails(movieIdApi)
+            }
+        }
+
         configAdapter()
         configAdapterApi()
+
+        if (extras != null) {
+            val showId = extras.getString(SHOW_ID)
+            if (showId.equals("Movie")) {
+                movieDetailBinding.rvCast.adapter = adapter
+            } else if (showId.equals("TvShow")) {
+                movieDetailBinding.rvCast.adapter = adapter2
+            }
+        }
     }
 
     private fun setMovieData(movieId: MovieListResponse) {
@@ -345,54 +327,6 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         }
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            movieDetailBinding.apply {
-                progressBar.visibility = View.VISIBLE
-                imagePoster.visibility = View.GONE
-                movieEpisodeImg.visibility = View.GONE
-                view.visibility = View.GONE
-                imgShare.visibility = View.GONE
-                cvGenre1.visibility = View.GONE
-                cvGenre2.visibility = View.GONE
-                rvGenreApi.visibility = View.GONE
-                calendarImg.visibility = View.GONE
-                movieDurationImg.visibility = View.GONE
-                movieDurationText.visibility = View.GONE
-                movieEpisodeText.visibility = View.GONE
-                movieEpisodeImg.visibility = View.GONE
-                descTitle.visibility = View.GONE
-                castListModule.visibility = View.GONE
-                movieRevenueText.visibility = View.GONE
-                movieRevenueImg.visibility = View.GONE
-                movieLanguageText.visibility = View.GONE
-                movieLanguageImg.visibility = View.GONE
-            }
-        } else {
-            movieDetailBinding.apply {
-                progressBar.visibility = View.GONE
-                imagePoster.visibility = View.VISIBLE
-                view.visibility = View.VISIBLE
-                imgShare.visibility = View.VISIBLE
-                cvGenre1.visibility = View.VISIBLE
-                cvGenre2.visibility = View.VISIBLE
-                rvCast.visibility = View.VISIBLE
-                rvGenreApi.visibility = View.VISIBLE
-                calendarImg.visibility = View.VISIBLE
-                descTitle.visibility = View.VISIBLE
-                castListModule.visibility = View.VISIBLE
-                movieDurationImg.visibility = View.VISIBLE
-                movieDurationText.visibility = View.VISIBLE
-                movieEpisodeText.visibility = View.VISIBLE
-                movieEpisodeImg.visibility = View.VISIBLE
-                movieRevenueImg.visibility = View.VISIBLE
-                movieRevenueText.visibility = View.VISIBLE
-                movieLanguageText.visibility = View.VISIBLE
-                movieLanguageImg.visibility = View.VISIBLE
-            }
-        }
-    }
-
     private fun genreColoringGenre1(genre1: String) {
         when (genre1) {
             drama -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
@@ -559,16 +493,28 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         }
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            hideStaticUI()
+        }
+    }
+
     private fun hideStaticUI() {
         movieDetailBinding.apply {
             imagePoster.visibility = View.GONE
-            movieEpisodeImg.visibility = View.GONE
             view.visibility = View.GONE
             imgShare.visibility = View.GONE
+            movieTitleText.visibility = View.GONE
+            descText.visibility = View.GONE
+            movieReleaseDate.visibility = View.GONE
             cvGenre1.visibility = View.GONE
             cvGenre2.visibility = View.GONE
             rvGenreApi.visibility = View.GONE
+            rvCast.visibility = View.GONE
+            castListModule.visibility = View.GONE
             calendarImg.visibility = View.GONE
+            movieRating.visibility = View.GONE
+            movieRatingText.visibility = View.GONE
             movieDurationImg.visibility = View.GONE
             movieDurationText.visibility = View.GONE
             movieEpisodeText.visibility = View.GONE
@@ -581,41 +527,51 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         }
     }
 
-    private fun showStaticUIDB() {
+    private fun showStaticUIMovieDB() {
         movieDetailBinding.apply {
             imagePoster.visibility = View.VISIBLE
-            movieEpisodeImg.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
             imgShare.visibility = View.VISIBLE
+            movieReleaseDate.visibility = View.VISIBLE
+            movieTitleText.visibility = View.VISIBLE
+            descText.visibility = View.VISIBLE
             cvGenre1.visibility = View.VISIBLE
             cvGenre2.visibility = View.VISIBLE
             rvGenreApi.visibility = View.INVISIBLE
-            calendarImg.visibility = View.VISIBLE
-            movieDurationImg.visibility = View.VISIBLE
-            movieRating.visibility = View.VISIBLE
-            movieDurationText.visibility = View.VISIBLE
-            movieRatingText.visibility = View.VISIBLE
-            descTitle.visibility = View.VISIBLE
+            rvCast.visibility = View.VISIBLE
             castListModule.visibility = View.VISIBLE
+            calendarImg.visibility = View.VISIBLE
+            movieRating.visibility = View.VISIBLE
+            movieRatingText.visibility = View.VISIBLE
+            movieDurationImg.visibility = View.VISIBLE
+            movieDurationText.visibility = View.VISIBLE
+            descTitle.visibility = View.VISIBLE
             movieRevenueImg.visibility = View.INVISIBLE
             movieRevenueText.visibility = View.INVISIBLE
             movieLanguageText.visibility = View.INVISIBLE
             movieLanguageImg.visibility = View.INVISIBLE
+            movieEpisodeImg.visibility = View.INVISIBLE
+            movieEpisodeText.visibility = View.INVISIBLE
         }
     }
 
-    private fun showStaticUIAPI() {
+    private fun showStaticUIMovieAPI() {
         movieDetailBinding.apply {
             imagePoster.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
             imgShare.visibility = View.VISIBLE
+            movieReleaseDate.visibility = View.VISIBLE
+            movieTitleText.visibility = View.VISIBLE
+            descText.visibility = View.VISIBLE
+            descTitle.visibility = View.VISIBLE
             cvGenre1.visibility = View.INVISIBLE
             cvGenre2.visibility = View.INVISIBLE
-            rvCast.visibility = View.VISIBLE
             rvGenreApi.visibility = View.VISIBLE
-            calendarImg.visibility = View.VISIBLE
-            descTitle.visibility = View.VISIBLE
+            rvCast.visibility = View.VISIBLE
             castListModule.visibility = View.VISIBLE
+            calendarImg.visibility = View.VISIBLE
+            movieRating.visibility = View.VISIBLE
+            movieRatingText.visibility = View.VISIBLE
             movieDurationImg.visibility = View.INVISIBLE
             movieDurationText.visibility = View.INVISIBLE
             movieEpisodeText.visibility = View.INVISIBLE
@@ -635,6 +591,8 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
                 movieDetailBinding.rvGenreApi.context,
                 DividerItemDecoration.HORIZONTAL
             )
+        movieDetailBinding.rvGenreApi.isNestedScrollingEnabled = false
+        movieDetailBinding.rvGenreApi.setHasFixedSize(true)
         movieDetailBinding.rvGenreApi.layoutManager = linearLayoutManager
         movieDetailBinding.rvGenreApi.addItemDecoration(dividerItemDecoration)
     }
@@ -658,9 +616,9 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
     companion object {
         const val SHOW_ID = "show_id"
-        const val EXTRA_MOVIE = "extra_movie"
         const val EXTRA_MOVIE_DB = "extra_movie_db"
         const val EXTRA_MOVIE_API = "extra_movie_api"
+        const val EXTRA_GENRE_API = "extra_genre_api"
         const val EXTRA_TV_SHOW = "extra_tvShow"
         const val drama = "Drama"
         const val romance = "Romance"

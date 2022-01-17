@@ -52,7 +52,7 @@ class MovieApiAdapter(private val listMovieApi: ArrayList<MovieListResponse>) :
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, DetailShowActivity::class.java)
                 intent.putExtra(DetailShowActivity.SHOW_ID, "Movie")
-                intent.putExtra(DetailShowActivity.EXTRA_MOVIE_DB, position.plus(1).toString())
+                intent.putExtra(DetailShowActivity.EXTRA_GENRE_API, position.plus(1).toString())
                 intent.putExtra(DetailShowActivity.EXTRA_MOVIE_API, movieId)
                 itemView.context.startActivity(intent)
             }

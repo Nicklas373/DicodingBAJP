@@ -1,5 +1,7 @@
 package com.dicoding.moviecatalog.viewmodel
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,9 +14,11 @@ import com.dicoding.moviecatalog.data.movie.response.MovieGenreListResponse
 import com.dicoding.moviecatalog.data.movie.response.MovieGenreResponse
 import com.dicoding.moviecatalog.data.movie.response.MovieListResponse
 import com.dicoding.moviecatalog.data.movie.source.Repository
+import com.dicoding.moviecatalog.data.movie.source.remote.RemoteDataSource
 import com.dicoding.moviecatalog.data.tvshow.TvShowCastEntity
 import com.dicoding.moviecatalog.data.tvshow.TvShowEntity
 import com.dicoding.moviecatalog.data.tvshow.response.TvShowListResponse
+import com.dicoding.moviecatalog.utils.EspressoIdlingResource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,69 +45,89 @@ class DetailMovieViewModel(private val movieRepository: Repository) : ViewModel(
     private lateinit var movieId: String
     private lateinit var tvShowId: String
 
+    private val handler = Handler(Looper.getMainLooper())
+
     fun getMovieListDetails(movieId: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getMovieDetail(movieId)
-        client.enqueue(object : Callback<MovieListResponse> {
-            override fun onResponse(
-                call: Call<MovieListResponse>,
-                response: Response<MovieListResponse>
-            ) {
-                _isLoading.value = false
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
-                        _toastReason.value = R.string.on_failure.toString()
-                        Log.e(TAG, R.string.on_failure.toString() + " " + response.toString())
-                        _movieDetailList.value = response.body()
-                    } else {
-                        _isToast.value = true
+        EspressoIdlingResource.increment()
+        handler.postDelayed(
+            {
+                client.enqueue(object : Callback<MovieListResponse> {
+                    override fun onResponse(
+                        call: Call<MovieListResponse>,
+                        response: Response<MovieListResponse>
+                    ) {
+                        _isLoading.value = false
+                        if (response.isSuccessful) {
+                            if (response.body() != null) {
+                                _toastReason.value = R.string.on_failure.toString()
+                                Log.e(
+                                    TAG,
+                                    R.string.on_failure.toString() + " " + response.toString()
+                                )
+                                _movieDetailList.value = response.body()
+                            } else {
+                                _isToast.value = true
+                            }
+                        } else {
+                            _isLoading.value = true
+                            _isToast.value = false
+                            _toastReason.value = "onFailure: ${response.message()}"
+                            Log.e(TAG, "onFailure: ${response.message()}")
+                        }
                     }
-                } else {
-                    _isLoading.value = true
-                    _isToast.value = false
-                    _toastReason.value = "onFailure: ${response.message()}"
-                    Log.e(TAG, "onFailure: ${response.message()}")
-                }
-            }
 
-            override fun onFailure(call: Call<MovieListResponse>, t: Throwable) {
-                _isLoading.value = false
-                _isToast.value = false
-                Log.e(TAG, R.string.on_failure.toString() + " " + t.message.toString())
-            }
-        })
+                    override fun onFailure(call: Call<MovieListResponse>, t: Throwable) {
+                        _isLoading.value = false
+                        _isToast.value = false
+                        Log.e(TAG, R.string.on_failure.toString() + " " + t.message.toString())
+                    }
+                })
+            },
+            SERVICE_LATENCY_IN_MILLIS
+        )
     }
 
     fun getMovieGenreListDetails(movieId: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getMovieGenreList(movieId)
-        client.enqueue(object : Callback<MovieGenreResponse> {
-            override fun onResponse(
-                call: Call<MovieGenreResponse>,
-                response: Response<MovieGenreResponse>
-            ) {
-                _isLoading.value = false
-                if (response.isSuccessful) {
-                    if (response.body() != null) {
-                        _toastReason.value = R.string.on_failure.toString()
-                        Log.e(TAG, R.string.on_failure.toString() + " " + response.toString())
-                        _movieGenreList.value = response.body()!!.genres
-                    } else {
-                        _isToast.value = true
+        EspressoIdlingResource.increment()
+        handler.postDelayed(
+            {
+                client.enqueue(object : Callback<MovieGenreResponse> {
+                    override fun onResponse(
+                        call: Call<MovieGenreResponse>,
+                        response: Response<MovieGenreResponse>
+                    ) {
+                        _isLoading.value = false
+                        if (response.isSuccessful) {
+                            if (response.body() != null) {
+                                _toastReason.value = R.string.on_failure.toString()
+                                Log.e(
+                                    TAG,
+                                    R.string.on_failure.toString() + " " + response.toString()
+                                )
+                                _movieGenreList.value = response.body()!!.genres
+                            } else {
+                                _isToast.value = true
+                            }
+                        } else {
+                            _isToast.value = false
+                            _toastReason.value = "onFailure: ${response.message()}"
+                            Log.e(TAG, "onFailure: ${response.message()}")
+                        }
                     }
-                } else {
-                    _isToast.value = false
-                    _toastReason.value = "onFailure: ${response.message()}"
-                    Log.e(TAG, "onFailure: ${response.message()}")
-                }
-            }
 
-            override fun onFailure(call: Call<MovieGenreResponse>, t: Throwable) {
-                _isLoading.value = false
-                _isToast.value = false
-                Log.e(TAG, R.string.on_failure.toString() + " " + t.message.toString())
-            }
-        })
+                    override fun onFailure(call: Call<MovieGenreResponse>, t: Throwable) {
+                        _isLoading.value = false
+                        _isToast.value = false
+                        Log.e(TAG, R.string.on_failure.toString() + " " + t.message.toString())
+                    }
+                })
+            },
+            SERVICE_LATENCY_IN_MILLIS
+        )
     }
 
     fun setSelectedMovie(movieId: String) {
@@ -126,5 +150,6 @@ class DetailMovieViewModel(private val movieRepository: Repository) : ViewModel(
 
     companion object {
         private val TAG = DetailMovieViewModel::class.java.simpleName
+        private const val SERVICE_LATENCY_IN_MILLIS: Long = 2000
     }
 }
