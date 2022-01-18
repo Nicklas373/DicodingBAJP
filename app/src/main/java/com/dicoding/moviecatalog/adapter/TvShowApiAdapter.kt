@@ -11,6 +11,10 @@ import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.activity.DetailShowActivity
 import com.dicoding.moviecatalog.data.tvshow.response.TvShowListResponse
 import com.dicoding.moviecatalog.databinding.ItemsTvShowBinding
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TvShowApiAdapter(private val listTvShowApi: ArrayList<TvShowListResponse>) :
     RecyclerView.Adapter<TvShowApiAdapter.ListViewHolder>() {
@@ -29,11 +33,12 @@ class TvShowApiAdapter(private val listTvShowApi: ArrayList<TvShowListResponse>)
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         with(holder) {
-            val (tvShowOverview, tvShowOriginalName, tvShowReleaseDate, tvShowVoteAverage, tvShowName, tvShowPosterPath) = listTvShowApi[position]
+            val (tvShowId, tvShowOverview, tvShowOriginalName, tvShowReleaseDate, tvShowVoteAverage, tvShowName, tvShowPosterPath) = listTvShowApi[position]
             val tvShowImage =
                 itemView.context.getString(R.string.movieDb_static_image) + tvShowPosterPath
+            val releaseDate = setReleaseDate(tvShowReleaseDate)
             binding.tvshowTitle.text = tvShowName
-            binding.tvshowReleaseDate.text = tvShowReleaseDate
+            binding.tvshowReleaseDate.text = releaseDate
             binding.tvshowRatingText.text = tvShowVoteAverage.toString()
             binding.separateRatingText.visibility = View.GONE
             binding.tvshowDurationText.visibility = View.GONE
@@ -46,11 +51,19 @@ class TvShowApiAdapter(private val listTvShowApi: ArrayList<TvShowListResponse>)
                 .into(binding.imgPoster)
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, DetailShowActivity::class.java)
-                val index = position + 1
                 intent.putExtra(DetailShowActivity.SHOW_ID, "TvShow")
-                intent.putExtra(DetailShowActivity.EXTRA_TV_SHOW, index.toString())
+                intent.putExtra(DetailShowActivity.EXTRA_TV_SHOW_API, tvShowId)
+                intent.putExtra(DetailShowActivity.EXTRA_GENRE_API, position.plus(1).toString())
                 itemView.context.startActivity(intent)
             }
         }
+    }
+
+    private fun setReleaseDate(releaseDate: String): String {
+        val outputFormat: DateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
+        val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val date: Date = inputFormat.parse(releaseDate)
+
+        return outputFormat.format(date)
     }
 }

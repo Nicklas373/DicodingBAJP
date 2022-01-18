@@ -241,6 +241,33 @@
         tools:text="@string/Revenue" />
 
     <ImageView
+        android:id="@+id/movie_popularity_img"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/popularity"
+        android:gravity="start"
+        android:src="@drawable/ic_baseline_people_24"
+        app:layout_constraintBottom_toTopOf="@id/movie_language_img"
+        app:layout_constraintEnd_toStartOf="@id/movie_popularity_txt"
+        app:layout_constraintStart_toEndOf="@+id/image_poster"
+        app:layout_constraintTop_toBottomOf="@+id/movie_rating" />
+
+    <TextView
+        android:id="@+id/movie_popularity_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:gravity="start"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/movie_popularity_img"
+        app:layout_constraintTop_toTopOf="@id/movie_popularity_img"
+        tools:text="@string/Revenue" />
+
+    <ImageView
         android:id="@+id/movie_language_img"
         android:layout_width="24dp"
         android:layout_height="24dp"
@@ -251,7 +278,7 @@
         android:src="@drawable/ic_baseline_language_24"
         app:layout_constraintEnd_toStartOf="@id/movie_language_text"
         app:layout_constraintStart_toEndOf="@+id/image_poster"
-        app:layout_constraintTop_toBottomOf="@+id/movie_revenue_img" />
+        app:layout_constraintTop_toBottomOf="@+id/movie_popularity_img" />
 
     <TextView
         android:id="@+id/movie_language_text"
@@ -264,6 +291,32 @@
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/movie_language_img"
         app:layout_constraintTop_toTopOf="@id/movie_language_img"
+        tools:text="@string/language" />
+
+    <ImageView
+        android:id="@+id/tvShow_language_img"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/language"
+        android:gravity="start"
+        android:src="@drawable/ic_baseline_language_24"
+        app:layout_constraintEnd_toStartOf="@id/tvShow_language_text"
+        app:layout_constraintStart_toEndOf="@+id/image_poster"
+        app:layout_constraintTop_toBottomOf="@+id/movie_language_img" />
+
+    <TextView
+        android:id="@+id/tvShow_language_text"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:gravity="start"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/tvShow_language_img"
+        app:layout_constraintTop_toTopOf="@id/tvShow_language_img"
         tools:text="@string/language" />
 
     <ImageButton

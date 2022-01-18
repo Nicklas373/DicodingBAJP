@@ -14,10 +14,11 @@ import com.dicoding.moviecatalog.data.movie.response.MovieGenreListResponse
 import com.dicoding.moviecatalog.data.movie.response.MovieGenreResponse
 import com.dicoding.moviecatalog.data.movie.response.MovieListResponse
 import com.dicoding.moviecatalog.data.movie.source.Repository
-import com.dicoding.moviecatalog.data.movie.source.remote.RemoteDataSource
 import com.dicoding.moviecatalog.data.tvshow.TvShowCastEntity
 import com.dicoding.moviecatalog.data.tvshow.TvShowEntity
-import com.dicoding.moviecatalog.data.tvshow.response.TvShowListResponse
+import com.dicoding.moviecatalog.data.tvshow.response.TvShowDetailResponse
+import com.dicoding.moviecatalog.data.tvshow.response.TvShowGenreListResponse
+import com.dicoding.moviecatalog.data.tvshow.response.TvShowGenreResponse
 import com.dicoding.moviecatalog.utils.EspressoIdlingResource
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,8 +31,11 @@ class DetailMovieViewModel(private val movieRepository: Repository) : ViewModel(
     private val _movieGenreList = MutableLiveData<ArrayList<MovieGenreListResponse>>()
     val movieGenreList: LiveData<ArrayList<MovieGenreListResponse>> = _movieGenreList
 
-    private val _tvShowDetailList = MutableLiveData<TvShowListResponse>()
-    val tvShowDetailList: LiveData<TvShowListResponse> = _tvShowDetailList
+    private val _tvShowDetailList = MutableLiveData<TvShowDetailResponse>()
+    val tvShowDetailList: LiveData<TvShowDetailResponse> = _tvShowDetailList
+
+    private val _tvShowGenreList = MutableLiveData<ArrayList<TvShowGenreListResponse>>()
+    val tvShowGenreList: LiveData<ArrayList<TvShowGenreListResponse>> = _tvShowGenreList
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -89,6 +93,48 @@ class DetailMovieViewModel(private val movieRepository: Repository) : ViewModel(
         )
     }
 
+    fun getTvShowListDetails(tvShowId: String) {
+        _isLoading.value = true
+        val client = ApiConfig.getApiService().getTvShowDetail(tvShowId)
+        EspressoIdlingResource.increment()
+        handler.postDelayed(
+            {
+                client.enqueue(object : Callback<TvShowDetailResponse> {
+                    override fun onResponse(
+                        call: Call<TvShowDetailResponse>,
+                        response: Response<TvShowDetailResponse>
+                    ) {
+                        _isLoading.value = false
+                        if (response.isSuccessful) {
+                            if (response.body() != null) {
+                                _toastReason.value = R.string.on_failure.toString()
+                                Log.e(
+                                    TAG,
+                                    R.string.on_failure.toString() + " " + response.toString()
+                                )
+                                _tvShowDetailList.value = response.body()
+                            } else {
+                                _isToast.value = true
+                            }
+                        } else {
+                            _isLoading.value = true
+                            _isToast.value = false
+                            _toastReason.value = "onFailure: ${response.message()}"
+                            Log.e(TAG, "onFailure: ${response.message()}")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<TvShowDetailResponse>, t: Throwable) {
+                        _isLoading.value = false
+                        _isToast.value = false
+                        Log.e(TAG, R.string.on_failure.toString() + " " + t.message.toString())
+                    }
+                })
+            },
+            SERVICE_LATENCY_IN_MILLIS
+        )
+    }
+
     fun getMovieGenreListDetails(movieId: String) {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getMovieGenreList(movieId)
@@ -120,6 +166,47 @@ class DetailMovieViewModel(private val movieRepository: Repository) : ViewModel(
                     }
 
                     override fun onFailure(call: Call<MovieGenreResponse>, t: Throwable) {
+                        _isLoading.value = false
+                        _isToast.value = false
+                        Log.e(TAG, R.string.on_failure.toString() + " " + t.message.toString())
+                    }
+                })
+            },
+            SERVICE_LATENCY_IN_MILLIS
+        )
+    }
+
+    fun getTvShowGenreListDetails(tvShowId: String) {
+        _isLoading.value = true
+        val client = ApiConfig.getApiService().getTvShowGenreList(tvShowId)
+        EspressoIdlingResource.increment()
+        handler.postDelayed(
+            {
+                client.enqueue(object : Callback<TvShowGenreResponse> {
+                    override fun onResponse(
+                        call: Call<TvShowGenreResponse>,
+                        response: Response<TvShowGenreResponse>
+                    ) {
+                        _isLoading.value = false
+                        if (response.isSuccessful) {
+                            if (response.body() != null) {
+                                _toastReason.value = R.string.on_failure.toString()
+                                Log.e(
+                                    TAG,
+                                    R.string.on_failure.toString() + " " + response.toString()
+                                )
+                                _tvShowGenreList.value = response.body()!!.genres
+                            } else {
+                                _isToast.value = true
+                            }
+                        } else {
+                            _isToast.value = false
+                            _toastReason.value = "onFailure: ${response.message()}"
+                            Log.e(TAG, "onFailure: ${response.message()}")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<TvShowGenreResponse>, t: Throwable) {
                         _isLoading.value = false
                         _isToast.value = false
                         Log.e(TAG, R.string.on_failure.toString() + " " + t.message.toString())

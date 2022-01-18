@@ -16,11 +16,15 @@ import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.adapter.DetailMovieAdapter
 import com.dicoding.moviecatalog.adapter.DetailTvShowAdapter
 import com.dicoding.moviecatalog.adapter.MovieGenreApiAdapter
+import com.dicoding.moviecatalog.adapter.TvShowGenreApiAdapter
 import com.dicoding.moviecatalog.callback.ShareCallback
 import com.dicoding.moviecatalog.data.movie.MovieEntity
 import com.dicoding.moviecatalog.data.movie.response.MovieGenreListResponse
 import com.dicoding.moviecatalog.data.movie.response.MovieListResponse
 import com.dicoding.moviecatalog.data.tvshow.TvShowEntity
+import com.dicoding.moviecatalog.data.tvshow.response.TvShowDetailResponse
+import com.dicoding.moviecatalog.data.tvshow.response.TvShowGenreListResponse
+import com.dicoding.moviecatalog.data.tvshow.response.TvShowListResponse
 import com.dicoding.moviecatalog.databinding.ActivityDetailShowBinding
 import com.dicoding.moviecatalog.databinding.ContentDetailShowBinding
 import com.dicoding.moviecatalog.viewmodel.DetailMovieViewModel
@@ -60,6 +64,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             val movieIdDb = extras.getString(EXTRA_MOVIE_DB)
             val tvShowIdDb = extras.getString(EXTRA_TV_SHOW)
             val movieIdApi = extras.getString(EXTRA_MOVIE_API)
+            val tvShowIdApi = extras.getString(EXTRA_TV_SHOW_API)
             val genreApi = extras.getString(EXTRA_GENRE_API)
             if (showId.equals("Movie")) {
                 if (movieIdDb != null) {
@@ -95,17 +100,36 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
                     }
                 }
             } else if (showId.equals("TvShow")) {
-                val tvShowId = extras.getString(EXTRA_TV_SHOW)
                 hideStaticUI()
-                if (tvShowId != null) {
+                if (tvShowIdDb != null) {
                     movieDetailBinding.progressBar.visibility = View.VISIBLE
-                    viewModel.setSelectedTvShow(tvShowId)
-                    viewModel.getCastTvShow(tvShowId).observe(this, { tvShow ->
+                    viewModel.setSelectedTvShow(tvShowIdDb)
+                    viewModel.getCastTvShow(tvShowIdDb).observe(this, { tvShow ->
+                        showStaticUITvShowDB()
                         movieDetailBinding.progressBar.visibility = View.GONE
                         adapter2.setTvShowCastList(tvShow)
                         adapter2.notifyDataSetChanged()
                     })
                     viewModel.getTvShow().observe(this, { tvShow -> populateTvShow(tvShow) })
+                } else {
+                    if (tvShowIdApi != null) {
+                        movieDetailBinding.progressBar.visibility = View.VISIBLE
+                        viewModel.setSelectedTvShow(tvShowIdApi)
+                        if (genreApi != null) {
+                            viewModel.getCastTvShow(genreApi).observe(this, { tvShowGenreApiVM ->
+                                showStaticUITvShowAPI()
+                                movieDetailBinding.progressBar.visibility = View.GONE
+                                adapter2.setTvShowCastList(tvShowGenreApiVM)
+                                adapter2.notifyDataSetChanged()
+                            })
+                        }
+                        viewModel.tvShowDetailList.observe(this, { tvShowIdApiVM ->
+                            setTvShowData(tvShowIdApiVM)
+                        })
+                        viewModel.tvShowGenreList.observe(this, { tvShowIdApiVM ->
+                            setTvShowGenreData(tvShowIdApiVM)
+                        })
+                    }
                 }
             }
         }
@@ -120,9 +144,13 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
         if (extras != null) {
             val movieIdApi = extras.getString(EXTRA_MOVIE_API)
+            val tvShowIdApi = extras.getString(EXTRA_TV_SHOW_API)
             if (movieIdApi != null) {
                 viewModel.getMovieListDetails(movieIdApi)
                 viewModel.getMovieGenreListDetails(movieIdApi)
+            } else if (tvShowIdApi != null) {
+                viewModel.getTvShowListDetails(tvShowIdApi)
+                viewModel.getTvShowGenreListDetails(tvShowIdApi)
             }
         }
 
@@ -201,6 +229,83 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         } else {
             movieDetailBinding.movieLanguageText.text = movieId.originalLanguage
         }
+
+        movieDetailBinding.imagePoster.contentDescription = movieId.posterPath
+        movieDetailBinding.imgShare.setOnClickListener {
+            onShareClickMovie()
+        }
+    }
+
+    private fun setTvShowData(tvShowId: TvShowDetailResponse) {
+        if (tvShowId.tvShowName.isBlank()) {
+            movieDetailBinding.movieTitleText.text = "-"
+        } else {
+            movieDetailBinding.movieTitleText.text = tvShowId.tvShowName
+        }
+
+        if (tvShowId.tvShowOverview.isBlank()) {
+            movieDetailBinding.descText.text = "-"
+        } else {
+            movieDetailBinding.descText.text = tvShowId.tvShowOverview
+        }
+
+        if (tvShowId.tvShowFirstAirDate.isBlank()) {
+            movieDetailBinding.movieReleaseDate.text = "-"
+        } else {
+            val setDate = setReleaseDate(tvShowId.tvShowFirstAirDate)
+            movieDetailBinding.movieReleaseDate.text = setDate
+        }
+
+        if (tvShowId.tvShowVote.equals(null)) {
+            movieDetailBinding.movieRatingText.text = "-"
+        } else {
+            movieDetailBinding.movieRatingText.text = tvShowId.tvShowVote.toString()
+        }
+
+        if (tvShowId.tvShowLanguage.isBlank()) {
+            movieDetailBinding.tvShowLanguageText.text = "-"
+        } else {
+            movieDetailBinding.tvShowLanguageText.text = tvShowId.tvShowLanguage
+        }
+
+        if (tvShowId.tvShowPopularity.isBlank()) {
+            movieDetailBinding.moviePopularityTxt.text = "-"
+        } else {
+            movieDetailBinding.moviePopularityTxt.text = tvShowId.tvShowPopularity
+        }
+
+        val movieImage = getString(R.string.movieDb_static_image) + tvShowId.tvShowPoster
+
+        if (tvShowId.tvShowPoster.isBlank()) {
+            Glide.with(this)
+                .load("-")
+                .transform(RoundedCorners(20))
+                .apply(
+                    RequestOptions.placeholderOf(R.drawable.ic_loading)
+                        .error(R.drawable.ic_error)
+                )
+                .into(movieDetailBinding.imagePoster)
+        } else {
+            Glide.with(this)
+                .load(movieImage)
+                .transform(RoundedCorners(20))
+                .apply(
+                    RequestOptions.placeholderOf(R.drawable.ic_loading)
+                        .error(R.drawable.ic_error)
+                )
+                .into(movieDetailBinding.imagePoster)
+        }
+
+        val season: String =
+            tvShowId.tvShowEpisodes.toString() + " " + resources.getString(R.string.episode) + " | " + tvShowId.tvShowSeasons + " " + resources.getString(
+                R.string.season
+            )
+        movieDetailBinding.movieEpisodeText.text = season
+
+        movieDetailBinding.imagePoster.contentDescription = tvShowId.tvShowPoster
+        movieDetailBinding.imgShare.setOnClickListener {
+            onShareClickTvShow()
+        }
     }
 
     private fun setMovieGenreData(movieId: ArrayList<MovieGenreListResponse>) {
@@ -213,6 +318,19 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             listReview.add(movieGenreApi)
         }
         val adapter = MovieGenreApiAdapter(listReview)
+        movieDetailBinding.rvGenreApi.adapter = adapter
+    }
+
+    private fun setTvShowGenreData(tvShowId: ArrayList<TvShowGenreListResponse>) {
+        val listReview = ArrayList<TvShowGenreListResponse>()
+        for (tvShowGenre in tvShowId) {
+            val movieGenreApi = TvShowGenreListResponse(
+                tvShowGenre.id,
+                tvShowGenre.name
+            )
+            listReview.add(movieGenreApi)
+        }
+        val adapter = TvShowGenreApiAdapter(listReview)
         movieDetailBinding.rvGenreApi.adapter = adapter
     }
 
@@ -248,7 +366,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
         movieDetailBinding.imagePoster.contentDescription = movieEntity.imagePath
         movieDetailBinding.imgShare.setOnClickListener {
-            onShareClickMovie(movieEntity)
+            onShareClickMovie()
         }
     }
 
@@ -289,11 +407,11 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         movieDetailBinding.imagePoster.contentDescription = tvShowEntity.imagePath
 
         movieDetailBinding.imgShare.setOnClickListener {
-            onShareClickTvShow(tvShowEntity)
+            onShareClickTvShow()
         }
     }
 
-    override fun onShareClickMovie(movie: MovieEntity) {
+    override fun onShareClickMovie() {
         val mimeType = "text/plain"
         ShareCompat.IntentBuilder
             .from(this)
@@ -307,7 +425,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             .startChooser()
     }
 
-    override fun onShareClickTvShow(tvShow: TvShowEntity) {
+    override fun onShareClickTvShow() {
         val mimeType = "text/plain"
         ShareCompat.IntentBuilder
             .from(this)
@@ -524,6 +642,10 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             movieRevenueImg.visibility = View.GONE
             movieLanguageText.visibility = View.GONE
             movieLanguageImg.visibility = View.GONE
+            moviePopularityTxt.visibility = View.GONE
+            moviePopularityImg.visibility = View.GONE
+            tvShowLanguageImg.visibility = View.GONE
+            tvShowLanguageText.visibility = View.GONE
         }
     }
 
@@ -552,6 +674,10 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             movieLanguageImg.visibility = View.INVISIBLE
             movieEpisodeImg.visibility = View.INVISIBLE
             movieEpisodeText.visibility = View.INVISIBLE
+            moviePopularityTxt.visibility = View.INVISIBLE
+            moviePopularityImg.visibility = View.INVISIBLE
+            tvShowLanguageImg.visibility = View.INVISIBLE
+            tvShowLanguageText.visibility = View.INVISIBLE
         }
     }
 
@@ -580,6 +706,74 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             movieRevenueText.visibility = View.VISIBLE
             movieLanguageText.visibility = View.VISIBLE
             movieLanguageImg.visibility = View.VISIBLE
+            moviePopularityTxt.visibility = View.INVISIBLE
+            moviePopularityImg.visibility = View.INVISIBLE
+            tvShowLanguageImg.visibility = View.INVISIBLE
+            tvShowLanguageText.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showStaticUITvShowDB() {
+        movieDetailBinding.apply {
+            imagePoster.visibility = View.VISIBLE
+            view.visibility = View.VISIBLE
+            imgShare.visibility = View.VISIBLE
+            movieReleaseDate.visibility = View.VISIBLE
+            movieTitleText.visibility = View.VISIBLE
+            descText.visibility = View.VISIBLE
+            cvGenre1.visibility = View.VISIBLE
+            cvGenre2.visibility = View.VISIBLE
+            rvGenreApi.visibility = View.INVISIBLE
+            rvCast.visibility = View.VISIBLE
+            castListModule.visibility = View.VISIBLE
+            calendarImg.visibility = View.VISIBLE
+            movieRating.visibility = View.VISIBLE
+            movieRatingText.visibility = View.VISIBLE
+            movieDurationImg.visibility = View.VISIBLE
+            movieDurationText.visibility = View.VISIBLE
+            descTitle.visibility = View.VISIBLE
+            movieRevenueImg.visibility = View.INVISIBLE
+            movieRevenueText.visibility = View.INVISIBLE
+            movieLanguageText.visibility = View.INVISIBLE
+            movieLanguageImg.visibility = View.INVISIBLE
+            movieEpisodeImg.visibility = View.VISIBLE
+            movieEpisodeText.visibility = View.VISIBLE
+            moviePopularityTxt.visibility = View.INVISIBLE
+            moviePopularityImg.visibility = View.INVISIBLE
+            tvShowLanguageImg.visibility = View.INVISIBLE
+            tvShowLanguageText.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun showStaticUITvShowAPI() {
+        movieDetailBinding.apply {
+            imagePoster.visibility = View.VISIBLE
+            view.visibility = View.VISIBLE
+            imgShare.visibility = View.VISIBLE
+            movieReleaseDate.visibility = View.VISIBLE
+            movieTitleText.visibility = View.VISIBLE
+            descText.visibility = View.VISIBLE
+            cvGenre1.visibility = View.INVISIBLE
+            cvGenre2.visibility = View.INVISIBLE
+            rvGenreApi.visibility = View.VISIBLE
+            rvCast.visibility = View.VISIBLE
+            castListModule.visibility = View.VISIBLE
+            calendarImg.visibility = View.VISIBLE
+            movieRating.visibility = View.VISIBLE
+            movieRatingText.visibility = View.VISIBLE
+            movieDurationImg.visibility = View.INVISIBLE
+            movieDurationText.visibility = View.INVISIBLE
+            descTitle.visibility = View.VISIBLE
+            movieRevenueImg.visibility = View.INVISIBLE
+            movieRevenueText.visibility = View.INVISIBLE
+            movieLanguageText.visibility = View.INVISIBLE
+            movieLanguageImg.visibility = View.INVISIBLE
+            movieEpisodeImg.visibility = View.VISIBLE
+            movieEpisodeText.visibility = View.VISIBLE
+            moviePopularityTxt.visibility = View.VISIBLE
+            moviePopularityImg.visibility = View.VISIBLE
+            tvShowLanguageImg.visibility = View.VISIBLE
+            tvShowLanguageText.visibility = View.VISIBLE
         }
     }
 
@@ -620,6 +814,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         const val EXTRA_MOVIE_API = "extra_movie_api"
         const val EXTRA_GENRE_API = "extra_genre_api"
         const val EXTRA_TV_SHOW = "extra_tvShow"
+        const val EXTRA_TV_SHOW_API = "extra_tvShow_api"
         const val drama = "Drama"
         const val romance = "Romance"
         const val action = "Action"

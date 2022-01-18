@@ -3,6 +3,10 @@ package com.dicoding.moviecatalog.data.tvshow.response
 import com.google.gson.annotations.SerializedName
 
 data class TvShowListResponse(
+
+    @field:SerializedName("id")
+    val id: String,
+
     @field:SerializedName("overview")
     val overview: String,
 

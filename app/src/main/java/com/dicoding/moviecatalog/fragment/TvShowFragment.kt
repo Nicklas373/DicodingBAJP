@@ -74,6 +74,7 @@ class TvShowFragment : Fragment() {
         val listReview = ArrayList<TvShowListResponse>()
         for (tvShowList in tvShowListApi) {
             val tvShowApi = TvShowListResponse(
+                tvShowList.id,
                 tvShowList.overview,
                 tvShowList.originalName,
                 tvShowList.releasedDate,
