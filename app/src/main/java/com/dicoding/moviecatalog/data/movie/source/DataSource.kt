@@ -3,12 +3,16 @@ package com.dicoding.moviecatalog.data.movie.source
 import androidx.lifecycle.LiveData
 import com.dicoding.moviecatalog.data.movie.MovieCastEntity
 import com.dicoding.moviecatalog.data.movie.MovieEntity
+import com.dicoding.moviecatalog.data.movie.response.MovieListResponse
+import com.dicoding.moviecatalog.data.movie.response.MovieResponse
 import com.dicoding.moviecatalog.data.tvshow.TvShowCastEntity
 import com.dicoding.moviecatalog.data.tvshow.TvShowEntity
 
 interface DataSource {
 
     fun getAllMovies(): LiveData<List<MovieEntity>>
+
+    fun getAllMoviesApi(listId: String): LiveData<ArrayList<MovieListResponse>>
 
     fun getCastMovies(movieId: String): LiveData<List<MovieCastEntity>>
 

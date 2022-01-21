@@ -1,6 +1,7 @@
 package com.dicoding.moviecatalog.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.moviecatalog.adapter.MovieAdapter
 import com.dicoding.moviecatalog.adapter.MovieApiAdapter
 import com.dicoding.moviecatalog.data.movie.response.MovieListResponse
+import com.dicoding.moviecatalog.data.movie.source.Repository
+import com.dicoding.moviecatalog.data.movie.source.remote.RemoteDataSource
 import com.dicoding.moviecatalog.databinding.FragmentMovieBinding
 import com.dicoding.moviecatalog.viewmodel.MovieViewModel
 import com.dicoding.moviecatalog.viewmodel.ViewModelFactory
@@ -38,17 +41,17 @@ class MovieFragment : Fragment() {
             )[MovieViewModel::class.java]
             val movieAdapter = MovieAdapter()
             _binding?.progressBar?.visibility = View.VISIBLE
-            viewModel.getMovie().observe(viewLifecycleOwner, { movieId ->
-                _binding?.progressBar?.visibility = View.GONE
-                movieAdapter.setMovies(movieId)
-                movieAdapter.notifyDataSetChanged()
-            })
-
-            viewModel.movieList.observe(viewLifecycleOwner, { movieId ->
+            viewModel.getMovieApi().observe(viewLifecycleOwner, { movieId ->
                 _binding?.progressBar?.visibility = View.GONE
                 setMovieListApi(movieId)
                 MovieApiAdapter(movieId).notifyDataSetChanged()
             })
+
+            //viewModel.movieList.observe(viewLifecycleOwner, { movieId ->
+            //    _binding?.progressBar?.visibility = View.GONE
+            //    setMovieListApi(movieId)
+            //    MovieApiAdapter(movieId).notifyDataSetChanged()
+            //})
 
             viewModel.isLoading.observe(viewLifecycleOwner, {
                 showLoading(it)
@@ -58,7 +61,7 @@ class MovieFragment : Fragment() {
                 showToast(isToast, viewModel.toastReason.value.toString())
             })
 
-            viewModel.getMovieList()
+            //viewModel.getMovieList()
 
             _binding?.let {
                 with(it.rvMovie) {
@@ -85,6 +88,7 @@ class MovieFragment : Fragment() {
                 movieList.originalLanguage
             )
             listReview.add(movieApi)
+            Log.e(TAG, "response size: ${listReview.size}")
         }
         val adapter = MovieApiAdapter(listReview)
         binding.rvMovie.adapter = adapter
@@ -103,5 +107,9 @@ class MovieFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val TAG = "MovieFragment"
     }
 }

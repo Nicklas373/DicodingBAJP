@@ -29,6 +29,10 @@ class MovieViewModel(private val movieRepository: Repository) : ViewModel() {
 
     fun getMovie(): LiveData<List<MovieEntity>> = movieRepository.getAllMovies()
 
+    fun getMovieApi(): LiveData<ArrayList<MovieListResponse>> = movieRepository.getAllMoviesApi(
+        listId
+    )
+
     fun getMovieList() {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getMovieList(listId)

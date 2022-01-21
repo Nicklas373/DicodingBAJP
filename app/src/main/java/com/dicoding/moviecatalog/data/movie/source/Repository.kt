@@ -1,9 +1,12 @@
 package com.dicoding.moviecatalog.data.movie.source
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.dicoding.moviecatalog.api.ApiConfig
 import com.dicoding.moviecatalog.data.movie.MovieCastEntity
 import com.dicoding.moviecatalog.data.movie.MovieEntity
+import com.dicoding.moviecatalog.data.movie.response.MovieListResponse
 import com.dicoding.moviecatalog.data.movie.source.remote.RemoteDataSource
 import com.dicoding.moviecatalog.data.movie.source.remote.response.CastMovieResponse
 import com.dicoding.moviecatalog.data.movie.source.remote.response.CastTvShowResponse
@@ -11,6 +14,10 @@ import com.dicoding.moviecatalog.data.movie.source.remote.response.MovieResponse
 import com.dicoding.moviecatalog.data.movie.source.remote.response.TvShowResponse
 import com.dicoding.moviecatalog.data.tvshow.TvShowCastEntity
 import com.dicoding.moviecatalog.data.tvshow.TvShowEntity
+import com.dicoding.moviecatalog.utils.JsonHelper
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class Repository private constructor(private val remoteDataSource: RemoteDataSource) :
     DataSource {
@@ -22,6 +29,8 @@ class Repository private constructor(private val remoteDataSource: RemoteDataSou
             instance ?: synchronized(this) {
                 instance ?: Repository(remoteData).apply { instance = this }
             }
+
+        private const val TAG = "Repository"
     }
 
     override fun getAllMovies(): LiveData<List<MovieEntity>> {
@@ -48,6 +57,48 @@ class Repository private constructor(private val remoteDataSource: RemoteDataSou
         })
 
         return movieResults
+    }
+
+    override fun getAllMoviesApi(listId: String): LiveData<ArrayList<MovieListResponse>> {
+        val resultAllMoviesApi = MutableLiveData<ArrayList<MovieListResponse>>()
+        val client = ApiConfig.getApiService().getMovieList(listId)
+        remoteDataSource.getAllMoviesApi(object : RemoteDataSource.LoadMoviesApiCallback {
+            override fun onAllMoviesApiReceived(movieApiResponses: ArrayList<MovieListResponse>) {
+
+                client.enqueue(object :
+                    Callback<com.dicoding.moviecatalog.data.movie.response.MovieResponse> {
+                    override fun onResponse(
+                        call: Call<com.dicoding.moviecatalog.data.movie.response.MovieResponse>,
+                        response: Response<com.dicoding.moviecatalog.data.movie.response.MovieResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            if (response.body()?.items?.isEmpty() == true) {
+                                Log.e(
+                                    "Repository",
+                                    "response size:  ${response.body()!!.items.size}"
+                                )
+                            } else {
+                                Log.e(
+                                    "Repository",
+                                    "response size:  ${response.body()!!.items.size}"
+                                )
+                            }
+                            resultAllMoviesApi.postValue(response.body()?.items)
+                        } else {
+                            Log.e("Repository", "onFailure: ${response.message()}")
+                        }
+                    }
+
+                    override fun onFailure(
+                        call: Call<com.dicoding.moviecatalog.data.movie.response.MovieResponse>,
+                        t: Throwable
+                    ) {
+                        Log.e("Repository", "onFailure: ${t.message}")
+                    }
+                })
+            }
+        })
+        return resultAllMoviesApi
     }
 
     override fun getCastMovies(movieId: String): LiveData<List<MovieCastEntity>> {

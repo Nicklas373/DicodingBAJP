@@ -2,6 +2,7 @@ package com.dicoding.moviecatalog.data.movie.source.remote
 
 import android.os.Handler
 import android.os.Looper
+import com.dicoding.moviecatalog.data.movie.response.MovieListResponse
 import com.dicoding.moviecatalog.data.movie.source.remote.response.CastMovieResponse
 import com.dicoding.moviecatalog.data.movie.source.remote.response.CastTvShowResponse
 import com.dicoding.moviecatalog.data.movie.source.remote.response.MovieResponse
@@ -32,6 +33,17 @@ class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
         handler.postDelayed(
             {
                 callback.onAllMoviesReceived(jsonHelper.loadMovie())
+                EspressoIdlingResource.decrement()
+            },
+            SERVICE_LATENCY_IN_MILLIS
+        )
+    }
+
+    fun getAllMoviesApi(callback: LoadMoviesApiCallback) {
+        EspressoIdlingResource.increment()
+        handler.postDelayed(
+            {
+                callback.onAllMoviesApiReceived(jsonHelper.loadMoviesApi())
                 EspressoIdlingResource.decrement()
             },
             SERVICE_LATENCY_IN_MILLIS
@@ -77,6 +89,10 @@ class RemoteDataSource private constructor(private val jsonHelper: JsonHelper) {
 
     interface LoadMoviesCallback {
         fun onAllMoviesReceived(movieResponses: List<MovieResponse>)
+    }
+
+    interface LoadMoviesApiCallback {
+        fun onAllMoviesApiReceived(movieApiResponses: ArrayList<MovieListResponse>)
     }
 
     interface LoadTvShowCallback {

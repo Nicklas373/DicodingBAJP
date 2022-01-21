@@ -1,12 +1,18 @@
 package com.dicoding.moviecatalog.utils
 
 import android.content.Context
+import android.util.Log
+import com.dicoding.moviecatalog.api.ApiConfig
+import com.dicoding.moviecatalog.data.movie.response.MovieListResponse
 import com.dicoding.moviecatalog.data.movie.source.remote.response.CastMovieResponse
-import com.dicoding.moviecatalog.data.movie.source.remote.response.MovieResponse
 import com.dicoding.moviecatalog.data.movie.source.remote.response.CastTvShowResponse
+import com.dicoding.moviecatalog.data.movie.source.remote.response.MovieResponse
 import com.dicoding.moviecatalog.data.movie.source.remote.response.TvShowResponse
 import org.json.JSONException
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.IOException
 
 class JsonHelper(private val context: Context) {
@@ -63,10 +69,31 @@ class JsonHelper(private val context: Context) {
         return list
     }
 
+    fun loadMoviesApi(): ArrayList<MovieListResponse> {
+        val resultAllMoviesApi = ArrayList<MovieListResponse>()
+
+        for (movieApi in resultAllMoviesApi) {
+            val movieListResponse = MovieListResponse(
+                movieApi.movieId,
+                movieApi.overview,
+                movieApi.originalTitle,
+                movieApi.releaseDate,
+                movieApi.voteAverage,
+                movieApi.title,
+                movieApi.posterPath,
+                movieApi.revenue,
+                movieApi.originalLanguage
+            )
+            resultAllMoviesApi.add(movieListResponse)
+        }
+        return resultAllMoviesApi
+    }
+
     fun loadTvShow(): List<TvShowResponse> {
         val list = ArrayList<TvShowResponse>()
         try {
-            val responseObject = JSONObject(parsingFileToString("TvShowResponses.json").toString())
+            val responseObject =
+                JSONObject(parsingFileToString("TvShowResponses.json").toString())
             val listArray = responseObject.getJSONArray("tvShow")
             for (i in 0 until listArray.length()) {
                 val tvShow = listArray.getJSONObject(i)
@@ -157,5 +184,10 @@ class JsonHelper(private val context: Context) {
             e.printStackTrace()
         }
         return list
+    }
+
+    companion object {
+        private const val listId = "8174952"
+        private const val TAG = "JsonHelper"
     }
 }
