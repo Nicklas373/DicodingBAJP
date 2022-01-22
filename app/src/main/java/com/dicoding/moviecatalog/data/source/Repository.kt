@@ -1,9 +1,8 @@
-package com.dicoding.moviecatalog.viewmodel.data
+package com.dicoding.moviecatalog.data.source
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.dicoding.moviecatalog.api.ApiConfig
-import com.dicoding.moviecatalog.data.source.DataSource
 import com.dicoding.moviecatalog.data.source.remote.RemoteDataSource
 import com.dicoding.moviecatalog.data.source.remote.response.ProductionCompaniesListResponse
 import com.dicoding.moviecatalog.data.source.remote.response.ProductionCompaniesResponse
@@ -20,8 +19,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FakeRepositoryTest(private val remoteDataSource: RemoteDataSource) :
+class Repository private constructor(private val remoteDataSource: RemoteDataSource) :
     DataSource {
+
+    companion object {
+        @Volatile
+        private var instance: Repository? = null
+        fun getInstance(remoteData: RemoteDataSource): Repository =
+            instance ?: synchronized(this) {
+                instance ?: Repository(remoteData).apply { instance = this }
+            }
+    }
 
     override fun getAllMovies(): MutableLiveData<ArrayList<MovieListResponse>> {
         val resultAllMovies = MutableLiveData<ArrayList<MovieListResponse>>()

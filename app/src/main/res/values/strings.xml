@@ -14,8 +14,10 @@
     <string name="tv_show">TV Show</string>
     <string name="episode">Episode</string>
     <string name="season">Season</string>
+    <string name="companies">Production Companies</string>
     <string name="popularity">Popularity</string>
-    <string name="as">As</string>
+    <string name="name">Name</string>
+    <string name="origin">Origin Country</string>
     <string name="share">Share</string>
     <string name="share_title">Share :</string>
     <string name="Revenue">Revenue</string>

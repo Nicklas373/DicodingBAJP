@@ -3,11 +3,12 @@ package com.dicoding.moviecatalog.viewmodel.activity
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.dicoding.moviecatalog.data.movie.MovieCastEntity
-import com.dicoding.moviecatalog.data.movie.MovieEntity
-import com.dicoding.moviecatalog.data.movie.source.Repository
-import com.dicoding.moviecatalog.data.tvshow.TvShowCastEntity
-import com.dicoding.moviecatalog.data.tvshow.TvShowEntity
+import com.dicoding.moviecatalog.data.source.Repository
+import com.dicoding.moviecatalog.data.source.remote.response.ProductionCompaniesListResponse
+import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieGenreListResponse
+import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieListResponse
+import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowGenreListResponse
+import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowListResponse
 import com.dicoding.moviecatalog.utils.CatalogDatabase
 import com.dicoding.moviecatalog.viewmodel.DetailMovieViewModel
 import org.junit.Assert.assertEquals
@@ -25,11 +26,13 @@ import org.mockito.junit.MockitoJUnitRunner
 class DetailMovieViewModelTest {
 
     private lateinit var viewModel: DetailMovieViewModel
-    private val dummyMovie = CatalogDatabase.generateMovieDatabase()[0]
-    private val dummyTvShow = CatalogDatabase.generateTvShowDatabase()[0]
-    private val dummyCastMovie = CatalogDatabase.generateCastListMovie1()
-    private val dummyCastTvShow = CatalogDatabase.generateCastListTvShow1()
-    private val movieId = dummyMovie.movieId
+    private val dummyMovie = CatalogDatabase.generateMovieLocal()[0]
+    private val dummyTvShow = CatalogDatabase.generateTvShowLocal()[0]
+    private val dummyGenreMovie = CatalogDatabase.generateGenreMovies()
+    private val dummyGenreTvShow = CatalogDatabase.generateGenreTvShow()
+    private val dummyCompaniesMovie = CatalogDatabase.generateCompaniesMovies()
+    private val dummyCompaniesTvShow = CatalogDatabase.generateCompaniesTvShow()
+    private val movieId = dummyMovie.id
     private val tvShowId = dummyTvShow.tvShowId
 
     @get:Rule
@@ -39,99 +42,137 @@ class DetailMovieViewModelTest {
     private lateinit var movieRepository: Repository
 
     @Mock
-    private lateinit var movieObserver: Observer<MovieEntity>
+    private lateinit var movieObserver: Observer<MovieListResponse>
 
     @Mock
-    private lateinit var tvShowObserver: Observer<TvShowEntity>
+    private lateinit var tvShowObserver: Observer<TvShowListResponse>
 
     @Mock
-    private lateinit var movieCastObserver: Observer<List<MovieCastEntity>>
+    private lateinit var movieGenreObserver: Observer<ArrayList<MovieGenreListResponse>>
 
     @Mock
-    private lateinit var tvShowCastObserver: Observer<List<TvShowCastEntity>>
+    private lateinit var tvShowGenreObserver: Observer<ArrayList<TvShowGenreListResponse>>
+
+    @Mock
+    private lateinit var movieCompaniesObserver: Observer<ArrayList<ProductionCompaniesListResponse>>
+
+    @Mock
+    private lateinit var tvShowCompaniesObserver: Observer<ArrayList<ProductionCompaniesListResponse>>
 
     @Before
     fun setUp() {
         viewModel = DetailMovieViewModel(movieRepository)
-        viewModel.setSelectedMovie(movieId)
-        viewModel.setSelectedTvShow(tvShowId)
+        viewModel.setSelectedMovie(movieId.toString())
+        viewModel.setSelectedTvShow(tvShowId.toString())
     }
 
     @Test
     fun getMovie() {
-        val movie = MutableLiveData<MovieEntity>()
+        val movie = MutableLiveData<MovieListResponse>()
         movie.value = dummyMovie
-        `when`(movieRepository.getMovieWithCast(movieId)).thenReturn(movie)
-        val movieEntity = viewModel.getMovie().value as MovieEntity
-        verify(movieRepository).getMovieWithCast(movieId)
-        assertNotNull(movieEntity)
-        assertEquals(dummyMovie.movieId, movieEntity.movieId)
-        assertEquals(dummyMovie.title, movieEntity.title)
-        assertEquals(dummyMovie.description, movieEntity.description)
-        assertEquals(dummyMovie.duration, movieEntity.duration)
-        assertEquals(dummyMovie.genre1, movieEntity.genre1)
-        assertEquals(dummyMovie.genre2, movieEntity.genre2)
-        assertEquals(dummyMovie.rating, movieEntity.rating)
-        assertEquals(dummyMovie.imagePath, movieEntity.imagePath)
-        assertEquals(dummyMovie.releaseDate, movieEntity.releaseDate)
 
-        viewModel.getMovie().observeForever(movieObserver)
+        `when`(movieRepository.getSelectedMovies(movieId.toString())).thenReturn(movie)
+        val movieEntity = viewModel.getSelectedMovie().value as MovieListResponse
+        verify(movieRepository).getSelectedMovies(movieId.toString())
+
+        assertNotNull(movieEntity)
+        assertEquals(dummyMovie.id, movieEntity.id)
+        assertEquals(dummyMovie.title, movieEntity.title)
+        assertEquals(dummyMovie.overview, movieEntity.overview)
+        assertEquals(dummyMovie.revenue, movieEntity.revenue)
+        assertEquals(dummyMovie.releaseDate, movieEntity.releaseDate)
+        assertEquals(dummyMovie.originalLanguage, movieEntity.originalLanguage)
+        assertEquals(dummyMovie.posterPath, movieEntity.posterPath)
+        assertEquals(dummyMovie.popularity, movieEntity.popularity, 0.0001)
+        assertEquals(dummyMovie.voteAverage, movieEntity.voteAverage, 0.0001)
+
+        viewModel.getSelectedMovie().observeForever(movieObserver)
         verify(movieObserver).onChanged(dummyMovie)
     }
 
     @Test
-    fun getCastMovie() {
-        val castMovie = MutableLiveData<List<MovieCastEntity>>()
-        castMovie.value = dummyCastMovie
+    fun getGenreMovie() {
+        val genreMovie = MutableLiveData<ArrayList<MovieGenreListResponse>>()
+        genreMovie.value = dummyGenreMovie as ArrayList<MovieGenreListResponse>
 
-        `when`(movieRepository.getAllMoviesByCast(movieId)).thenReturn(castMovie)
-        val castEntities = viewModel.getCastMovie(movieId).value
-        verify(movieRepository).getAllMoviesByCast(movieId)
-        assertNotNull(castEntities)
-        assertEquals(3, castEntities?.size)
+        `when`(movieRepository.getGenresFromMovies(movieId.toString())).thenReturn(genreMovie)
+        val genreEntities = viewModel.getMovieGenres().value
+        verify(movieRepository).getGenresFromMovies(movieId.toString())
+        assertNotNull(genreEntities)
+        assertEquals(2, genreEntities?.size)
 
-        viewModel.getCastMovie(movieId).observeForever(movieCastObserver)
-        verify(movieCastObserver).onChanged(dummyCastMovie)
+        viewModel.getMovieGenres().observeForever(movieGenreObserver)
+        verify(movieGenreObserver).onChanged(dummyGenreMovie)
+    }
+
+    @Test
+    fun getCompaniesMovie() {
+        val companiesMovie = MutableLiveData<ArrayList<ProductionCompaniesListResponse>>()
+        companiesMovie.value = dummyCompaniesMovie as ArrayList<ProductionCompaniesListResponse>
+
+        `when`(movieRepository.getCompaniesFromMovies(movieId.toString())).thenReturn(companiesMovie)
+        val companiesEntities = viewModel.getMovieCompanies().value
+        verify(movieRepository).getCompaniesFromMovies(movieId.toString())
+        assertNotNull(companiesEntities)
+        assertEquals(7, companiesEntities?.size)
+
+        viewModel.getMovieCompanies().observeForever(movieCompaniesObserver)
+        verify(movieCompaniesObserver).onChanged(dummyCompaniesMovie)
+    }
+
+    @Test
+    fun getGenreTvShow() {
+        val genreTvShow = MutableLiveData<ArrayList<TvShowGenreListResponse>>()
+        genreTvShow.value = dummyGenreTvShow as ArrayList<TvShowGenreListResponse>
+
+        `when`(movieRepository.getGenresFromTvShow(tvShowId.toString())).thenReturn(genreTvShow)
+        val genreEntities = viewModel.getTvShowGenres().value
+        verify(movieRepository).getGenresFromTvShow(tvShowId.toString())
+        assertNotNull(genreEntities)
+        assertEquals(4, genreEntities?.size)
+
+        viewModel.getTvShowGenres().observeForever(tvShowGenreObserver)
+        verify(tvShowGenreObserver).onChanged(dummyGenreTvShow)
+    }
+
+    @Test
+    fun getCompaniesTvShow() {
+        val companiesTvShow = MutableLiveData<ArrayList<ProductionCompaniesListResponse>>()
+        companiesTvShow.value = dummyCompaniesTvShow as ArrayList<ProductionCompaniesListResponse>
+
+        `when`(movieRepository.getCompaniesFromTvShow(tvShowId.toString())).thenReturn(
+            companiesTvShow
+        )
+        val companiesEntities = viewModel.getTvShowCompanies().value
+        verify(movieRepository).getCompaniesFromTvShow(tvShowId.toString())
+        assertNotNull(companiesEntities)
+        assertEquals(3, companiesEntities?.size)
+
+        viewModel.getTvShowCompanies().observeForever(tvShowCompaniesObserver)
+        verify(tvShowCompaniesObserver).onChanged(dummyCompaniesTvShow)
     }
 
     @Test
     fun getTvShow() {
-        val tvShow = MutableLiveData<TvShowEntity>()
+        val tvShow = MutableLiveData<TvShowListResponse>()
         tvShow.value = dummyTvShow
 
-        `when`(movieRepository.getTvShowWithCast(tvShowId)).thenReturn(tvShow)
-        val tvShowEntity = viewModel.getTvShow().value as TvShowEntity
-        verify(movieRepository).getTvShowWithCast(tvShowId)
+        `when`(movieRepository.getSelectedTvShow(tvShowId.toString())).thenReturn(tvShow)
+        val tvShowEntity = viewModel.getSelectedTvShow().value as TvShowListResponse
+        verify(movieRepository).getSelectedTvShow(tvShowId.toString())
 
         assertNotNull(tvShowEntity)
         assertEquals(dummyTvShow.tvShowId, tvShowEntity.tvShowId)
-        assertEquals(dummyTvShow.title, tvShowEntity.title)
-        assertEquals(dummyTvShow.description, tvShowEntity.description)
-        assertEquals(dummyTvShow.duration, tvShowEntity.duration)
-        assertEquals(dummyTvShow.episode, tvShowEntity.episode)
-        assertEquals(dummyTvShow.genre1, tvShowEntity.genre1)
-        assertEquals(dummyTvShow.genre2, tvShowEntity.genre2)
-        assertEquals(dummyTvShow.season, tvShowEntity.season)
-        assertEquals(dummyTvShow.imagePath, tvShowEntity.imagePath)
-        assertEquals(dummyTvShow.rating, tvShowEntity.rating)
-        assertEquals(dummyTvShow.releaseDate, tvShowEntity.releaseDate)
+        assertEquals(dummyTvShow.tvShowName, tvShowEntity.tvShowName)
+        assertEquals(dummyTvShow.tvShowOverview, tvShowEntity.tvShowOverview)
+        assertEquals(dummyTvShow.tvShowFirstAirDate, tvShowEntity.tvShowFirstAirDate)
+        assertEquals(dummyTvShow.tvShowEpisodes, tvShowEntity.tvShowEpisodes)
+        assertEquals(dummyTvShow.tvShowSeasons, tvShowEntity.tvShowSeasons)
+        assertEquals(dummyTvShow.tvShowLanguage, tvShowEntity.tvShowLanguage)
+        assertEquals(dummyTvShow.tvShowVote, tvShowEntity.tvShowVote, 0.0001)
+        assertEquals(dummyTvShow.tvShowPopularity, tvShowEntity.tvShowPopularity)
 
-        viewModel.getTvShow().observeForever(tvShowObserver)
+        viewModel.getSelectedTvShow().observeForever(tvShowObserver)
         verify(tvShowObserver).onChanged(dummyTvShow)
-    }
-
-    @Test
-    fun getCastTvShow1() {
-        val castTvShow = MutableLiveData<List<TvShowCastEntity>>()
-        castTvShow.value = dummyCastTvShow
-
-        `when`(movieRepository.getAllTvShowByCast(tvShowId)).thenReturn(castTvShow)
-        val castEntities = viewModel.getCastTvShow(tvShowId).value
-        verify(movieRepository).getAllTvShowByCast(tvShowId)
-        assertNotNull(castEntities)
-        assertEquals(3, castEntities?.size)
-
-        viewModel.getCastTvShow(tvShowId).observeForever(tvShowCastObserver)
-        verify(tvShowCastObserver).onChanged(dummyCastTvShow)
     }
 }

@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,32 +12,25 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.moviecatalog.R
-import com.dicoding.moviecatalog.adapter.DetailMovieAdapter
-import com.dicoding.moviecatalog.adapter.DetailTvShowAdapter
-import com.dicoding.moviecatalog.adapter.MovieGenreApiAdapter
-import com.dicoding.moviecatalog.adapter.TvShowGenreApiAdapter
+import com.dicoding.moviecatalog.adapter.CompaniesMovieAdapter
+import com.dicoding.moviecatalog.adapter.api.MovieGenreApiAdapter
+import com.dicoding.moviecatalog.adapter.api.TvShowGenreApiAdapter
 import com.dicoding.moviecatalog.callback.ShareCallback
-import com.dicoding.moviecatalog.data.movie.MovieEntity
-import com.dicoding.moviecatalog.data.movie.response.MovieGenreListResponse
-import com.dicoding.moviecatalog.data.movie.response.MovieListResponse
-import com.dicoding.moviecatalog.data.tvshow.TvShowEntity
-import com.dicoding.moviecatalog.data.tvshow.response.TvShowDetailResponse
-import com.dicoding.moviecatalog.data.tvshow.response.TvShowGenreListResponse
-import com.dicoding.moviecatalog.data.tvshow.response.TvShowListResponse
+import com.dicoding.moviecatalog.data.source.remote.response.ProductionCompaniesListResponse
+import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieGenreListResponse
+import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieListResponse
+import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowGenreListResponse
+import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowListResponse
 import com.dicoding.moviecatalog.databinding.ActivityDetailShowBinding
 import com.dicoding.moviecatalog.databinding.ContentDetailShowBinding
+import com.dicoding.moviecatalog.utils.InlineVariable
 import com.dicoding.moviecatalog.viewmodel.DetailMovieViewModel
 import com.dicoding.moviecatalog.viewmodel.ViewModelFactory
-import java.text.DateFormat
-import java.text.DecimalFormat
-import java.text.NumberFormat
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
     private lateinit var movieDetailBinding: ContentDetailShowBinding
+    private var inlineVariable = InlineVariable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +44,6 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         setSupportActionBar(activityMovieDetailBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val adapter = DetailMovieAdapter()
-        val adapter2 = DetailTvShowAdapter()
         val factory = ViewModelFactory.getInstance(this)
         val viewModel = ViewModelProvider(
             this, factory
@@ -61,75 +51,43 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         val extras = intent.extras
         if (extras != null) {
             val showId = extras.getString(SHOW_ID)
-            val movieIdDb = extras.getString(EXTRA_MOVIE_DB)
-            val tvShowIdDb = extras.getString(EXTRA_TV_SHOW)
-            val movieIdApi = extras.getString(EXTRA_MOVIE_API)
-            val tvShowIdApi = extras.getString(EXTRA_TV_SHOW_API)
-            val genreApi = extras.getString(EXTRA_GENRE_API)
+            val movieId = extras.getInt(EXTRA_MOVIE)
+            val tvShowId = extras.getInt(EXTRA_TV_SHOW)
             if (showId.equals("Movie")) {
-                if (movieIdDb != null) {
-                    hideStaticUI()
+                hideStaticUI()
+                if (movieId.toString().isNotBlank()) {
                     movieDetailBinding.progressBar.visibility = View.VISIBLE
-                    viewModel.setSelectedMovie(movieIdDb)
-                    viewModel.getCastMovie(movieIdDb).observe(this, { movie ->
+                    viewModel.setSelectedMovie(movieId.toString())
+                    viewModel.getSelectedMovie()
+                        .observe(this, { selectedMovieId -> setMovieData(selectedMovieId) })
+                    viewModel.getMovieCompanies().observe(this, { selectedMovieId ->
                         movieDetailBinding.progressBar.visibility = View.GONE
-                        showStaticUIMovieDB()
-                        adapter.setMovieModule(movie)
-                        adapter.notifyDataSetChanged()
+                        showStaticUIMovie()
+                        setCompaniesData(selectedMovieId)
                     })
-                    viewModel.getMovie().observe(this, { movie -> populateMovie(movie) })
-                } else {
-                    if (movieIdApi != null) {
-                        hideStaticUI()
-                        movieDetailBinding.progressBar.visibility = View.VISIBLE
-                        viewModel.setSelectedMovie(movieIdApi)
-                        if (genreApi != null) {
-                            viewModel.getCastMovie(genreApi).observe(this, { movieGenreApi ->
-                                showStaticUIMovieAPI()
-                                movieDetailBinding.progressBar.visibility = View.GONE
-                                adapter.setMovieModule(movieGenreApi)
-                                adapter.notifyDataSetChanged()
-                            })
-                        }
-                        viewModel.movieDetailList.observe(this, { movieIdApiVM ->
-                            setMovieData(movieIdApiVM)
-                        })
-                        viewModel.movieGenreList.observe(this, { movieIdGenreVM ->
-                            setMovieGenreData(movieIdGenreVM)
-                        })
-                    }
+                    viewModel.getMovieGenres().observe(this, { selectedMovieId ->
+                        movieDetailBinding.progressBar.visibility = View.GONE
+                        showStaticUIMovie()
+                        setMovieGenreData(selectedMovieId)
+                    })
                 }
             } else if (showId.equals("TvShow")) {
                 hideStaticUI()
-                if (tvShowIdDb != null) {
+                if (tvShowId.toString().isNotBlank()) {
                     movieDetailBinding.progressBar.visibility = View.VISIBLE
-                    viewModel.setSelectedTvShow(tvShowIdDb)
-                    viewModel.getCastTvShow(tvShowIdDb).observe(this, { tvShow ->
-                        showStaticUITvShowDB()
+                    viewModel.setSelectedTvShow(tvShowId.toString())
+                    viewModel.getSelectedTvShow()
+                        .observe(this, { selectedTvShowId -> setTvShowData(selectedTvShowId) })
+                    viewModel.getTvShowCompanies().observe(this, { selectedTvShowId ->
                         movieDetailBinding.progressBar.visibility = View.GONE
-                        adapter2.setTvShowCastList(tvShow)
-                        adapter2.notifyDataSetChanged()
+                        showStaticUITvShow()
+                        setCompaniesData(selectedTvShowId)
                     })
-                    viewModel.getTvShow().observe(this, { tvShow -> populateTvShow(tvShow) })
-                } else {
-                    if (tvShowIdApi != null) {
-                        movieDetailBinding.progressBar.visibility = View.VISIBLE
-                        viewModel.setSelectedTvShow(tvShowIdApi)
-                        if (genreApi != null) {
-                            viewModel.getCastTvShow(genreApi).observe(this, { tvShowGenreApiVM ->
-                                showStaticUITvShowAPI()
-                                movieDetailBinding.progressBar.visibility = View.GONE
-                                adapter2.setTvShowCastList(tvShowGenreApiVM)
-                                adapter2.notifyDataSetChanged()
-                            })
-                        }
-                        viewModel.tvShowDetailList.observe(this, { tvShowIdApiVM ->
-                            setTvShowData(tvShowIdApiVM)
-                        })
-                        viewModel.tvShowGenreList.observe(this, { tvShowIdApiVM ->
-                            setTvShowGenreData(tvShowIdApiVM)
-                        })
-                    }
+                    viewModel.getTvShowGenres().observe(this, { selectedTvShowId ->
+                        movieDetailBinding.progressBar.visibility = View.GONE
+                        showStaticUITvShow()
+                        setTvShowGenreData(selectedTvShowId)
+                    })
                 }
             }
         }
@@ -142,29 +100,8 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             showLoading(it)
         })
 
-        if (extras != null) {
-            val movieIdApi = extras.getString(EXTRA_MOVIE_API)
-            val tvShowIdApi = extras.getString(EXTRA_TV_SHOW_API)
-            if (movieIdApi != null) {
-                viewModel.getMovieListDetails(movieIdApi)
-                viewModel.getMovieGenreListDetails(movieIdApi)
-            } else if (tvShowIdApi != null) {
-                viewModel.getTvShowListDetails(tvShowIdApi)
-                viewModel.getTvShowGenreListDetails(tvShowIdApi)
-            }
-        }
-
-        configAdapter()
-        configAdapterApi()
-
-        if (extras != null) {
-            val showId = extras.getString(SHOW_ID)
-            if (showId.equals("Movie")) {
-                movieDetailBinding.rvCast.adapter = adapter
-            } else if (showId.equals("TvShow")) {
-                movieDetailBinding.rvCast.adapter = adapter2
-            }
-        }
+        configAdapterCompanies()
+        configAdapterGenres()
     }
 
     private fun setMovieData(movieId: MovieListResponse) {
@@ -183,7 +120,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         if (movieId.releaseDate.isBlank()) {
             movieDetailBinding.movieReleaseDate.text = "-"
         } else {
-            val setDate = setReleaseDate(movieId.releaseDate)
+            val setDate = inlineVariable.setReleaseDate(movieId.releaseDate)
             movieDetailBinding.movieReleaseDate.text = setDate
         }
 
@@ -218,10 +155,8 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         if (movieId.revenue.toString().isBlank()) {
             movieDetailBinding.movieRevenueText.text = "-"
         } else {
-            val formatter: NumberFormat = DecimalFormat("#,###")
-            val myNumber: Int = movieId.revenue
-            val formattedNumber: String = formatter.format(myNumber)
-            movieDetailBinding.movieRevenueText.text = formattedNumber
+            movieDetailBinding.movieRevenueText.text =
+                inlineVariable.setRevenue(movieId.revenue.toString())
         }
 
         if (movieId.originalLanguage.isBlank()) {
@@ -236,7 +171,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         }
     }
 
-    private fun setTvShowData(tvShowId: TvShowDetailResponse) {
+    private fun setTvShowData(tvShowId: TvShowListResponse) {
         if (tvShowId.tvShowName.isBlank()) {
             movieDetailBinding.movieTitleText.text = "-"
         } else {
@@ -252,7 +187,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         if (tvShowId.tvShowFirstAirDate.isBlank()) {
             movieDetailBinding.movieReleaseDate.text = "-"
         } else {
-            val setDate = setReleaseDate(tvShowId.tvShowFirstAirDate)
+            val setDate = inlineVariable.setReleaseDate(tvShowId.tvShowFirstAirDate)
             movieDetailBinding.movieReleaseDate.text = setDate
         }
 
@@ -319,6 +254,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         }
         val adapter = MovieGenreApiAdapter(listReview)
         movieDetailBinding.rvGenreApi.adapter = adapter
+        adapter.notifyDataSetChanged()
     }
 
     private fun setTvShowGenreData(tvShowId: ArrayList<TvShowGenreListResponse>) {
@@ -332,83 +268,23 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         }
         val adapter = TvShowGenreApiAdapter(listReview)
         movieDetailBinding.rvGenreApi.adapter = adapter
+        adapter.notifyDataSetChanged()
     }
 
-    private fun populateMovie(movieEntity: MovieEntity) {
-        movieDetailBinding.apply {
-            movieTitleText.text = movieEntity.title
-            movieReleaseDate.text = movieEntity.releaseDate
-            movieDurationText.text = movieEntity.duration
-            movieRatingText.text = movieEntity.rating
-            descText.text = movieEntity.description
-            if (movieEntity.genre1 == "Null") {
-                cvGenre1.visibility = View.INVISIBLE
-            } else {
-                movieGenre1Text.text = movieEntity.genre1
-                genreColoringGenre1(movieEntity.genre1)
-            }
-            if (movieEntity.genre2 == "Null") {
-                cvGenre2.visibility = View.INVISIBLE
-            } else {
-                movieGenre2Text.text = movieEntity.genre2
-                genreColoringGenre2(movieEntity.genre2)
-            }
-        }
-
-        Glide.with(this)
-            .load(movieEntity.imagePath)
-            .transform(RoundedCorners(20))
-            .apply(
-                RequestOptions.placeholderOf(R.drawable.ic_loading)
-                    .error(R.drawable.ic_error)
+    private fun setCompaniesData(movieId: ArrayList<ProductionCompaniesListResponse>) {
+        val listReview = ArrayList<ProductionCompaniesListResponse>()
+        for (movieGenre in movieId) {
+            val movieGenreApi = ProductionCompaniesListResponse(
+                movieGenre.logoPath,
+                movieGenre.name,
+                movieGenre.id,
+                movieGenre.originCountry
             )
-            .into(movieDetailBinding.imagePoster)
-
-        movieDetailBinding.imagePoster.contentDescription = movieEntity.imagePath
-        movieDetailBinding.imgShare.setOnClickListener {
-            onShareClickMovie()
+            listReview.add(movieGenreApi)
         }
-    }
-
-    private fun populateTvShow(tvShowEntity: TvShowEntity) {
-        movieDetailBinding.apply {
-            movieTitleText.text = tvShowEntity.title
-            movieReleaseDate.text = tvShowEntity.releaseDate
-            movieDurationText.text = tvShowEntity.duration
-            movieRatingText.text = tvShowEntity.rating
-            descText.text = tvShowEntity.description
-            val season: String =
-                tvShowEntity.episode + " | " + tvShowEntity.season
-            movieEpisodeText.text = season
-
-            if (tvShowEntity.genre1 == "Null") {
-                cvGenre1.visibility = View.INVISIBLE
-            } else {
-                movieGenre1Text.text = tvShowEntity.genre1
-                genreColoringGenre1(tvShowEntity.genre1)
-            }
-            if (tvShowEntity.genre2 == "Null") {
-                cvGenre2.visibility = View.INVISIBLE
-            } else {
-                movieGenre2Text.text = tvShowEntity.genre2
-                genreColoringGenre2(tvShowEntity.genre2)
-            }
-        }
-
-        Glide.with(this)
-            .load(tvShowEntity.imagePath)
-            .transform(RoundedCorners(20))
-            .apply(
-                RequestOptions.placeholderOf(R.drawable.ic_loading)
-                    .error(R.drawable.ic_error)
-            )
-            .into(movieDetailBinding.imagePoster)
-
-        movieDetailBinding.imagePoster.contentDescription = tvShowEntity.imagePath
-
-        movieDetailBinding.imgShare.setOnClickListener {
-            onShareClickTvShow()
-        }
+        val adapter = CompaniesMovieAdapter(listReview)
+        movieDetailBinding.rvCompanies.adapter = adapter
+        adapter.notifyDataSetChanged()
     }
 
     override fun onShareClickMovie() {
@@ -445,172 +321,6 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         }
     }
 
-    private fun genreColoringGenre1(genre1: String) {
-        when (genre1) {
-            drama -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.red
-                )
-            )
-            romance -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.red
-                )
-            )
-            action -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.blue
-                )
-            )
-            adventure -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.green
-                )
-            )
-            music -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.orange
-                )
-            )
-            crime -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.purple
-                )
-            )
-            fantasy -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.red
-                )
-            )
-            thriller -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.dark_green
-                )
-            )
-            family -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.blue
-                )
-            )
-            animation -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.red
-                )
-            )
-            sciFi -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.silver
-                )
-            )
-            comedy -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.yellow
-                )
-            )
-            mystery -> movieDetailBinding.cvGenre1.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.green
-                )
-            )
-        }
-    }
-
-    private fun genreColoringGenre2(genre2: String) {
-        when (genre2) {
-            drama -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.red
-                )
-            )
-            romance -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.red
-                )
-            )
-            action -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.blue
-                )
-            )
-            adventure -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.green
-                )
-            )
-            music -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.orange
-                )
-            )
-            crime -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.purple
-                )
-            )
-            fantasy -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.red
-                )
-            )
-            thriller -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.dark_green
-                )
-            )
-            family -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.blue
-                )
-            )
-            animation -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.red
-                )
-            )
-            sciFi -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.silver
-                )
-            )
-            comedy -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.yellow
-                )
-            )
-            mystery -> movieDetailBinding.cvGenre2.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.green
-                )
-            )
-        }
-    }
-
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             hideStaticUI()
@@ -625,16 +335,12 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             movieTitleText.visibility = View.GONE
             descText.visibility = View.GONE
             movieReleaseDate.visibility = View.GONE
-            cvGenre1.visibility = View.GONE
-            cvGenre2.visibility = View.GONE
             rvGenreApi.visibility = View.GONE
-            rvCast.visibility = View.GONE
-            castListModule.visibility = View.GONE
+            rvCompanies.visibility = View.GONE
+            companiesListModule.visibility = View.GONE
             calendarImg.visibility = View.GONE
             movieRating.visibility = View.GONE
             movieRatingText.visibility = View.GONE
-            movieDurationImg.visibility = View.GONE
-            movieDurationText.visibility = View.GONE
             movieEpisodeText.visibility = View.GONE
             movieEpisodeImg.visibility = View.GONE
             descTitle.visibility = View.GONE
@@ -649,39 +355,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         }
     }
 
-    private fun showStaticUIMovieDB() {
-        movieDetailBinding.apply {
-            imagePoster.visibility = View.VISIBLE
-            view.visibility = View.VISIBLE
-            imgShare.visibility = View.VISIBLE
-            movieReleaseDate.visibility = View.VISIBLE
-            movieTitleText.visibility = View.VISIBLE
-            descText.visibility = View.VISIBLE
-            cvGenre1.visibility = View.VISIBLE
-            cvGenre2.visibility = View.VISIBLE
-            rvGenreApi.visibility = View.INVISIBLE
-            rvCast.visibility = View.VISIBLE
-            castListModule.visibility = View.VISIBLE
-            calendarImg.visibility = View.VISIBLE
-            movieRating.visibility = View.VISIBLE
-            movieRatingText.visibility = View.VISIBLE
-            movieDurationImg.visibility = View.VISIBLE
-            movieDurationText.visibility = View.VISIBLE
-            descTitle.visibility = View.VISIBLE
-            movieRevenueImg.visibility = View.INVISIBLE
-            movieRevenueText.visibility = View.INVISIBLE
-            movieLanguageText.visibility = View.INVISIBLE
-            movieLanguageImg.visibility = View.INVISIBLE
-            movieEpisodeImg.visibility = View.INVISIBLE
-            movieEpisodeText.visibility = View.INVISIBLE
-            moviePopularityTxt.visibility = View.INVISIBLE
-            moviePopularityImg.visibility = View.INVISIBLE
-            tvShowLanguageImg.visibility = View.INVISIBLE
-            tvShowLanguageText.visibility = View.INVISIBLE
-        }
-    }
-
-    private fun showStaticUIMovieAPI() {
+    private fun showStaticUIMovie() {
         movieDetailBinding.apply {
             imagePoster.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
@@ -690,16 +364,12 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             movieTitleText.visibility = View.VISIBLE
             descText.visibility = View.VISIBLE
             descTitle.visibility = View.VISIBLE
-            cvGenre1.visibility = View.INVISIBLE
-            cvGenre2.visibility = View.INVISIBLE
             rvGenreApi.visibility = View.VISIBLE
-            rvCast.visibility = View.VISIBLE
-            castListModule.visibility = View.VISIBLE
+            rvCompanies.visibility = View.VISIBLE
+            companiesListModule.visibility = View.VISIBLE
             calendarImg.visibility = View.VISIBLE
             movieRating.visibility = View.VISIBLE
             movieRatingText.visibility = View.VISIBLE
-            movieDurationImg.visibility = View.INVISIBLE
-            movieDurationText.visibility = View.INVISIBLE
             movieEpisodeText.visibility = View.INVISIBLE
             movieEpisodeImg.visibility = View.INVISIBLE
             movieRevenueImg.visibility = View.VISIBLE
@@ -713,7 +383,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         }
     }
 
-    private fun showStaticUITvShowDB() {
+    private fun showStaticUITvShow() {
         movieDetailBinding.apply {
             imagePoster.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
@@ -721,16 +391,12 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             movieReleaseDate.visibility = View.VISIBLE
             movieTitleText.visibility = View.VISIBLE
             descText.visibility = View.VISIBLE
-            cvGenre1.visibility = View.VISIBLE
-            cvGenre2.visibility = View.VISIBLE
-            rvGenreApi.visibility = View.INVISIBLE
-            rvCast.visibility = View.VISIBLE
-            castListModule.visibility = View.VISIBLE
+            rvGenreApi.visibility = View.VISIBLE
+            rvCompanies.visibility = View.VISIBLE
+            companiesListModule.visibility = View.VISIBLE
             calendarImg.visibility = View.VISIBLE
             movieRating.visibility = View.VISIBLE
             movieRatingText.visibility = View.VISIBLE
-            movieDurationImg.visibility = View.VISIBLE
-            movieDurationText.visibility = View.VISIBLE
             descTitle.visibility = View.VISIBLE
             movieRevenueImg.visibility = View.INVISIBLE
             movieRevenueText.visibility = View.INVISIBLE
@@ -740,44 +406,12 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             movieEpisodeText.visibility = View.VISIBLE
             moviePopularityTxt.visibility = View.INVISIBLE
             moviePopularityImg.visibility = View.INVISIBLE
-            tvShowLanguageImg.visibility = View.INVISIBLE
-            tvShowLanguageText.visibility = View.INVISIBLE
-        }
-    }
-
-    private fun showStaticUITvShowAPI() {
-        movieDetailBinding.apply {
-            imagePoster.visibility = View.VISIBLE
-            view.visibility = View.VISIBLE
-            imgShare.visibility = View.VISIBLE
-            movieReleaseDate.visibility = View.VISIBLE
-            movieTitleText.visibility = View.VISIBLE
-            descText.visibility = View.VISIBLE
-            cvGenre1.visibility = View.INVISIBLE
-            cvGenre2.visibility = View.INVISIBLE
-            rvGenreApi.visibility = View.VISIBLE
-            rvCast.visibility = View.VISIBLE
-            castListModule.visibility = View.VISIBLE
-            calendarImg.visibility = View.VISIBLE
-            movieRating.visibility = View.VISIBLE
-            movieRatingText.visibility = View.VISIBLE
-            movieDurationImg.visibility = View.INVISIBLE
-            movieDurationText.visibility = View.INVISIBLE
-            descTitle.visibility = View.VISIBLE
-            movieRevenueImg.visibility = View.INVISIBLE
-            movieRevenueText.visibility = View.INVISIBLE
-            movieLanguageText.visibility = View.INVISIBLE
-            movieLanguageImg.visibility = View.INVISIBLE
-            movieEpisodeImg.visibility = View.VISIBLE
-            movieEpisodeText.visibility = View.VISIBLE
-            moviePopularityTxt.visibility = View.VISIBLE
-            moviePopularityImg.visibility = View.VISIBLE
             tvShowLanguageImg.visibility = View.VISIBLE
             tvShowLanguageText.visibility = View.VISIBLE
         }
     }
 
-    private fun configAdapterApi() {
+    private fun configAdapterGenres() {
         val linearLayoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val dividerItemDecoration =
@@ -791,42 +425,23 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         movieDetailBinding.rvGenreApi.addItemDecoration(dividerItemDecoration)
     }
 
-    private fun configAdapter() {
-        movieDetailBinding.rvCast.isNestedScrollingEnabled = false
-        movieDetailBinding.rvCast.layoutManager = LinearLayoutManager(this)
-        movieDetailBinding.rvCast.setHasFixedSize(true)
+    private fun configAdapterCompanies() {
+        movieDetailBinding.rvCompanies.isNestedScrollingEnabled = false
+        movieDetailBinding.rvCompanies.layoutManager = LinearLayoutManager(this)
+        movieDetailBinding.rvCompanies.setHasFixedSize(true)
         val dividerItemDecoration =
-            DividerItemDecoration(movieDetailBinding.rvCast.context, DividerItemDecoration.VERTICAL)
-        movieDetailBinding.rvCast.addItemDecoration(dividerItemDecoration)
-    }
-
-    private fun setReleaseDate(releaseDate: String): String {
-        val outputFormat: DateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
-        val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val date: Date = inputFormat.parse(releaseDate)
-
-        return outputFormat.format(date)
+            DividerItemDecoration(
+                movieDetailBinding.rvCompanies.context,
+                DividerItemDecoration.VERTICAL
+            )
+        movieDetailBinding.rvCompanies.isNestedScrollingEnabled = false
+        movieDetailBinding.rvCompanies.setHasFixedSize(true)
+        movieDetailBinding.rvCompanies.addItemDecoration(dividerItemDecoration)
     }
 
     companion object {
         const val SHOW_ID = "show_id"
-        const val EXTRA_MOVIE_DB = "extra_movie_db"
-        const val EXTRA_MOVIE_API = "extra_movie_api"
-        const val EXTRA_GENRE_API = "extra_genre_api"
+        const val EXTRA_MOVIE = "extra_movie"
         const val EXTRA_TV_SHOW = "extra_tvShow"
-        const val EXTRA_TV_SHOW_API = "extra_tvShow_api"
-        const val drama = "Drama"
-        const val romance = "Romance"
-        const val action = "Action"
-        const val adventure = "Adventure"
-        const val music = "Music"
-        const val crime = "Crime"
-        const val fantasy = "Fantasy"
-        const val thriller = "Thriller"
-        const val family = "Family"
-        const val animation = "Animation"
-        const val sciFi = "Sci-Fi"
-        const val comedy = "Comedy"
-        const val mystery = "Mystery"
     }
 }

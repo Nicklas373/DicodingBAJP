@@ -8,9 +8,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.moviecatalog.adapter.TvShowAdapter
-import com.dicoding.moviecatalog.adapter.TvShowApiAdapter
-import com.dicoding.moviecatalog.data.tvshow.response.TvShowListResponse
+import com.dicoding.moviecatalog.adapter.local.TvShowAdapter
+import com.dicoding.moviecatalog.adapter.api.TvShowApiAdapter
+import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowListResponse
 import com.dicoding.moviecatalog.databinding.FragmentTvShowBinding
 import com.dicoding.moviecatalog.viewmodel.TvShowViewModel
 import com.dicoding.moviecatalog.viewmodel.ViewModelFactory
@@ -38,13 +38,13 @@ class TvShowFragment : Fragment() {
             )[TvShowViewModel::class.java]
             val adapter = TvShowAdapter()
             _binding?.progressBar?.visibility = View.VISIBLE
-            viewModel.getTvShow().observe(viewLifecycleOwner, { tvShowId ->
+            viewModel.getTvShowLocal().observe(viewLifecycleOwner, { tvShowId ->
                 _binding?.progressBar?.visibility = View.GONE
                 adapter.setTvShow(tvShowId)
                 adapter.notifyDataSetChanged()
             })
 
-            viewModel.tvShowList.observe(viewLifecycleOwner, { tvShowId ->
+            viewModel.getTvShow().observe(viewLifecycleOwner, { tvShowId ->
                 _binding?.progressBar?.visibility = View.GONE
                 setTvShowListApi(tvShowId)
                 TvShowApiAdapter(tvShowId).notifyDataSetChanged()
@@ -57,8 +57,6 @@ class TvShowFragment : Fragment() {
             viewModel.isToast.observe(viewLifecycleOwner, { isToast ->
                 showToast(isToast, viewModel.toastReason.value.toString())
             })
-
-            viewModel.getTvShowList()
 
             _binding?.let {
                 with(it.rvTvshow) {
@@ -74,13 +72,16 @@ class TvShowFragment : Fragment() {
         val listReview = ArrayList<TvShowListResponse>()
         for (tvShowList in tvShowListApi) {
             val tvShowApi = TvShowListResponse(
-                tvShowList.id,
-                tvShowList.overview,
-                tvShowList.originalName,
-                tvShowList.releasedDate,
-                tvShowList.voteAverage,
-                tvShowList.name,
-                tvShowList.posterPath
+                tvShowList.tvShowFirstAirDate,
+                tvShowList.tvShowId,
+                tvShowList.tvShowName,
+                tvShowList.tvShowEpisodes,
+                tvShowList.tvShowSeasons,
+                tvShowList.tvShowLanguage,
+                tvShowList.tvShowOverview,
+                tvShowList.tvShowPoster,
+                tvShowList.tvShowVote,
+                tvShowList.tvShowPopularity
             )
             listReview.add(tvShowApi)
         }

@@ -3,14 +3,14 @@ package com.dicoding.moviecatalog.viewmodel.activity
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.dicoding.moviecatalog.data.movie.MovieEntity
-import com.dicoding.moviecatalog.data.movie.source.Repository
+import com.dicoding.moviecatalog.data.source.Repository
+import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieListResponse
 import com.dicoding.moviecatalog.utils.CatalogDatabase
 import com.dicoding.moviecatalog.viewmodel.MovieViewModel
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
-
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -30,7 +30,7 @@ class MovieViewModelTest {
     private lateinit var movieRepository: Repository
 
     @Mock
-    private lateinit var observer: Observer<List<MovieEntity>>
+    private lateinit var observer: Observer<ArrayList<MovieListResponse>>
 
     @Before
     fun setUp() {
@@ -39,17 +39,21 @@ class MovieViewModelTest {
 
     @Test
     fun getMovie() {
-        val movieDatabase = CatalogDatabase.generateMovieDatabase()
-        val movie = MutableLiveData<List<MovieEntity>>()
+        val movieDatabase = CatalogDatabase.generateMovieLocal() as ArrayList<MovieListResponse>
+        val movie = MutableLiveData<ArrayList<MovieListResponse>>()
         movie.value = movieDatabase
 
-        `when`(movieRepository.getAllMovies()).thenReturn(movie)
+        `when`(movieRepository.getAllMoviesApi(listId)).thenReturn(movie)
         val movieEntities = viewModel.getMovie().value
-        verify(movieRepository).getAllMovies()
+        verify(movieRepository).getAllMoviesApi(listId)
         assertNotNull(movieEntities)
         assertEquals(10, movieEntities?.size)
 
         viewModel.getMovie().observeForever(observer)
         verify(observer).onChanged(movieDatabase)
+    }
+
+    companion object {
+        private const val listId = "8174952"
     }
 }

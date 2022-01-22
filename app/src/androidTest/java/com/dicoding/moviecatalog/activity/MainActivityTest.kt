@@ -12,17 +12,20 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.utils.CatalogDatabase
 import com.dicoding.moviecatalog.utils.EspressoIdlingResource
+import com.dicoding.moviecatalog.utils.InlineVariable
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-
 class MainActivityTest {
-    private val dummyMovie = CatalogDatabase.generateMovieDatabase()
-    private val dummyCastMovie1 = CatalogDatabase.generateCastListMovie1()
-    private val dummyCastTvShow1 = CatalogDatabase.generateCastListTvShow1()
-    private val dummyTvShow = CatalogDatabase.generateTvShowDatabase()
+    private val dummyMovie = CatalogDatabase.generateMovieLocal()
+    private val dummyGenreMovie = CatalogDatabase.generateGenreMovies()
+    private val dummyProductionMovie = CatalogDatabase.generateCompaniesMovies()
+    private val dummyProductionTvShow = CatalogDatabase.generateCompaniesTvShow()
+    private val dummyGenreTvShow = CatalogDatabase.generateGenreTvShow()
+    private val dummyTvShow = CatalogDatabase.generateTvShowLocal()
+    private val inlineVariable = InlineVariable()
 
     @get:Rule
     var activityRule = ActivityScenarioRule(MainActivity::class.java)
@@ -40,6 +43,7 @@ class MainActivityTest {
 
     @Test
     fun loadMovie() {
+        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_movie)).perform(
@@ -51,6 +55,7 @@ class MainActivityTest {
 
     @Test
     fun loadDetailMovie() {
+        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_movie)).perform(
@@ -59,28 +64,40 @@ class MainActivityTest {
                 click()
             )
         )
+        inlineVariable.delayTwoSecond()
         onView(withId(R.id.movie_title_text)).check(matches(isDisplayed()))
         onView(withId(R.id.movie_title_text)).check(matches(withText(dummyMovie[0].title)))
         onView(withId(R.id.movie_release_date)).check(matches(isDisplayed()))
-        onView(withId(R.id.movie_release_date)).check(matches(withText(dummyMovie[0].releaseDate)))
+        val releaseDate = inlineVariable.setReleaseDate(dummyMovie[0].releaseDate)
+        onView(withId(R.id.movie_release_date)).check(matches(withText(releaseDate)))
         onView(withId(R.id.image_poster)).check(matches(isDisplayed()))
-        onView(withId(R.id.image_poster)).check(matches(withContentDescription(dummyMovie[0].imagePath)))
+        onView(withId(R.id.image_poster)).check(matches(withContentDescription(dummyMovie[0].posterPath)))
         onView(withId(R.id.movie_rating_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.movie_rating_text)).check(matches(withText(dummyMovie[0].rating)))
-        onView(withId(R.id.movie_duration_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.movie_duration_text)).check(matches(withText(dummyMovie[0].duration)))
+        onView(withId(R.id.movie_rating_text)).check(matches(withText(dummyMovie[0].voteAverage.toString())))
+        onView(withId(R.id.movie_revenue_text)).check(matches(isDisplayed()))
+        val revenue = inlineVariable.setRevenue(dummyMovie[0].revenue.toString())
+        onView(withId(R.id.movie_revenue_text)).check(matches(withText(revenue)))
         onView(withId(R.id.desc_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.desc_text)).check(matches(withText(dummyMovie[0].description)))
-        onView(withId(R.id.rv_cast)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_cast)).perform(
+        onView(withId(R.id.desc_text)).check(matches(withText(dummyMovie[0].overview)))
+        inlineVariable.delayTwoSecond()
+        onView(withId(R.id.rv_genre_api)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_genre_api)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                dummyCastMovie1.size
+                dummyGenreMovie.size
+            )
+        )
+        inlineVariable.delayTwoSecond()
+        onView(withId(R.id.rv_companies)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_companies)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
+                dummyProductionMovie.size
             )
         )
     }
 
     @Test
     fun loadDetailTvShow() {
+        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_tvshow)).perform(
@@ -89,30 +106,49 @@ class MainActivityTest {
                 click()
             )
         )
+        inlineVariable.delayTwoSecond()
         onView(withId(R.id.movie_title_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.movie_title_text)).check(matches(withText(dummyTvShow[0].title)))
+        onView(withId(R.id.movie_title_text)).check(matches(withText(dummyTvShow[0].tvShowName)))
         onView(withId(R.id.movie_release_date)).check(matches(isDisplayed()))
-        onView(withId(R.id.movie_release_date)).check(matches(withText(dummyTvShow[0].releaseDate)))
+        val releaseDate = dummyTvShow[0].tvShowFirstAirDate
+        onView(withId(R.id.movie_release_date)).check(
+            matches(
+                withText(
+                    inlineVariable.setReleaseDate(
+                        releaseDate
+                    )
+                )
+            )
+        )
         onView(withId(R.id.image_poster)).check(matches(isDisplayed()))
-        onView(withId(R.id.image_poster)).check(matches(withContentDescription(dummyTvShow[0].imagePath)))
+        onView(withId(R.id.image_poster)).check(matches(withContentDescription(dummyTvShow[0].tvShowPoster)))
         onView(withId(R.id.movie_rating_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.movie_rating_text)).check(matches(withText(dummyTvShow[0].rating)))
+        onView(withId(R.id.movie_rating_text)).check(matches(withText(dummyTvShow[0].tvShowVote.toString())))
         onView(withId(R.id.movie_episode_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.movie_episode_text)).check(matches(withText(dummyTvShow[0].episode + " | " + dummyTvShow[0].season)))
-        onView(withId(R.id.movie_duration_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.movie_duration_text)).check(matches(withText(dummyTvShow[0].duration)))
+        onView(withId(R.id.movie_episode_text)).check(matches(withText(dummyTvShow[0].tvShowEpisodes.toString() + " Episode | " + dummyTvShow[0].tvShowSeasons.toString() + " Season")))
+        onView(withId(R.id.tvShow_language_text)).check(matches(isDisplayed()))
+        onView(withId(R.id.tvShow_language_text)).check(matches(withText(dummyTvShow[0].tvShowLanguage)))
         onView(withId(R.id.desc_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.desc_text)).check(matches(withText(dummyTvShow[0].description)))
-        onView(withId(R.id.rv_cast)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_cast)).perform(
+        onView(withId(R.id.desc_text)).check(matches(withText(dummyTvShow[0].tvShowOverview)))
+        inlineVariable.delayTwoSecond()
+        onView(withId(R.id.rv_genre_api)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_genre_api)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                dummyCastTvShow1.size
+                dummyGenreTvShow.size
+            )
+        )
+        inlineVariable.delayTwoSecond()
+        onView(withId(R.id.rv_companies)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_companies)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
+                dummyProductionTvShow.size
             )
         )
     }
 
     @Test
     fun loadTvShow() {
+        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_tvshow)).perform(
@@ -124,6 +160,7 @@ class MainActivityTest {
 
     @Test
     fun loadShareMovie() {
+        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_movie)).perform(
@@ -132,6 +169,7 @@ class MainActivityTest {
                 click()
             )
         )
+        inlineVariable.delayTwoSecond()
         onView(withId(R.id.img_share)).check(matches(isDisplayed()))
         onView(withId(R.id.img_share)).check(matches(isClickable()))
         onView(withId(R.id.img_share)).perform(click())
@@ -139,6 +177,7 @@ class MainActivityTest {
 
     @Test
     fun loadShareTvShow() {
+        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_tvshow)).perform(
@@ -147,9 +186,9 @@ class MainActivityTest {
                 click()
             )
         )
+        inlineVariable.delayTwoSecond()
         onView(withId(R.id.img_share)).check(matches(isDisplayed()))
         onView(withId(R.id.img_share)).check(matches(isClickable()))
         onView(withId(R.id.img_share)).perform(click())
     }
-
 }

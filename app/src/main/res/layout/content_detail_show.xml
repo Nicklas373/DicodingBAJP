@@ -68,55 +68,6 @@
         app:layout_constraintStart_toEndOf="@id/image_poster"
         app:layout_constraintTop_toBottomOf="@id/movie_release_date" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_genre_1"
-        android:layout_width="90dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:cardBackgroundColor="@color/design_default_color_primary"
-        app:layout_constraintStart_toStartOf="@id/calendar_img"
-        app:layout_constraintTop_toBottomOf="@+id/view">
-
-        <TextView
-            android:id="@+id/movie_genre_1_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:text="@string/genre"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_genre_2"
-        android:layout_width="90dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
-        app:cardBackgroundColor="@color/design_default_color_primary"
-        app:layout_constraintStart_toEndOf="@id/cv_genre_1"
-        app:layout_constraintTop_toBottomOf="@+id/view">
-
-        <TextView
-            android:id="@+id/movie_genre_2_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:text="@string/genre"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-    </androidx.cardview.widget.CardView>
-
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -138,14 +89,14 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:contentDescription="@string/rating"
         android:gravity="start"
         android:src="@drawable/ic_baseline_star_24"
-        app:layout_constraintBottom_toTopOf="@id/movie_duration_img"
+        app:layout_constraintBottom_toTopOf="@id/movie_episode_img"
         app:layout_constraintEnd_toStartOf="@id/movie_rating_text"
         app:layout_constraintStart_toEndOf="@+id/image_poster"
-        app:layout_constraintTop_toBottomOf="@+id/cv_genre_1" />
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <TextView
         android:id="@+id/movie_rating_text"
@@ -161,33 +112,6 @@
         tools:text="@string/rating" />
 
     <ImageView
-        android:id="@+id/movie_duration_img"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:contentDescription="@string/duration"
-        android:gravity="start"
-        android:src="@drawable/ic_baseline_access_time_24"
-        app:layout_constraintBottom_toTopOf="@id/movie_episode_img"
-        app:layout_constraintEnd_toStartOf="@id/movie_duration_text"
-        app:layout_constraintStart_toEndOf="@+id/image_poster"
-        app:layout_constraintTop_toBottomOf="@+id/movie_rating" />
-
-    <TextView
-        android:id="@+id/movie_duration_text"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="2dp"
-        android:gravity="start"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/movie_duration_img"
-        app:layout_constraintTop_toTopOf="@id/movie_duration_img"
-        tools:text="@string/duration" />
-
-    <ImageView
         android:id="@+id/movie_episode_img"
         android:layout_width="24dp"
         android:layout_height="24dp"
@@ -198,7 +122,7 @@
         android:src="@drawable/ic_baseline_local_movies_24"
         app:layout_constraintEnd_toStartOf="@id/movie_episode_text"
         app:layout_constraintStart_toEndOf="@+id/image_poster"
-        app:layout_constraintTop_toBottomOf="@+id/movie_duration_img" />
+        app:layout_constraintTop_toBottomOf="@+id/movie_rating" />
 
     <TextView
         android:id="@+id/movie_episode_text"
@@ -218,7 +142,6 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:contentDescription="@string/revenue_usd"
         android:gravity="start"
         android:src="@drawable/ic_baseline_attach_money_24"
@@ -304,7 +227,7 @@
         android:src="@drawable/ic_baseline_language_24"
         app:layout_constraintEnd_toStartOf="@id/tvShow_language_text"
         app:layout_constraintStart_toEndOf="@+id/image_poster"
-        app:layout_constraintTop_toBottomOf="@+id/movie_language_img" />
+        app:layout_constraintTop_toBottomOf="@+id/movie_revenue_img" />
 
     <TextView
         android:id="@+id/tvShow_language_text"
@@ -349,18 +272,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/cast_list_module"
+        app:layout_constraintBottom_toTopOf="@id/companies_list_module"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/desc_title"
         tools:text="@string/synopsis" />
 
     <TextView
-        android:id="@+id/cast_list_module"
+        android:id="@+id/companies_list_module"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="@string/cast_list"
+        android:text="@string/companies"
         android:textColor="@color/dark_red"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -369,14 +292,14 @@
         app:layout_constraintTop_toBottomOf="@+id/desc_text" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_cast"
+        android:id="@+id/rv_companies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cast_list_module"
-        tools:listitem="@layout/items_cast_list" />
+        app:layout_constraintTop_toBottomOf="@id/companies_list_module"
+        tools:listitem="@layout/items_companies_list" />
 
     <ProgressBar
         android:id="@+id/progress_bar"

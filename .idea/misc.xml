@@ -57,8 +57,10 @@
         <entry key="..\:/Users/Nickl/StudioProjects/DicodingBAJP/app/src/main/res/layout/activity_detail_show.xml" value="0.31929347826086957" />
         <entry key="..\:/Users/Nickl/StudioProjects/DicodingBAJP/app/src/main/res/layout/activity_main.xml" value="0.21979166666666666" />
         <entry key="..\:/Users/Nickl/StudioProjects/DicodingBAJP/app/src/main/res/layout/activity_splas_screen.xml" value="0.21979166666666666" />
-        <entry key="..\:/Users/Nickl/StudioProjects/DicodingBAJP/app/src/main/res/layout/content_detail_show.xml" value="0.4494142705005325" />
+        <entry key="..\:/Users/Nickl/StudioProjects/DicodingBAJP/app/src/main/res/layout/content_detail_show.xml" value="0.25" />
         <entry key="..\:/Users/Nickl/StudioProjects/DicodingBAJP/app/src/main/res/layout/fragment_movie.xml" value="0.3283514492753623" />
+        <entry key="..\:/Users/Nickl/StudioProjects/DicodingBAJP/app/src/main/res/layout/items_cast_list.xml" value="0.20260416666666667" />
+        <entry key="..\:/Users/Nickl/StudioProjects/DicodingBAJP/app/src/main/res/layout/items_companies_list.xml" value="0.2890625" />
         <entry key="..\:/Users/Nickl/StudioProjects/DicodingBAJP/app/src/main/res/layout/items_movie.xml" value="0.3283514492753623" />
         <entry key="..\:/Users/Nickl/StudioProjects/DicodingBAJP/app/src/main/res/layout/items_tv_show.xml" value="0.3283514492753623" />
         <entry key="..\:/Users/Nickl/StudioProjects/DicodingBAJP/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2359375" />

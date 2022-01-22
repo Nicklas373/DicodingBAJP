@@ -3,8 +3,8 @@ package com.dicoding.moviecatalog.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dicoding.moviecatalog.data.movie.source.Repository
-import com.dicoding.moviecatalog.data.movie.di.Injection
+import com.dicoding.moviecatalog.data.di.Injection
+import com.dicoding.moviecatalog.data.source.Repository
 
 class ViewModelFactory private constructor(private val mMovieRepository: Repository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -15,7 +15,7 @@ class ViewModelFactory private constructor(private val mMovieRepository: Reposit
 
         fun getInstance(context: Context): ViewModelFactory =
             instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(Injection.provideRepository(context)).apply {
+                instance ?: ViewModelFactory(Injection.provideRepository()).apply {
                     instance = this
                 }
             }
