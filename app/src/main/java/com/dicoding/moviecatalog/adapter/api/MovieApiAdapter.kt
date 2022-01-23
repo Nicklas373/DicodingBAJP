@@ -32,15 +32,17 @@ class MovieApiAdapter(private val listMovieApi: ArrayList<MovieListResponse>) :
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         with(holder) {
-            val (movieOverview, movieOriginalLanguage, movieRevenue, movieOriginalTitle, movieReleaseDate, moviePopularity, movieVoteAverage, movieId, movieTitle, moviePosterPath) = listMovieApi[position]
+            val (_, _, _, movieOriginalTitle, movieDate, _, movieVoteAverage, movieId, _, moviePosterPath) = listMovieApi[position]
             val movieImage =
                 itemView.context.getString(R.string.movieDb_static_image) + moviePosterPath
-            val releaseDate = inlineVariable.setReleaseDate(movieReleaseDate)
-            binding.movieTitle.text = movieOriginalTitle
-            binding.movieReleaseDate.text = releaseDate
-            binding.movieRatingText.text = movieVoteAverage.toString()
-            binding.separateRatingText.visibility = View.GONE
-            binding.movieDurationText.visibility = View.GONE
+            val releaseDate = inlineVariable.setReleaseDate(movieDate)
+            with(binding) {
+                movieTitle.text = movieOriginalTitle
+                movieReleaseDate.text = releaseDate
+                movieRatingText.text = movieVoteAverage.toString()
+                separateRatingText.visibility = View.GONE
+                movieDurationText.visibility = View.GONE
+            }
             Glide.with(itemView.context)
                 .load(movieImage)
                 .apply(

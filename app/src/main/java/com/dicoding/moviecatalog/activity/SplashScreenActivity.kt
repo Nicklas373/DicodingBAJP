@@ -23,6 +23,10 @@ class SplashScreenActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }, 3000)
+        }, delayMill.toLong())
+    }
+
+    companion object {
+        const val delayMill = 3000
     }
 }

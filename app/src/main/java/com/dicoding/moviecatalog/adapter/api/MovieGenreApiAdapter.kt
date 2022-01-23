@@ -26,7 +26,7 @@ class MovieGenreApiAdapter(private val listMovieApi: ArrayList<MovieGenreListRes
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         with(holder) {
-            val (movieId, movieName) = listMovieApi[position]
+            val (_, movieName) = listMovieApi[position]
             binding.movieGenreText.text = movieName
             genreColoringApi(holder, movieName)
             if (movieName == science) {

@@ -22,15 +22,6 @@ import retrofit2.Response
 class Repository private constructor(private val remoteDataSource: RemoteDataSource) :
     DataSource {
 
-    companion object {
-        @Volatile
-        private var instance: Repository? = null
-        fun getInstance(remoteData: RemoteDataSource): Repository =
-            instance ?: synchronized(this) {
-                instance ?: Repository(remoteData).apply { instance = this }
-            }
-    }
-
     override fun getAllMovies(): MutableLiveData<ArrayList<MovieListResponse>> {
         val resultAllMovies = MutableLiveData<ArrayList<MovieListResponse>>()
         remoteDataSource.getAllMovies(object : RemoteDataSource.LoadMoviesCallback {
@@ -294,5 +285,14 @@ class Repository private constructor(private val remoteDataSource: RemoteDataSou
             }
         })
         return resultGenreTvShowApi
+    }
+
+    companion object {
+        @Volatile
+        private var instance: Repository? = null
+        fun getInstance(remoteData: RemoteDataSource): Repository =
+            instance ?: synchronized(this) {
+                instance ?: Repository(remoteData).apply { instance = this }
+            }
     }
 }

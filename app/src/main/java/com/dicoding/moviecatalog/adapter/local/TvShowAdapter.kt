@@ -12,10 +12,6 @@ import com.dicoding.moviecatalog.activity.DetailShowActivity
 import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowListResponse
 import com.dicoding.moviecatalog.databinding.ItemsTvShowBinding
 import com.dicoding.moviecatalog.utils.InlineVariable
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 class TvShowAdapter :
     RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {

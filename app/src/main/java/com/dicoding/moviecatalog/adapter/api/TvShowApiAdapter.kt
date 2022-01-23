@@ -33,15 +33,17 @@ class TvShowApiAdapter(private val listTvShowApi: ArrayList<TvShowListResponse>)
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         with(holder) {
-            val (FirstAirDate, Id, Name, Episode, Seasons, Language, Overview, Poster, Vote, Popularity) = listTvShowApi[position]
+            val (FirstAirDate, Id, Name, _, _, _, _, Poster, Vote, _) = listTvShowApi[position]
             val tvShowImage =
                 itemView.context.getString(R.string.movieDb_static_image) + Poster
             val releaseDate = inlineVariable.setReleaseDate(FirstAirDate)
-            binding.tvshowTitle.text = Name
-            binding.tvshowReleaseDate.text = releaseDate
-            binding.tvshowRatingText.text = Vote.toString()
-            binding.separateRatingText.visibility = View.GONE
-            binding.tvshowDurationText.visibility = View.GONE
+            with(binding) {
+                tvshowTitle.text = Name
+                tvshowReleaseDate.text = releaseDate
+                tvshowRatingText.text = Vote.toString()
+                separateRatingText.visibility = View.GONE
+                tvshowDurationText.visibility = View.GONE
+            }
             Glide.with(itemView.context)
                 .load(tvShowImage)
                 .apply(

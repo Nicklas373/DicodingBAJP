@@ -27,7 +27,7 @@ class CompaniesMovieAdapter(private val listCompanies: ArrayList<ProductionCompa
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         with(holder) {
-            val (logo, name, id, origin) = listCompanies[position]
+            val (logo, name, _, origin) = listCompanies[position]
             val productionImage =
                 itemView.resources.getString(R.string.movieDb_static_image) + logo
             binding.nameCompaniesTxt.text = name
