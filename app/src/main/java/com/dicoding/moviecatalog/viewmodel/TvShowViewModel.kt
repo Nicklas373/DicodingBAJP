@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicoding.moviecatalog.data.source.Repository
-import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowListResponse
+import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowListEntity
+import com.dicoding.moviecatalog.vo.Resource
 
 class TvShowViewModel(private val repository: Repository) : ViewModel() {
 
@@ -17,10 +18,8 @@ class TvShowViewModel(private val repository: Repository) : ViewModel() {
     private val _toastReason = MutableLiveData<String>()
     val toastReason: LiveData<String> = _toastReason
 
-    fun getTvShow(): MutableLiveData<ArrayList<TvShowListResponse>> =
-        repository.getAllTvShowApi(listId)
-
-    fun getTvShowLocal(): MutableLiveData<ArrayList<TvShowListResponse>> = repository.getAllTvShow()
+    fun getTvShow(): LiveData<Resource<List<TvShowListEntity>>> =
+        repository.getAllTvShow(listId)
 
     companion object {
         private const val listId = "8174957"

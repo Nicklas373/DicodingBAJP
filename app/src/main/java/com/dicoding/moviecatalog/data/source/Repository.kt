@@ -1,298 +1,238 @@
 package com.dicoding.moviecatalog.data.source
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import com.dicoding.moviecatalog.api.ApiConfig
+import androidx.lifecycle.LiveData
+import com.dicoding.moviecatalog.data.source.local.LocalDataSource
+import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieDetailEntity
+import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieListEntity
+import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowDetailEntity
+import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowListEntity
+import com.dicoding.moviecatalog.data.source.remote.ApiResponse
 import com.dicoding.moviecatalog.data.source.remote.RemoteDataSource
-import com.dicoding.moviecatalog.data.source.remote.response.ProductionCompaniesListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.ProductionCompaniesResponse
-import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieGenreListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieGenreResponse
 import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieResponse
-import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowGenreListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowGenreResponse
 import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowResponse
-import com.dicoding.moviecatalog.utils.CatalogDatabase
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.dicoding.moviecatalog.utils.AppExecutors
+import com.dicoding.moviecatalog.vo.Resource
 
-class Repository private constructor(private val remoteDataSource: RemoteDataSource) :
+class Repository private constructor(
+    private val remoteDataSource: RemoteDataSource,
+    private val localDataSource: LocalDataSource,
+    private val appExecutors: AppExecutors
+) :
     DataSource {
 
-    override fun getAllMovies(): MutableLiveData<ArrayList<MovieListResponse>> {
-        val resultAllMovies = MutableLiveData<ArrayList<MovieListResponse>>()
-        remoteDataSource.getAllMovies(object : RemoteDataSource.LoadMoviesCallback {
-            override fun onAllMoviesReceived(movieResponses: ArrayList<MovieListResponse>) {
-                resultAllMovies.postValue(CatalogDatabase.generateMovieLocal() as ArrayList<MovieListResponse>)
-            }
-        })
+    override fun getAllMovies(listId: String): LiveData<Resource<List<MovieListEntity>>> {
+        return object :
+            NetworkBoundResource<List<MovieListEntity>, ArrayList<MovieListResponse>>(appExecutors) {
+            public override fun loadFromDB(): LiveData<List<MovieListEntity>> =
+                localDataSource.getAllMovies()
 
-        return resultAllMovies
+            override fun shouldFetch(data: List<MovieListEntity>?): Boolean =
+                data == null || data.isEmpty()
+
+            public override fun createCall(): LiveData<ApiResponse<ArrayList<MovieListResponse>>> =
+                remoteDataSource.getAllMovies(listId)
+
+            public override fun saveCallResult(data: ArrayList<MovieListResponse>) {
+                val movieList = ArrayList<MovieListEntity>()
+                for (response in data) {
+                    val movie = MovieListEntity(
+                        response.releaseDate,
+                        response.id,
+                        response.title,
+                        response.posterPath,
+                        response.voteAverage
+                    )
+                    movieList.add(movie)
+                }
+                localDataSource.insertMovies(movieList)
+            }
+        }.asLiveData()
     }
 
-    override fun getAllMoviesApi(listId: String): MutableLiveData<ArrayList<MovieListResponse>> {
-        val resultAllMoviesApi = MutableLiveData<ArrayList<MovieListResponse>>()
-        val client = ApiConfig.getApiService().getMovieList(listId)
-        remoteDataSource.getAllMoviesApi(object : RemoteDataSource.LoadMoviesApiCallback {
-            override fun onAllMoviesApiReceived(movieApiResponses: ArrayList<MovieListResponse>) {
+    override fun getSelectedMovies(movieId: Int): LiveData<Resource<MovieDetailEntity>> {
+        return object :
+            NetworkBoundResource<MovieDetailEntity, MovieListResponse>(appExecutors) {
+            public override fun loadFromDB(): LiveData<MovieDetailEntity> =
+                localDataSource.getSelectedMovies(movieId)
 
-                client.enqueue(object :
-                    Callback<MovieResponse> {
-                    override fun onResponse(
-                        call: Call<MovieResponse>,
-                        response: Response<MovieResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            resultAllMoviesApi.postValue(response.body()?.items)
-                        } else {
-                            Log.e("Repository", "onFailure: ${response.message()}")
-                        }
-                    }
+            override fun shouldFetch(data: MovieDetailEntity?): Boolean =
+                data == null || data.equals(null)
 
-                    override fun onFailure(
-                        call: Call<MovieResponse>,
-                        t: Throwable
-                    ) {
-                        Log.e("Repository", "onFailure: ${t.message}")
-                    }
-                })
+            public override fun createCall(): LiveData<ApiResponse<MovieListResponse>> =
+                remoteDataSource.getSelectedMovies(movieId)
+
+            public override fun saveCallResult(data: MovieListResponse) {
+                val genres1 = StringBuilder().append("")
+                val genres2 = StringBuilder().append("")
+                val compName1 = StringBuilder().append("")
+                val compName2 = StringBuilder().append("")
+                val compLogo1 = StringBuilder().append("")
+                val compLogo2 = StringBuilder().append("")
+                val compOrigin1 = StringBuilder().append("")
+                val compOrigin2 = StringBuilder().append("")
+
+                if (data.genres.size > 1) {
+                    genres1.append(data.genres[0].name)
+                    genres2.append(data.genres[1].name)
+                } else {
+                    genres1.append(data.genres[0].name)
+                    genres2.append("null")
+                }
+
+                if (data.productionCompanies.size > 1) {
+                    compName1.append(data.productionCompanies[0].name)
+                    compLogo1.append(data.productionCompanies[0].logoPath)
+                    compOrigin1.append(data.productionCompanies[0].originCountry)
+                    compName2.append(data.productionCompanies[1].name)
+                    compLogo2.append(data.productionCompanies[1].logoPath)
+                    compOrigin2.append(data.productionCompanies[1].originCountry)
+                } else {
+                    compName1.append(data.productionCompanies[0].name)
+                    compLogo1.append(data.productionCompanies[0].logoPath)
+                    compOrigin1.append(data.productionCompanies[0].originCountry)
+                    compName2.append("null")
+                    compLogo2.append("null")
+                    compOrigin2.append("null")
+                }
+
+                val movie = MovieDetailEntity(
+                    data.overview,
+                    data.originalLanguage,
+                    data.originalTitle,
+                    genres1.toString(),
+                    genres2.toString(),
+                    data.revenue,
+                    data.releaseDate,
+                    data.popularity,
+                    data.voteAverage,
+                    data.id,
+                    data.title,
+                    data.posterPath,
+                    compName1.toString(),
+                    compName2.toString(),
+                    compLogo1.toString(),
+                    compLogo2.toString(),
+                    compOrigin1.toString(),
+                    compOrigin2.toString()
+                )
+                localDataSource.insertMoviesDetails(movie)
             }
-        })
-        return resultAllMoviesApi
+        }.asLiveData()
     }
 
-    override fun getSelectedMovies(movieId: String): MutableLiveData<MovieListResponse> {
-        val selectedMovies = MutableLiveData<MovieListResponse>()
-        val client = ApiConfig.getApiService().getSelectedMovie(movieId)
-        remoteDataSource.getAllMovies(object : RemoteDataSource.LoadMoviesCallback {
-            override fun onAllMoviesReceived(movieResponses: ArrayList<MovieListResponse>) {
-                client.enqueue(object :
-                    Callback<MovieListResponse> {
-                    override fun onResponse(
-                        call: Call<MovieListResponse>,
-                        response: Response<MovieListResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            selectedMovies.postValue(response.body())
-                        } else {
-                            Log.e("Repository", "onFailure: ${response.message()}")
-                        }
-                    }
+    override fun getAllTvShow(listId: String): LiveData<Resource<List<TvShowListEntity>>> {
+        return object :
+            NetworkBoundResource<List<TvShowListEntity>, ArrayList<TvShowListResponse>>(appExecutors) {
+            public override fun loadFromDB(): LiveData<List<TvShowListEntity>> =
+                localDataSource.getAllTvShow()
 
-                    override fun onFailure(
-                        call: Call<MovieListResponse>,
-                        t: Throwable
-                    ) {
-                        Log.e("Repository", "onFailure: ${t.message}")
-                    }
-                })
+            override fun shouldFetch(data: List<TvShowListEntity>?): Boolean =
+                data == null || data.isEmpty()
+
+            public override fun createCall(): LiveData<ApiResponse<ArrayList<TvShowListResponse>>> =
+                remoteDataSource.getAllTvShow(listId)
+
+            public override fun saveCallResult(data: ArrayList<TvShowListResponse>) {
+                val tvShowList = ArrayList<TvShowListEntity>()
+                for (response in data) {
+                    val tvShow = TvShowListEntity(
+                        response.tvShowFirstAirDate,
+                        response.tvShowId,
+                        response.tvShowName,
+                        response.tvShowPoster,
+                        response.tvShowVote
+                    )
+                    tvShowList.add(tvShow)
+                }
+                localDataSource.insertTvShow(tvShowList)
             }
-        })
 
-        return selectedMovies
+        }.asLiveData()
     }
 
-    override fun getCompaniesFromMovies(movieId: String): MutableLiveData<ArrayList<ProductionCompaniesListResponse>> {
-        val resultProductionMovieApi = MutableLiveData<ArrayList<ProductionCompaniesListResponse>>()
-        val client = ApiConfig.getApiService().getMovieCompaniesList(movieId)
-        remoteDataSource.getCompaniesWithMovies(object :
-            RemoteDataSource.LoadCompaniesWithMoviesCallback {
-            override fun onAllCompaniesWithMoviesReceived(movieResponses: ArrayList<ProductionCompaniesListResponse>) {
-                client.enqueue(object : Callback<ProductionCompaniesResponse> {
-                    override fun onResponse(
-                        call: Call<ProductionCompaniesResponse>,
-                        response: Response<ProductionCompaniesResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            resultProductionMovieApi.postValue(response.body()?.productionCompanies)
-                        } else {
-                            Log.e("Repository", "onFailure: ${response.message()}")
-                        }
-                    }
+    override fun getSelectedTvShow(tvShowId: Int): LiveData<Resource<TvShowDetailEntity>> {
+        return object :
+            NetworkBoundResource<TvShowDetailEntity, TvShowListResponse>(appExecutors) {
+            public override fun loadFromDB(): LiveData<TvShowDetailEntity> =
+                localDataSource.getSelectedTvShow(tvShowId)
 
-                    override fun onFailure(
-                        call: Call<ProductionCompaniesResponse>,
-                        t: Throwable
-                    ) {
+            override fun shouldFetch(data: TvShowDetailEntity?): Boolean =
+                data == null || data.equals(null)
 
-                    }
-                })
+            public override fun createCall(): LiveData<ApiResponse<TvShowListResponse>> =
+                remoteDataSource.getSelectedTvShow(tvShowId)
+
+            public override fun saveCallResult(data: TvShowListResponse) {
+                val genres1 = StringBuilder().append("")
+                val genres2 = StringBuilder().append("")
+                val compName1 = StringBuilder().append("")
+                val compName2 = StringBuilder().append("")
+                val compLogo1 = StringBuilder().append("")
+                val compLogo2 = StringBuilder().append("")
+                val compOrigin1 = StringBuilder().append("")
+                val compOrigin2 = StringBuilder().append("")
+
+                if (data.tvShowGenres.size > 1) {
+                    genres1.append(data.tvShowGenres[0].name)
+                    genres2.append(data.tvShowGenres[1].name)
+                } else {
+                    genres1.append(data.tvShowGenres[0].name)
+                    genres2.append("null")
+                }
+
+                if (data.tvShowProductionCompanies.size > 1) {
+                    compName1.append(data.tvShowProductionCompanies[0].name)
+                    compLogo1.append(data.tvShowProductionCompanies[0].logoPath)
+                    compOrigin1.append(data.tvShowProductionCompanies[0].originCountry)
+                    compName2.append(data.tvShowProductionCompanies[1].name)
+                    compLogo2.append(data.tvShowProductionCompanies[1].logoPath)
+                    compOrigin2.append(data.tvShowProductionCompanies[1].originCountry)
+                } else {
+                    compName1.append(data.tvShowProductionCompanies[0].name)
+                    compLogo1.append(data.tvShowProductionCompanies[0].logoPath)
+                    compOrigin1.append(data.tvShowProductionCompanies[0].originCountry)
+                    compName2.append("null")
+                    compLogo2.append("null")
+                    compOrigin2.append("null")
+                }
+
+                val tvShow = TvShowDetailEntity(
+                    data.tvShowFirstAirDate,
+                    data.tvShowId,
+                    data.tvShowName,
+                    data.tvShowEpisodes,
+                    data.tvShowSeasons,
+                    data.tvShowLanguage,
+                    data.tvShowOverview,
+                    data.tvShowPoster,
+                    data.tvShowVote,
+                    data.tvShowPopularity,
+                    genres1.toString(),
+                    genres2.toString(),
+                    compName1.toString(),
+                    compName2.toString(),
+                    compLogo1.toString(),
+                    compLogo2.toString(),
+                    compOrigin1.toString(),
+                    compOrigin2.toString()
+                )
+                localDataSource.insertTvShowDetails(tvShow)
             }
-        })
-        return resultProductionMovieApi
-    }
-
-    override fun getGenresFromMovies(movieId: String): MutableLiveData<ArrayList<MovieGenreListResponse>> {
-        val resultGenreMovieApi = MutableLiveData<ArrayList<MovieGenreListResponse>>()
-        val client = ApiConfig.getApiService().getMovieGenreList(movieId)
-        remoteDataSource.getGenresWithMovies(object : RemoteDataSource.LoadMoviesGenresCallback {
-            override fun onAllMoviesGenresReceived(movieResponses: ArrayList<MovieGenreListResponse>) {
-                client.enqueue(object : Callback<MovieGenreResponse> {
-                    override fun onResponse(
-                        call: Call<MovieGenreResponse>,
-                        response: Response<MovieGenreResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            resultGenreMovieApi.postValue(response.body()?.genres)
-                        } else {
-                            Log.e("Repository", "onFailure: ${response.message()}")
-                        }
-                    }
-
-                    override fun onFailure(
-                        call: Call<MovieGenreResponse>,
-                        t: Throwable
-                    ) {
-
-                    }
-                })
-            }
-        })
-        return resultGenreMovieApi
-    }
-
-    override fun getAllTvShow(): MutableLiveData<ArrayList<TvShowListResponse>> {
-        val resultAllTvShow = MutableLiveData<ArrayList<TvShowListResponse>>()
-        remoteDataSource.getAllTvShow(object : RemoteDataSource.LoadTvShowCallback {
-            override fun onAllTvShowReceived(tvShowResponses: ArrayList<TvShowListResponse>) {
-                resultAllTvShow.postValue(CatalogDatabase.generateTvShowLocal() as ArrayList<TvShowListResponse>)
-            }
-        })
-
-        return resultAllTvShow
-    }
-
-    override fun getAllTvShowApi(listId: String): MutableLiveData<ArrayList<TvShowListResponse>> {
-        val resultAllTvShowApi = MutableLiveData<ArrayList<TvShowListResponse>>()
-        val client = ApiConfig.getApiService().getTvShowList(listId)
-        remoteDataSource.getAllTvShowApi(object : RemoteDataSource.LoadTvShowApiCallback {
-            override fun onAllTvShowApiReceived(tvShowApiResponses: ArrayList<TvShowListResponse>) {
-
-                client.enqueue(object :
-                    Callback<TvShowResponse> {
-                    override fun onResponse(
-                        call: Call<TvShowResponse>,
-                        response: Response<TvShowResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            resultAllTvShowApi.postValue(response.body()?.items)
-                        } else {
-                            Log.e("Repository", "onFailure: ${response.message()}")
-                        }
-                    }
-
-                    override fun onFailure(
-                        call: Call<TvShowResponse>,
-                        t: Throwable
-                    ) {
-                        Log.e("Repository", "onFailure: ${t.message}")
-                    }
-                })
-            }
-        })
-        return resultAllTvShowApi
-    }
-
-    override fun getSelectedTvShow(tvShowId: String): MutableLiveData<TvShowListResponse> {
-        val selectedTvShow = MutableLiveData<TvShowListResponse>()
-        val client = ApiConfig.getApiService().getSelectedTvShow(tvShowId)
-        remoteDataSource.getAllTvShow(object : RemoteDataSource.LoadTvShowCallback {
-            override fun onAllTvShowReceived(tvShowResponses: ArrayList<TvShowListResponse>) {
-                client.enqueue(object :
-                    Callback<TvShowListResponse> {
-                    override fun onResponse(
-                        call: Call<TvShowListResponse>,
-                        response: Response<TvShowListResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            selectedTvShow.postValue(response.body())
-                        } else {
-                            Log.e("Repository", "onFailure: ${response.message()}")
-                        }
-                    }
-
-                    override fun onFailure(
-                        call: Call<TvShowListResponse>,
-                        t: Throwable
-                    ) {
-                        Log.e("Repository", "onFailure: ${t.message}")
-                    }
-                })
-            }
-        })
-
-        return selectedTvShow
-    }
-
-    override fun getCompaniesFromTvShow(tvShowId: String): MutableLiveData<ArrayList<ProductionCompaniesListResponse>> {
-        val resultProductionTvShowApi =
-            MutableLiveData<ArrayList<ProductionCompaniesListResponse>>()
-        val client = ApiConfig.getApiService().getTvShowCompaniesList(tvShowId)
-        remoteDataSource.getCompaniesWithTvShow(object :
-            RemoteDataSource.LoadCompaniesWithTvShowCallback {
-            override fun onAllCompaniesWithTvShowReceived(tvShowResponses: ArrayList<ProductionCompaniesListResponse>) {
-                client.enqueue(object : Callback<ProductionCompaniesResponse> {
-                    override fun onResponse(
-                        call: Call<ProductionCompaniesResponse>,
-                        response: Response<ProductionCompaniesResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            resultProductionTvShowApi.postValue(response.body()?.productionCompanies)
-                        } else {
-                            Log.e("Repository", "onFailure: ${response.message()}")
-                        }
-                    }
-
-                    override fun onFailure(
-                        call: Call<ProductionCompaniesResponse>,
-                        t: Throwable
-                    ) {
-
-                    }
-                })
-            }
-        })
-        return resultProductionTvShowApi
-    }
-
-    override fun getGenresFromTvShow(tvShowId: String): MutableLiveData<ArrayList<TvShowGenreListResponse>> {
-        val resultGenreTvShowApi = MutableLiveData<ArrayList<TvShowGenreListResponse>>()
-        val client = ApiConfig.getApiService().getTvShowGenreList(tvShowId)
-        remoteDataSource.getGenresWithTvShow(object : RemoteDataSource.LoadTvShowGenresCallback {
-            override fun onAllTvShowGenresReceived(tvShowResponses: ArrayList<TvShowGenreListResponse>) {
-                client.enqueue(object : Callback<TvShowGenreResponse> {
-                    override fun onResponse(
-                        call: Call<TvShowGenreResponse>,
-                        response: Response<TvShowGenreResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            resultGenreTvShowApi.postValue(response.body()?.genres)
-                        } else {
-                            Log.e("Repository", "onFailure: ${response.message()}")
-                        }
-                    }
-
-                    override fun onFailure(
-                        call: Call<TvShowGenreResponse>,
-                        t: Throwable
-                    ) {
-
-                    }
-                })
-            }
-        })
-        return resultGenreTvShowApi
+        }.asLiveData()
     }
 
     companion object {
         @Volatile
         private var instance: Repository? = null
-        fun getInstance(remoteData: RemoteDataSource): Repository =
+        fun getInstance(
+            remoteData: RemoteDataSource,
+            localData: LocalDataSource,
+            appExecutors: AppExecutors
+        ): Repository =
             instance ?: synchronized(this) {
-                instance ?: Repository(remoteData).apply { instance = this }
+                instance ?: Repository(remoteData, localData, appExecutors).apply {
+                    instance = this
+                }
             }
     }
 }

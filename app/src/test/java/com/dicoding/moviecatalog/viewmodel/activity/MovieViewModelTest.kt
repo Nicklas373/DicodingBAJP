@@ -4,9 +4,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.dicoding.moviecatalog.data.source.Repository
-import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieListResponse
+import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieListEntity
 import com.dicoding.moviecatalog.utils.CatalogDatabase
 import com.dicoding.moviecatalog.viewmodel.MovieViewModel
+import com.dicoding.moviecatalog.vo.Resource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -30,7 +31,7 @@ class MovieViewModelTest {
     private lateinit var movieRepository: Repository
 
     @Mock
-    private lateinit var observer: Observer<ArrayList<MovieListResponse>>
+    private lateinit var observer: Observer<Resource<List<MovieListEntity>>>
 
     @Before
     fun setUp() {
@@ -39,13 +40,13 @@ class MovieViewModelTest {
 
     @Test
     fun getMovie() {
-        val movieDatabase = CatalogDatabase.generateMovieLocal() as ArrayList<MovieListResponse>
-        val movie = MutableLiveData<ArrayList<MovieListResponse>>()
+        val movieDatabase = Resource.success(CatalogDatabase.generateMovieLocal())
+        val movie = MutableLiveData<Resource<List<MovieListEntity>>>()
         movie.value = movieDatabase
 
-        `when`(movieRepository.getAllMoviesApi(listId)).thenReturn(movie)
-        val movieEntities = viewModel.getMovie().value
-        verify(movieRepository).getAllMoviesApi(listId)
+        `when`(movieRepository.getAllMovies(listId)).thenReturn(movie)
+        val movieEntities = viewModel.getMovie().value?.data
+        verify(movieRepository).getAllMovies(listId)
         assertNotNull(movieEntities)
         assertEquals(10, movieEntities?.size)
 

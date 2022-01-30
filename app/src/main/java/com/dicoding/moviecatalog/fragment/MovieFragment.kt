@@ -8,12 +8,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.moviecatalog.adapter.api.MovieApiAdapter
-import com.dicoding.moviecatalog.adapter.local.MovieAdapter
-import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieListResponse
+import com.dicoding.moviecatalog.adapter.MovieAdapter
 import com.dicoding.moviecatalog.databinding.FragmentMovieBinding
 import com.dicoding.moviecatalog.viewmodel.MovieViewModel
 import com.dicoding.moviecatalog.viewmodel.ViewModelFactory
+import com.dicoding.moviecatalog.vo.Status
 
 class MovieFragment : Fragment() {
 
@@ -37,27 +36,28 @@ class MovieFragment : Fragment() {
                 this, factory
             )[MovieViewModel::class.java]
             val movieAdapter = MovieAdapter()
-            _binding?.progressBar?.visibility = View.VISIBLE
-            viewModel.getMovieLocal().observe(viewLifecycleOwner, { movieId ->
-                _binding?.progressBar?.visibility = View.GONE
-                movieAdapter.setMovies(movieId)
-                movieAdapter.notifyDataSetChanged()
-            })
-
-            viewModel.getMovie().observe(viewLifecycleOwner, { movieId ->
-                _binding?.progressBar?.visibility = View.GONE
-                setMovieListApi(movieId)
-                MovieApiAdapter(movieId).notifyDataSetChanged()
-            })
-
-            viewModel.isLoading.observe(viewLifecycleOwner, {
+            viewModel.getMovie().observe(viewLifecycleOwner) { movie ->
+                if (movie != null) {
+                    when (movie.status) {
+                        Status.LOADING -> binding.progressBar.visibility = View.VISIBLE
+                        Status.SUCCESS -> {
+                            binding.progressBar.visibility = View.GONE
+                            movieAdapter.setMovies(movie.data)
+                            movieAdapter.notifyDataSetChanged()
+                        }
+                        Status.ERROR -> {
+                            binding.progressBar.visibility = View.GONE
+                            Toast.makeText(context, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+            viewModel.isLoading.observe(viewLifecycleOwner) {
                 showLoading(it)
-            })
-
-            viewModel.isToast.observe(viewLifecycleOwner, { isToast ->
+            }
+            viewModel.isToast.observe(viewLifecycleOwner) { isToast ->
                 showToast(isToast, viewModel.toastReason.value.toString())
-            })
-
+            }
             _binding?.let {
                 with(it.rvMovie) {
                     layoutManager = LinearLayoutManager(context)
@@ -66,27 +66,6 @@ class MovieFragment : Fragment() {
                 }
             }
         }
-    }
-
-    private fun setMovieListApi(movieListApi: ArrayList<MovieListResponse>) {
-        val listReview = ArrayList<MovieListResponse>()
-        for (movieList in movieListApi) {
-            val movieApi = MovieListResponse(
-                movieList.overview,
-                movieList.originalLanguage,
-                movieList.revenue,
-                movieList.originalTitle,
-                movieList.releaseDate,
-                movieList.popularity,
-                movieList.voteAverage,
-                movieList.id,
-                movieList.title,
-                movieList.posterPath
-            )
-            listReview.add(movieApi)
-        }
-        val adapter = MovieApiAdapter(listReview)
-        binding.rvMovie.adapter = adapter
     }
 
     private fun showLoading(isLoading: Boolean) {

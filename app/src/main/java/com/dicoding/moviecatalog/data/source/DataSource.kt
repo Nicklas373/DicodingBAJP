@@ -1,31 +1,19 @@
 package com.dicoding.moviecatalog.data.source
 
-import androidx.lifecycle.MutableLiveData
-import com.dicoding.moviecatalog.data.source.remote.response.ProductionCompaniesListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieGenreListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowGenreListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowListResponse
+import androidx.lifecycle.LiveData
+import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieDetailEntity
+import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieListEntity
+import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowDetailEntity
+import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowListEntity
+import com.dicoding.moviecatalog.vo.Resource
 
 interface DataSource {
 
-    fun getAllMovies(): MutableLiveData<ArrayList<MovieListResponse>>
+    fun getAllMovies(listId: String): LiveData<Resource<List<MovieListEntity>>>
 
-    fun getAllMoviesApi(listId: String): MutableLiveData<ArrayList<MovieListResponse>>
+    fun getSelectedMovies(movieId: Int): LiveData<Resource<MovieDetailEntity>>
 
-    fun getSelectedMovies(movieId: String): MutableLiveData<MovieListResponse>
+    fun getAllTvShow(listId: String): LiveData<Resource<List<TvShowListEntity>>>
 
-    fun getCompaniesFromMovies(movieId: String): MutableLiveData<ArrayList<ProductionCompaniesListResponse>>
-
-    fun getGenresFromMovies(movieId: String): MutableLiveData<ArrayList<MovieGenreListResponse>>
-
-    fun getAllTvShow(): MutableLiveData<ArrayList<TvShowListResponse>>
-
-    fun getAllTvShowApi(listId: String): MutableLiveData<ArrayList<TvShowListResponse>>
-
-    fun getSelectedTvShow(tvShowId: String): MutableLiveData<TvShowListResponse>
-
-    fun getCompaniesFromTvShow(tvShowId: String): MutableLiveData<ArrayList<ProductionCompaniesListResponse>>
-
-    fun getGenresFromTvShow(tvShowId: String): MutableLiveData<ArrayList<TvShowGenreListResponse>>
+    fun getSelectedTvShow(tvShowId: Int): LiveData<Resource<TvShowDetailEntity>>
 }

@@ -4,9 +4,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.dicoding.moviecatalog.data.source.Repository
-import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowListResponse
+import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowListEntity
 import com.dicoding.moviecatalog.utils.CatalogDatabase
 import com.dicoding.moviecatalog.viewmodel.TvShowViewModel
+import com.dicoding.moviecatalog.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert
 import org.junit.Before
@@ -29,7 +30,7 @@ class TvShowViewModelTest {
     private lateinit var tvShowRepository: Repository
 
     @Mock
-    private lateinit var observer: Observer<ArrayList<TvShowListResponse>>
+    private lateinit var observer: Observer<Resource<List<TvShowListEntity>>>
 
     @Before
     fun setUp() {
@@ -38,13 +39,13 @@ class TvShowViewModelTest {
 
     @Test
     fun getTvShow() {
-        val tvShowDatabase = CatalogDatabase.generateTvShowLocal() as ArrayList<TvShowListResponse>
-        val tvShow = MutableLiveData<ArrayList<TvShowListResponse>>()
+        val tvShowDatabase = Resource.success(CatalogDatabase.generateTvShowLocal())
+        val tvShow = MutableLiveData<Resource<List<TvShowListEntity>>>()
         tvShow.value = tvShowDatabase
 
-        Mockito.`when`(tvShowRepository.getAllTvShowApi(listId)).thenReturn(tvShow)
-        val tvShowEntities = viewModel.getTvShow().value
-        Mockito.verify(tvShowRepository).getAllTvShowApi(listId)
+        Mockito.`when`(tvShowRepository.getAllTvShow(listId)).thenReturn(tvShow)
+        val tvShowEntities = viewModel.getTvShow().value?.data
+        Mockito.verify(tvShowRepository).getAllTvShow(listId)
         Assert.assertNotNull(tvShowEntities)
         Assert.assertEquals(10, tvShowEntities?.size)
 

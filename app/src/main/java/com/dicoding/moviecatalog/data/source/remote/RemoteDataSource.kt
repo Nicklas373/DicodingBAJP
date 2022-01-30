@@ -2,15 +2,20 @@ package com.dicoding.moviecatalog.data.source.remote
 
 import android.os.Handler
 import android.os.Looper
-import com.dicoding.moviecatalog.data.source.remote.response.ProductionCompaniesListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieGenreListResponse
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.dicoding.moviecatalog.api.ApiConfig
 import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowGenreListResponse
+import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieResponse
 import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowListResponse
+import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowResponse
 import com.dicoding.moviecatalog.utils.EspressoIdlingResource
-import com.dicoding.moviecatalog.utils.Helper
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class RemoteDataSource private constructor(private val helper: Helper) {
+class RemoteDataSource private constructor() {
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -20,131 +25,121 @@ class RemoteDataSource private constructor(private val helper: Helper) {
         @Volatile
         private var instance: RemoteDataSource? = null
 
-        fun getInstance(helper: Helper): RemoteDataSource =
+        fun getInstance(): RemoteDataSource =
             instance ?: synchronized(this) {
                 instance ?: RemoteDataSource(
-                    helper
                 ).apply { instance = this }
             }
     }
 
-    fun getAllMovies(callback: LoadMoviesCallback) {
+    fun getAllMovies(listId: String): LiveData<ApiResponse<ArrayList<MovieListResponse>>> {
+        val resultMovies = MutableLiveData<ApiResponse<ArrayList<MovieListResponse>>>()
+        val client = ApiConfig.getApiService().getMovieList(listId)
         EspressoIdlingResource.increment()
         handler.postDelayed(
             {
-                callback.onAllMoviesReceived(helper.loadMovies())
-                EspressoIdlingResource.decrement()
+                client.enqueue(object : Callback<MovieResponse> {
+                    override fun onResponse(
+                        call: Call<MovieResponse>,
+                        response: Response<MovieResponse>
+                    ) {
+                        resultMovies.value =
+                            ApiResponse.success(response.body()?.items as ArrayList<MovieListResponse>)
+                        EspressoIdlingResource.decrement()
+                    }
+
+                    override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                        Log.e("RemoteDataSource", "getAllMovies onFailure : ${t.message}")
+                        EspressoIdlingResource.decrement()
+                    }
+                })
+
             },
             SERVICE_LATENCY_IN_MILLIS
         )
+        return resultMovies
     }
 
-    fun getAllMoviesApi(callback: LoadMoviesApiCallback) {
+    fun getSelectedMovies(movieId: Int): LiveData<ApiResponse<MovieListResponse>> {
+        val resultMovies = MutableLiveData<ApiResponse<MovieListResponse>>()
+        val client = ApiConfig.getApiService().getSelectedMovie(movieId)
+
         EspressoIdlingResource.increment()
         handler.postDelayed(
             {
-                callback.onAllMoviesApiReceived(helper.loadMovies())
-                EspressoIdlingResource.decrement()
-            },
-            SERVICE_LATENCY_IN_MILLIS
+                client.enqueue(object : Callback<MovieListResponse> {
+                    override fun onResponse(
+                        call: Call<MovieListResponse>,
+                        response: Response<MovieListResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            resultMovies.value = ApiResponse.success(response.body()!!)
+                            EspressoIdlingResource.decrement()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<MovieListResponse>, t: Throwable) {
+                        Log.e("RemoteDataSource", "getSelectedMovies onFailure : ${t.message}")
+                        EspressoIdlingResource.decrement()
+                    }
+                })
+            }, SERVICE_LATENCY_IN_MILLIS
         )
+        return resultMovies
     }
 
-    fun getCompaniesWithMovies(callback: LoadCompaniesWithMoviesCallback) {
+    fun getAllTvShow(listId: String): LiveData<ApiResponse<ArrayList<TvShowListResponse>>> {
+        val resultTvShow = MutableLiveData<ApiResponse<ArrayList<TvShowListResponse>>>()
+        val client = ApiConfig.getApiService().getTvShowList(listId)
+
         EspressoIdlingResource.increment()
         handler.postDelayed(
             {
-                callback.onAllCompaniesWithMoviesReceived(helper.loadCompaniesMovies())
-                EspressoIdlingResource.decrement()
-            },
-            SERVICE_LATENCY_IN_MILLIS
+                client.enqueue(object : Callback<TvShowResponse> {
+                    override fun onResponse(
+                        call: Call<TvShowResponse>,
+                        response: Response<TvShowResponse>
+                    ) {
+                        resultTvShow.value =
+                            ApiResponse.success(response.body()?.items as ArrayList<TvShowListResponse>)
+                        EspressoIdlingResource.decrement()
+                    }
+
+                    override fun onFailure(call: Call<TvShowResponse>, t: Throwable) {
+                        Log.e("RemoteDataSource", "getTvShow onFailure : ${t.message}")
+                        EspressoIdlingResource.decrement()
+                    }
+                })
+            }, SERVICE_LATENCY_IN_MILLIS
         )
+        return resultTvShow
     }
 
-    fun getGenresWithMovies(callback: LoadMoviesGenresCallback) {
+    fun getSelectedTvShow(tvShowId: Int): LiveData<ApiResponse<TvShowListResponse>> {
+        val resultTvShow = MutableLiveData<ApiResponse<TvShowListResponse>>()
+        val client = ApiConfig.getApiService().getSelectedTvShow(tvShowId)
+
         EspressoIdlingResource.increment()
         handler.postDelayed(
             {
-                callback.onAllMoviesGenresReceived(helper.loadGenresMovies())
-                EspressoIdlingResource.decrement()
-            },
-            SERVICE_LATENCY_IN_MILLIS
+                client.enqueue(object : Callback<TvShowListResponse> {
+                    override fun onResponse(
+                        call: Call<TvShowListResponse>,
+                        response: Response<TvShowListResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            resultTvShow.value = ApiResponse.success(response.body()!!)
+                            EspressoIdlingResource.decrement()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<TvShowListResponse>, t: Throwable) {
+                        Log.e("RemoteDataSource", "getSelectedTvShow onFailure : ${t.message}")
+                        EspressoIdlingResource.decrement()
+                    }
+                })
+            }, SERVICE_LATENCY_IN_MILLIS
         )
-    }
-
-    fun getAllTvShow(callback: LoadTvShowCallback) {
-        EspressoIdlingResource.increment()
-        handler.postDelayed(
-            {
-                callback.onAllTvShowReceived(helper.loadTvShow())
-                EspressoIdlingResource.decrement()
-            },
-            SERVICE_LATENCY_IN_MILLIS
-        )
-    }
-
-    fun getAllTvShowApi(callback: LoadTvShowApiCallback) {
-        EspressoIdlingResource.increment()
-        handler.postDelayed(
-            {
-                callback.onAllTvShowApiReceived(helper.loadTvShow())
-                EspressoIdlingResource.decrement()
-            },
-            SERVICE_LATENCY_IN_MILLIS
-        )
-    }
-
-    fun getCompaniesWithTvShow(callback: LoadCompaniesWithTvShowCallback) {
-        EspressoIdlingResource.increment()
-        handler.postDelayed(
-            {
-                callback.onAllCompaniesWithTvShowReceived(helper.loadCompaniesTvShow())
-                EspressoIdlingResource.decrement()
-            },
-            SERVICE_LATENCY_IN_MILLIS
-        )
-    }
-
-    fun getGenresWithTvShow(callback: LoadTvShowGenresCallback) {
-        EspressoIdlingResource.increment()
-        handler.postDelayed(
-            {
-                callback.onAllTvShowGenresReceived(helper.loadGenresTvShow())
-                EspressoIdlingResource.decrement()
-            },
-            SERVICE_LATENCY_IN_MILLIS
-        )
-    }
-
-    interface LoadMoviesCallback {
-        fun onAllMoviesReceived(movieResponses: ArrayList<MovieListResponse>)
-    }
-
-    interface LoadMoviesApiCallback {
-        fun onAllMoviesApiReceived(movieApiResponses: ArrayList<MovieListResponse>)
-    }
-
-    interface LoadMoviesGenresCallback {
-        fun onAllMoviesGenresReceived(movieResponses: ArrayList<MovieGenreListResponse>)
-    }
-
-    interface LoadCompaniesWithMoviesCallback {
-        fun onAllCompaniesWithMoviesReceived(movieResponses: ArrayList<ProductionCompaniesListResponse>)
-    }
-
-    interface LoadTvShowCallback {
-        fun onAllTvShowReceived(tvShowResponses: ArrayList<TvShowListResponse>)
-    }
-
-    interface LoadTvShowApiCallback {
-        fun onAllTvShowApiReceived(tvShowApiResponses: ArrayList<TvShowListResponse>)
-    }
-
-    interface LoadTvShowGenresCallback {
-        fun onAllTvShowGenresReceived(tvShowResponses: ArrayList<TvShowGenreListResponse>)
-    }
-
-    interface LoadCompaniesWithTvShowCallback {
-        fun onAllCompaniesWithTvShowReceived(tvShowResponses: ArrayList<ProductionCompaniesListResponse>)
+        return resultTvShow
     }
 }

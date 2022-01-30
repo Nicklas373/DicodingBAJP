@@ -8,12 +8,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.moviecatalog.adapter.local.TvShowAdapter
-import com.dicoding.moviecatalog.adapter.api.TvShowApiAdapter
-import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowListResponse
+import com.dicoding.moviecatalog.adapter.TvShowAdapter
 import com.dicoding.moviecatalog.databinding.FragmentTvShowBinding
 import com.dicoding.moviecatalog.viewmodel.TvShowViewModel
 import com.dicoding.moviecatalog.viewmodel.ViewModelFactory
+import com.dicoding.moviecatalog.vo.Status
 
 class TvShowFragment : Fragment() {
 
@@ -32,61 +31,44 @@ class TvShowFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (activity != null) {
-            val factory = ViewModelFactory.getInstance(requireActivity())
-            val viewModel = ViewModelProvider(
-                this, factory
-            )[TvShowViewModel::class.java]
-            val adapter = TvShowAdapter()
-            _binding?.progressBar?.visibility = View.VISIBLE
-            viewModel.getTvShowLocal().observe(viewLifecycleOwner, { tvShowId ->
-                _binding?.progressBar?.visibility = View.GONE
-                adapter.setTvShow(tvShowId)
-                adapter.notifyDataSetChanged()
-            })
-
-            viewModel.getTvShow().observe(viewLifecycleOwner, { tvShowId ->
-                _binding?.progressBar?.visibility = View.GONE
-                setTvShowListApi(tvShowId)
-                TvShowApiAdapter(tvShowId).notifyDataSetChanged()
-            })
-
-            viewModel.isLoading.observe(viewLifecycleOwner, {
-                showLoading(it)
-            })
-
-            viewModel.isToast.observe(viewLifecycleOwner, { isToast ->
-                showToast(isToast, viewModel.toastReason.value.toString())
-            })
-
-            _binding?.let {
-                with(it.rvTvshow) {
-                    layoutManager = LinearLayoutManager(context)
-                    setHasFixedSize(true)
-                    this.adapter = adapter
+            val tvShowAdapter = TvShowAdapter()
+            if (activity != null) {
+                val factory = ViewModelFactory.getInstance(requireActivity())
+                val viewModel = ViewModelProvider(
+                    this, factory
+                )[TvShowViewModel::class.java]
+                viewModel.getTvShow().observe(viewLifecycleOwner) { tvShow ->
+                    if (tvShow != null) {
+                        when (tvShow.status) {
+                            Status.LOADING -> binding.progressBar.visibility = View.VISIBLE
+                            Status.SUCCESS -> {
+                                binding.progressBar.visibility = View.GONE
+                                tvShowAdapter.setTvShow(tvShow.data)
+                                tvShowAdapter.notifyDataSetChanged()
+                            }
+                            Status.ERROR -> {
+                                binding.progressBar.visibility = View.GONE
+                                Toast.makeText(context, "Terjadi kesalahan", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    }
+                }
+                viewModel.isLoading.observe(viewLifecycleOwner) {
+                    showLoading(it)
+                }
+                viewModel.isToast.observe(viewLifecycleOwner) { isToast ->
+                    showToast(isToast, viewModel.toastReason.value.toString())
+                }
+                _binding?.let {
+                    with(it.rvTvshow) {
+                        layoutManager = LinearLayoutManager(context)
+                        setHasFixedSize(true)
+                        adapter = tvShowAdapter
+                    }
                 }
             }
         }
-    }
-
-    private fun setTvShowListApi(tvShowListApi: ArrayList<TvShowListResponse>) {
-        val listReview = ArrayList<TvShowListResponse>()
-        for (tvShowList in tvShowListApi) {
-            val tvShowApi = TvShowListResponse(
-                tvShowList.tvShowFirstAirDate,
-                tvShowList.tvShowId,
-                tvShowList.tvShowName,
-                tvShowList.tvShowEpisodes,
-                tvShowList.tvShowSeasons,
-                tvShowList.tvShowLanguage,
-                tvShowList.tvShowOverview,
-                tvShowList.tvShowPoster,
-                tvShowList.tvShowVote,
-                tvShowList.tvShowPopularity
-            )
-            listReview.add(tvShowApi)
-        }
-        val adapter = TvShowApiAdapter(listReview)
-        binding.rvTvshow.adapter = adapter
     }
 
     private fun showLoading(isLoading: Boolean) {

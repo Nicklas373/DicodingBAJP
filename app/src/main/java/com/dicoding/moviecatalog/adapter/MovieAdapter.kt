@@ -1,4 +1,4 @@
-package com.dicoding.moviecatalog.adapter.local
+package com.dicoding.moviecatalog.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -9,14 +9,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.activity.DetailShowActivity
-import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieListResponse
+import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieListEntity
 import com.dicoding.moviecatalog.databinding.ItemsMovieBinding
 import com.dicoding.moviecatalog.utils.InlineVariable
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
-    private var listMovies = ArrayList<MovieListResponse>()
+    private var listMovies = ArrayList<MovieListEntity>()
 
-    fun setMovies(movies: List<MovieListResponse>?) {
+    fun setMovies(movies: List<MovieListEntity>?) {
         if (movies == null) return
         this.listMovies.clear()
         this.listMovies.addAll(movies)
@@ -39,7 +39,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         private val inlineVariable = InlineVariable()
 
-        fun bind(movie: MovieListResponse) {
+        fun bind(movie: MovieListEntity) {
             with(binding) {
                 val movieImage =
                     itemView.context.getString(R.string.movieDb_static_image) + movie.posterPath
@@ -50,10 +50,11 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
                 movieRatingText.text = movie.voteAverage.toString()
                 separateRatingText.visibility = View.GONE
                 movieDurationText.visibility = View.GONE
+                imgPoster.contentDescription = movie.posterPath
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailShowActivity::class.java)
                     intent.putExtra(DetailShowActivity.SHOW_ID, "Movie")
-                    intent.putExtra(DetailShowActivity.EXTRA_MOVIE, movie.id)
+                    intent.putExtra(DetailShowActivity.EXTRA_MOVIE, movie.movieId)
                     itemView.context.startActivity(intent)
                 }
                 Glide.with(itemView.context)

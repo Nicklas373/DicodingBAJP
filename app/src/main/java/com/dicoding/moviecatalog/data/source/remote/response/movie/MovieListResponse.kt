@@ -12,6 +12,9 @@ data class MovieListResponse(
     @field:SerializedName("revenue")
     val revenue: Int,
 
+    @SerializedName("genres")
+    val genres: List<MovieGenreListResponse>,
+
     @field:SerializedName("original_title")
     val originalTitle: String,
 
@@ -31,5 +34,8 @@ data class MovieListResponse(
     val title: String,
 
     @field:SerializedName("poster_path")
-    val posterPath: String
+    val posterPath: String,
+
+    @field:SerializedName("production_companies")
+    val productionCompanies: List<MovieProductionCompaniesListResponse>
 )

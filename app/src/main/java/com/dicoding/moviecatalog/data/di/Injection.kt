@@ -1,14 +1,21 @@
 package com.dicoding.moviecatalog.data.di
 
+import android.content.Context
 import com.dicoding.moviecatalog.data.source.Repository
+import com.dicoding.moviecatalog.data.source.local.LocalDataSource
+import com.dicoding.moviecatalog.data.source.local.room.CatalogLocalDatabase
 import com.dicoding.moviecatalog.data.source.remote.RemoteDataSource
-import com.dicoding.moviecatalog.utils.Helper
+import com.dicoding.moviecatalog.utils.AppExecutors
 
 object Injection {
-    fun provideRepository(): Repository {
+    fun provideRepository(context: Context): Repository {
 
-        val remoteDataSource = RemoteDataSource.getInstance(Helper())
+        val database = CatalogLocalDatabase.getInstance(context)
 
-        return Repository.getInstance(remoteDataSource)
+        val remoteDataSource = RemoteDataSource.getInstance()
+        val localDataSource = LocalDataSource.getInstance(database.catalogDao())
+        val appExecutors = AppExecutors()
+
+        return Repository.getInstance(remoteDataSource, localDataSource, appExecutors)
     }
 }

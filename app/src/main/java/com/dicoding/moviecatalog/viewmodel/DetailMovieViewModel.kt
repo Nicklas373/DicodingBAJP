@@ -2,13 +2,12 @@ package com.dicoding.moviecatalog.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.dicoding.moviecatalog.data.source.Repository
-import com.dicoding.moviecatalog.data.source.remote.response.ProductionCompaniesListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieGenreListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.movie.MovieListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowGenreListResponse
-import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowListResponse
+import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieDetailEntity
+import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowDetailEntity
+import com.dicoding.moviecatalog.vo.Resource
 
 class DetailMovieViewModel(private val Repository: Repository) : ViewModel() {
 
@@ -21,33 +20,20 @@ class DetailMovieViewModel(private val Repository: Repository) : ViewModel() {
     private val _toastReason = MutableLiveData<String>()
     val toastReason: LiveData<String> = _toastReason
 
-    private lateinit var movieId: String
-    private lateinit var tvShowId: String
+    private val nMovieId = MutableLiveData<Int>()
+    private val nTvShowId = MutableLiveData<Int>()
 
-    fun setSelectedMovie(movieId: String) {
-        this.movieId = movieId
+    fun nSetSelectedMovie(movieId: Int) {
+        this.nMovieId.value = movieId
     }
 
-    fun setSelectedTvShow(tvShowId: String) {
-        this.tvShowId = tvShowId
+    fun nSetSelectedTvShow(tvShowId: Int) {
+        this.nTvShowId.value = tvShowId
     }
 
-    fun getSelectedMovie(): MutableLiveData<MovieListResponse> =
+    fun nGetSelectedMovie(movieId: Int): LiveData<Resource<MovieDetailEntity>> =
         Repository.getSelectedMovies(movieId)
 
-    fun getMovieGenres(): MutableLiveData<ArrayList<MovieGenreListResponse>> =
-        Repository.getGenresFromMovies(movieId)
-
-    fun getMovieCompanies(): MutableLiveData<ArrayList<ProductionCompaniesListResponse>> =
-        Repository.getCompaniesFromMovies(movieId)
-
-    fun getSelectedTvShow(): MutableLiveData<TvShowListResponse> =
+    fun nGetSelectedTvShow(tvShowId: Int): LiveData<Resource<TvShowDetailEntity>> =
         Repository.getSelectedTvShow(tvShowId)
-
-    fun getTvShowGenres(): MutableLiveData<ArrayList<TvShowGenreListResponse>> =
-        Repository.getGenresFromTvShow(tvShowId)
-
-    fun getTvShowCompanies(): MutableLiveData<ArrayList<ProductionCompaniesListResponse>> =
-        Repository.getCompaniesFromTvShow(tvShowId)
-
 }

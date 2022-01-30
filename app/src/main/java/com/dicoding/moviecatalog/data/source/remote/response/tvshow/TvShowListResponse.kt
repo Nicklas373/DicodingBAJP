@@ -32,6 +32,12 @@ data class TvShowListResponse(
     val tvShowVote: Double,
 
     @field:SerializedName("popularity")
-    val tvShowPopularity: String
+    val tvShowPopularity: String,
+
+    @field:SerializedName("genres")
+    val tvShowGenres: List<TvShowGenreListResponse>,
+
+    @field:SerializedName("production_companies")
+    val tvShowProductionCompanies: List<TvShowProductionCompaniesListResponse>
 )
 

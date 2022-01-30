@@ -20,11 +20,9 @@ import org.junit.Test
 
 class MainActivityTest {
     private val dummyMovie = CatalogDatabase.generateMovieLocal()
-    private val dummyGenreMovie = CatalogDatabase.generateGenreMovies()
-    private val dummyProductionMovie = CatalogDatabase.generateCompaniesMovies()
-    private val dummyProductionTvShow = CatalogDatabase.generateCompaniesTvShow()
-    private val dummyGenreTvShow = CatalogDatabase.generateGenreTvShow()
+    private val dummySelectedMovie = CatalogDatabase.generateSelectedMovieLocal()
     private val dummyTvShow = CatalogDatabase.generateTvShowLocal()
+    private val dummySelectedTvShow = CatalogDatabase.generateSelectedTvShowLocal()
     private val inlineVariable = InlineVariable()
 
     @get:Rule
@@ -66,33 +64,32 @@ class MainActivityTest {
         )
         inlineVariable.delayTwoSecond()
         onView(withId(R.id.movie_title_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.movie_title_text)).check(matches(withText(dummyMovie[0].title)))
+        onView(withId(R.id.movie_title_text)).check(matches(withText(dummySelectedMovie.title)))
         onView(withId(R.id.movie_release_date)).check(matches(isDisplayed()))
-        val releaseDate = inlineVariable.setReleaseDate(dummyMovie[0].releaseDate)
+        val releaseDate = inlineVariable.setReleaseDate(dummySelectedMovie.releaseDate)
         onView(withId(R.id.movie_release_date)).check(matches(withText(releaseDate)))
         onView(withId(R.id.image_poster)).check(matches(isDisplayed()))
-        onView(withId(R.id.image_poster)).check(matches(withContentDescription(dummyMovie[0].posterPath)))
+        onView(withId(R.id.image_poster)).check(matches(withContentDescription(dummySelectedMovie.posterPath)))
         onView(withId(R.id.movie_rating_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.movie_rating_text)).check(matches(withText(dummyMovie[0].voteAverage.toString())))
+        onView(withId(R.id.movie_rating_text)).check(matches(withText(dummySelectedMovie.voteAverage.toString())))
         onView(withId(R.id.movie_revenue_text)).check(matches(isDisplayed()))
-        val revenue = inlineVariable.setRevenue(dummyMovie[0].revenue.toString())
+        val revenue = inlineVariable.setRevenue(dummySelectedMovie.revenue.toString())
         onView(withId(R.id.movie_revenue_text)).check(matches(withText(revenue)))
         onView(withId(R.id.desc_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.desc_text)).check(matches(withText(dummyMovie[0].overview)))
+        onView(withId(R.id.desc_text)).check(matches(withText(dummySelectedMovie.overview)))
         inlineVariable.delayTwoSecond()
-        onView(withId(R.id.rv_genre_api)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_genre_api)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                dummyGenreMovie.size
-            )
-        )
-        inlineVariable.delayTwoSecond()
-        onView(withId(R.id.rv_companies)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_companies)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                dummyProductionMovie.size
-            )
-        )
+        onView(withId(R.id.cv_genre_1)).check(matches(isDisplayed()))
+        onView(withId(R.id.movie_genre_text_1)).check(matches(withText(dummySelectedMovie.genres_1)))
+        onView(withId(R.id.cv_genre_2)).check(matches(isDisplayed()))
+        onView(withId(R.id.movie_genre_text_2)).check(matches(withText(dummySelectedMovie.genres_2)))
+        onView(withId(R.id.cv_item_companies_1)).check(matches(isDisplayed()))
+        onView(withId(R.id.name_companies_txt_1)).check(matches(withText(dummySelectedMovie.compName_1)))
+        onView(withId(R.id.origin_txt_1)).check(matches(withText(dummySelectedMovie.compOrigin_1)))
+        onView(withId(R.id.img_companies_1)).check(matches(withContentDescription(dummySelectedMovie.compLogo_1)))
+        onView(withId(R.id.cv_item_companies_2)).check(matches(isDisplayed()))
+        onView(withId(R.id.name_companies_txt_2)).check(matches(withText(dummySelectedMovie.compName_2)))
+        onView(withId(R.id.origin_txt_2)).check(matches(withText(dummySelectedMovie.compOrigin_2)))
+        onView(withId(R.id.img_companies_2)).check(matches(withContentDescription(dummySelectedMovie.compLogo_2)))
     }
 
     @Test
@@ -108,9 +105,9 @@ class MainActivityTest {
         )
         inlineVariable.delayTwoSecond()
         onView(withId(R.id.movie_title_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.movie_title_text)).check(matches(withText(dummyTvShow[0].tvShowName)))
+        onView(withId(R.id.movie_title_text)).check(matches(withText(dummySelectedTvShow.tvShowName)))
         onView(withId(R.id.movie_release_date)).check(matches(isDisplayed()))
-        val releaseDate = dummyTvShow[0].tvShowFirstAirDate
+        val releaseDate = dummySelectedTvShow.tvShowFirstAirDate
         onView(withId(R.id.movie_release_date)).check(
             matches(
                 withText(
@@ -121,27 +118,38 @@ class MainActivityTest {
             )
         )
         onView(withId(R.id.image_poster)).check(matches(isDisplayed()))
-        onView(withId(R.id.image_poster)).check(matches(withContentDescription(dummyTvShow[0].tvShowPoster)))
+        onView(withId(R.id.image_poster)).check(matches(withContentDescription(dummySelectedTvShow.tvShowPoster)))
         onView(withId(R.id.movie_rating_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.movie_rating_text)).check(matches(withText(dummyTvShow[0].tvShowVote.toString())))
+        onView(withId(R.id.movie_rating_text)).check(matches(withText(dummySelectedTvShow.tvShowVote.toString())))
         onView(withId(R.id.movie_episode_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.movie_episode_text)).check(matches(withText(dummyTvShow[0].tvShowEpisodes.toString() + " Episode | " + dummyTvShow[0].tvShowSeasons.toString() + " Season")))
+        onView(withId(R.id.movie_episode_text)).check(matches(withText(dummySelectedTvShow.tvShowEpisodes.toString() + " Episode | " + dummySelectedTvShow.tvShowSeasons.toString() + " Season")))
         onView(withId(R.id.tvShow_language_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.tvShow_language_text)).check(matches(withText(dummyTvShow[0].tvShowLanguage)))
+        onView(withId(R.id.tvShow_language_text)).check(matches(withText(dummySelectedTvShow.tvShowLanguage)))
         onView(withId(R.id.desc_text)).check(matches(isDisplayed()))
-        onView(withId(R.id.desc_text)).check(matches(withText(dummyTvShow[0].tvShowOverview)))
+        onView(withId(R.id.desc_text)).check(matches(withText(dummySelectedTvShow.tvShowOverview)))
         inlineVariable.delayTwoSecond()
-        onView(withId(R.id.rv_genre_api)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_genre_api)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                dummyGenreTvShow.size
+        onView(withId(R.id.cv_genre_1)).check(matches(isDisplayed()))
+        onView(withId(R.id.movie_genre_text_1)).check(matches(withText(dummySelectedTvShow.tvShowGenres_1)))
+        onView(withId(R.id.cv_genre_2)).check(matches(isDisplayed()))
+        onView(withId(R.id.movie_genre_text_2)).check(matches(withText(dummySelectedTvShow.tvShowGenres_2)))
+        onView(withId(R.id.cv_item_companies_1)).check(matches(isDisplayed()))
+        onView(withId(R.id.name_companies_txt_1)).check(matches(withText(dummySelectedTvShow.compName_1)))
+        onView(withId(R.id.origin_txt_1)).check(matches(withText(dummySelectedTvShow.compOrigin_1)))
+        onView(withId(R.id.img_companies_1)).check(
+            matches(
+                withContentDescription(
+                    dummySelectedTvShow.compLogo_1
+                )
             )
         )
-        inlineVariable.delayTwoSecond()
-        onView(withId(R.id.rv_companies)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_companies)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                dummyProductionTvShow.size
+        onView(withId(R.id.cv_item_companies_2)).check(matches(isDisplayed()))
+        onView(withId(R.id.name_companies_txt_2)).check(matches(withText(dummySelectedTvShow.compName_2)))
+        onView(withId(R.id.origin_txt_2)).check(matches(withText(dummySelectedTvShow.compOrigin_2)))
+        onView(withId(R.id.img_companies_2)).check(
+            matches(
+                withContentDescription(
+                    dummySelectedTvShow.compLogo_2
+                )
             )
         )
     }

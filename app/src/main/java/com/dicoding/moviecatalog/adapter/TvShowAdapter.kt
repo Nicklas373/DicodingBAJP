@@ -1,4 +1,4 @@
-package com.dicoding.moviecatalog.adapter.local
+package com.dicoding.moviecatalog.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -9,15 +9,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.activity.DetailShowActivity
-import com.dicoding.moviecatalog.data.source.remote.response.tvshow.TvShowListResponse
+import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowListEntity
 import com.dicoding.moviecatalog.databinding.ItemsTvShowBinding
 import com.dicoding.moviecatalog.utils.InlineVariable
 
 class TvShowAdapter :
     RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
-    private val listTvShow = ArrayList<TvShowListResponse>()
+    private val listTvShow = ArrayList<TvShowListEntity>()
 
-    fun setTvShow(TvShow: List<TvShowListResponse>?) {
+    fun setTvShow(TvShow: List<TvShowListEntity>?) {
         if (TvShow == null) return
         this.listTvShow.clear()
         this.listTvShow.addAll(TvShow)
@@ -30,8 +30,8 @@ class TvShowAdapter :
     }
 
     override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
-        val tvshow = listTvShow[position]
-        holder.bind(tvshow)
+        val tvShow = listTvShow[position]
+        holder.bind(tvShow)
     }
 
     override fun getItemCount(): Int = listTvShow.size
@@ -40,7 +40,7 @@ class TvShowAdapter :
         RecyclerView.ViewHolder(binding.root) {
         private val inlineVariable = InlineVariable()
 
-        fun bind(tvShow: TvShowListResponse) {
+        fun bind(tvShow: TvShowListEntity) {
             with(binding) {
                 val tvShowImage =
                     itemView.context.getString(R.string.movieDb_static_image) + tvShow.tvShowPoster
@@ -50,6 +50,7 @@ class TvShowAdapter :
                 tvshowRatingText.text = tvShow.tvShowVote.toString()
                 separateRatingText.visibility = View.GONE
                 tvshowDurationText.visibility = View.GONE
+                imgPoster.contentDescription = tvShowImage
                 itemView.setOnClickListener {
                     val intent = Intent(itemView.context, DetailShowActivity::class.java)
                     intent.putExtra(DetailShowActivity.SHOW_ID, "TvShow")
