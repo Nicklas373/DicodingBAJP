@@ -7,9 +7,14 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/drawable/ic_baseline_attach_money_24.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/drawable/ic_baseline_bookmark_24.xml" value="0.26614583333333336" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/drawable/ic_baseline_language_24.xml" value="0.26614583333333336" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/drawable/ic_baseline_local_movies_24.xml" value="0.183" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/drawable/ic_baseline_people_24.xml" value="0.26614583333333336" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/drawable/ic_baseline_tv_24.xml" value="0.183" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/activity_detail_show.xml" value="0.2" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/activity_main.xml" value="0.176" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/content_detail_show.xml" value="0.264" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/fragment_blank.xml" value="0.25" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/fragment_favourite.xml" value="0.14114583333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/fragment_movie.xml" value="0.4" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/fragment_tv_show.xml" value="0.12708333333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/items_cast_list.xml" value="0.1" />
@@ -17,6 +22,9 @@
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/items_genre_api.xml" value="0.4" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/items_movie.xml" value="0.25" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/layout/items_tv_show.xml" value="0.1328125" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/menu/bottom_menu.xml" value="0.1609375" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/menu/bottom_nav_menu.xml" value="0.21666666666666667" />
+        <entry key="..\:/Users/Lenovo/AndroidStudioProjects/DicodingBAJP/app/src/main/res/menu/bottom_navigation_bar.xml" value="0.14114583333333333" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.16302083333333334" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/drawable/bg_button.xml" value="0.16302083333333334" />
         <entry key="..\:/Users/Lenovo/AndroidStudioProjects/MovieCatalog/app/src/main/res/drawable/bg_button_disable.xml" value="0.16302083333333334" />
