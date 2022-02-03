@@ -4,6 +4,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -14,7 +16,7 @@ import com.dicoding.moviecatalog.databinding.ItemsTvShowBinding
 import com.dicoding.moviecatalog.utils.InlineVariable
 
 class TvShowAdapter :
-    RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
+    PagedListAdapter<TvShowListEntity, TvShowAdapter.TvShowViewHolder>(DIFF_CALLBACK) {
     private val listTvShow = ArrayList<TvShowListEntity>()
 
     fun setTvShow(TvShow: List<TvShowListEntity>?) {
@@ -64,6 +66,24 @@ class TvShowAdapter :
                             .error(R.drawable.ic_error)
                     )
                     .into(imgPoster)
+            }
+        }
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TvShowListEntity>() {
+            override fun areItemsTheSame(
+                oldItem: TvShowListEntity,
+                newItem: TvShowListEntity
+            ): Boolean {
+                return oldItem.tvShowId == newItem.tvShowId
+            }
+
+            override fun areContentsTheSame(
+                oldItem: TvShowListEntity,
+                newItem: TvShowListEntity
+            ): Boolean {
+                return oldItem == newItem
             }
         }
     }

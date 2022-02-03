@@ -1,14 +1,15 @@
 package com.dicoding.moviecatalog.viewmodel.data
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
+import androidx.paging.DataSource
 import com.dicoding.moviecatalog.data.source.local.LocalDataSource
 import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieListEntity
 import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowListEntity
 import com.dicoding.moviecatalog.data.source.remote.RemoteDataSource
 import com.dicoding.moviecatalog.utils.AppExecutors
 import com.dicoding.moviecatalog.utils.CatalogDatabase
-import com.dicoding.moviecatalog.viewmodel.utils.LiveDataTestUtil
+import com.dicoding.moviecatalog.viewmodel.utils.PagedListUtil
+import com.dicoding.moviecatalog.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -38,10 +39,12 @@ class RepositoryTest {
 
     @Test
     fun getAllMovies() {
-        val dummyMovies = MutableLiveData<List<MovieListEntity>>()
-        dummyMovies.value = CatalogDatabase.generateMovieLocal()
-        `when`(local.getAllMovies()).thenReturn(dummyMovies)
-        val movieEntities = LiveDataTestUtil.getValue(fakeRepository.getAllMovies(movieListId))
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieListEntity>
+        `when`(local.getAllMovies()).thenReturn(dataSourceFactory)
+        fakeRepository.getAllMovies(movieListId)
+        val movieEntities =
+            Resource.success(PagedListUtil.mockPagedList(CatalogDatabase.generateMovieLocal()))
         verify(local).getAllMovies()
         assertNotNull(movieEntities.data)
         assertEquals(movieResponses.size.toLong(), movieEntities.data?.size?.toLong())
@@ -49,10 +52,12 @@ class RepositoryTest {
 
     @Test
     fun getAllTvShow() {
-        val dummyTvShow = MutableLiveData<List<TvShowListEntity>>()
-        dummyTvShow.value = CatalogDatabase.generateTvShowLocal()
-        `when`(local.getAllTvShow()).thenReturn(dummyTvShow)
-        val tvShowEntities = LiveDataTestUtil.getValue(fakeRepository.getAllTvShow(tvShowListId))
+        val dataSourceFactory =
+            mock(DataSource.Factory::class.java) as DataSource.Factory<Int, TvShowListEntity>
+        `when`(local.getAllTvShow()).thenReturn(dataSourceFactory)
+        fakeRepository.getAllTvShow(tvShowListId)
+        val tvShowEntities =
+            Resource.success(PagedListUtil.mockPagedList(CatalogDatabase.generateTvShowLocal()))
         verify(local).getAllTvShow()
         assertNotNull(tvShowEntities.data)
         assertEquals(tvShowResponses.size.toLong(), tvShowEntities.data?.size?.toLong())

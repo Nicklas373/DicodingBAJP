@@ -3,9 +3,9 @@ package com.dicoding.moviecatalog.viewmodel.activity
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import com.dicoding.moviecatalog.data.source.Repository
 import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowListEntity
-import com.dicoding.moviecatalog.utils.CatalogDatabase
 import com.dicoding.moviecatalog.viewmodel.TvShowViewModel
 import com.dicoding.moviecatalog.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
@@ -30,7 +30,10 @@ class TvShowViewModelTest {
     private lateinit var tvShowRepository: Repository
 
     @Mock
-    private lateinit var observer: Observer<Resource<List<TvShowListEntity>>>
+    private lateinit var observer: Observer<Resource<PagedList<TvShowListEntity>>>
+
+    @Mock
+    private lateinit var pagedList: PagedList<TvShowListEntity>
 
     @Before
     fun setUp() {
@@ -39,15 +42,16 @@ class TvShowViewModelTest {
 
     @Test
     fun getTvShow() {
-        val tvShowDatabase = Resource.success(CatalogDatabase.generateTvShowLocal())
-        val tvShow = MutableLiveData<Resource<List<TvShowListEntity>>>()
+        val tvShowDatabase = Resource.success(pagedList)
+        Mockito.`when`(tvShowDatabase.data?.size).thenReturn(5)
+        val tvShow = MutableLiveData<Resource<PagedList<TvShowListEntity>>>()
         tvShow.value = tvShowDatabase
 
         Mockito.`when`(tvShowRepository.getAllTvShow(listId)).thenReturn(tvShow)
         val tvShowEntities = viewModel.getTvShow().value?.data
         Mockito.verify(tvShowRepository).getAllTvShow(listId)
         Assert.assertNotNull(tvShowEntities)
-        Assert.assertEquals(10, tvShowEntities?.size)
+        Assert.assertEquals(5, tvShowEntities?.size)
 
         viewModel.getTvShow().observeForever(observer)
         verify(observer).onChanged(tvShowDatabase)

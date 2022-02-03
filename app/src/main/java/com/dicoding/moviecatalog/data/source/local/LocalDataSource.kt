@@ -1,6 +1,7 @@
 package com.dicoding.moviecatalog.data.source.local
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieDetailEntity
 import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieListEntity
 import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowDetailEntity
@@ -16,7 +17,7 @@ class LocalDataSource private constructor(private val mCatalogDao: CatalogDao) {
             INSTANCE ?: LocalDataSource(catalogDao)
     }
 
-    fun getAllMovies(): LiveData<List<MovieListEntity>> = mCatalogDao.getMovies()
+    fun getAllMovies(): DataSource.Factory<Int, MovieListEntity> = mCatalogDao.getMovies()
 
     fun getSelectedMovies(movieId: Int): LiveData<MovieDetailEntity> =
         mCatalogDao.getSelectedMovies(movieId)
@@ -25,7 +26,7 @@ class LocalDataSource private constructor(private val mCatalogDao: CatalogDao) {
 
     fun insertMoviesDetails(movie: MovieDetailEntity) = mCatalogDao.insertMoviesDetails(movie)
 
-    fun getAllTvShow(): LiveData<List<TvShowListEntity>> = mCatalogDao.getTvShow()
+    fun getAllTvShow(): DataSource.Factory<Int, TvShowListEntity> = mCatalogDao.getTvShow()
 
     fun getSelectedTvShow(tvShowId: Int): LiveData<TvShowDetailEntity> =
         mCatalogDao.getSelectedTvShow(tvShowId)

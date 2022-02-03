@@ -33,6 +33,7 @@ ext {
     idleResourceVersion = '3.4.0'
     roomVersion = '2.2.3'
     roomRuntimeVersion = '2.4.1'
+    pagingVersion = '2.1.1'
 }
 
 task clean(type: Delete) {

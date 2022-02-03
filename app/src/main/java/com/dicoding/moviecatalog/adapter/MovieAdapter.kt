@@ -4,6 +4,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -13,7 +15,8 @@ import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieListEntity
 import com.dicoding.moviecatalog.databinding.ItemsMovieBinding
 import com.dicoding.moviecatalog.utils.InlineVariable
 
-class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
+class MovieAdapter :
+    PagedListAdapter<MovieListEntity, MovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
     private var listMovies = ArrayList<MovieListEntity>()
 
     fun setMovies(movies: List<MovieListEntity>?) {
@@ -64,6 +67,24 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
                             .error(R.drawable.ic_error)
                     )
                     .into(imgPoster)
+            }
+        }
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<MovieListEntity>() {
+            override fun areItemsTheSame(
+                oldItem: MovieListEntity,
+                newItem: MovieListEntity
+            ): Boolean {
+                return oldItem.movieId == newItem.movieId
+            }
+
+            override fun areContentsTheSame(
+                oldItem: MovieListEntity,
+                newItem: MovieListEntity
+            ): Boolean {
+                return oldItem == newItem
             }
         }
     }

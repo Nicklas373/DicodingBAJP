@@ -1,6 +1,7 @@
 package com.dicoding.moviecatalog.data.source.local.room
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -13,7 +14,7 @@ import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowListEntit
 @Dao
 interface CatalogDao {
     @Query("SELECT * FROM MOVIE_LIST_ENTITY")
-    fun getMovies(): LiveData<List<MovieListEntity>>
+    fun getMovies(): DataSource.Factory<Int, MovieListEntity>
 
     @Query("SELECT * FROM MOVIE_DETAIL_ENTITY WHERE movieId = :movieId")
     fun getSelectedMovies(movieId: Int): LiveData<MovieDetailEntity>
@@ -25,7 +26,7 @@ interface CatalogDao {
     fun insertMoviesDetails(movies: MovieDetailEntity)
 
     @Query("SELECT * FROM tvShow_list_entity")
-    fun getTvShow(): LiveData<List<TvShowListEntity>>
+    fun getTvShow(): DataSource.Factory<Int, TvShowListEntity>
 
     @Query("SELECT * FROM tvShow_detail_entity where tvShowId = :tvShowId")
     fun getSelectedTvShow(tvShowId: Int): LiveData<TvShowDetailEntity>

@@ -3,6 +3,7 @@ package com.dicoding.moviecatalog.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.paging.PagedList
 import com.dicoding.moviecatalog.data.source.Repository
 import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieListEntity
 import com.dicoding.moviecatalog.vo.Resource
@@ -18,7 +19,7 @@ class MovieViewModel(private val repository: Repository) : ViewModel() {
     private val _toastReason = MutableLiveData<String>()
     val toastReason: LiveData<String> = _toastReason
 
-    fun getMovie(): LiveData<Resource<List<MovieListEntity>>> =
+    fun getMovie(): LiveData<Resource<PagedList<MovieListEntity>>> =
         repository.getAllMovies(listId)
 
     companion object {
