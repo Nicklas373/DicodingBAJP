@@ -130,6 +130,22 @@ class Repository private constructor(
         }.asLiveData()
     }
 
+    override fun getFavoriteMovies(): LiveData<PagedList<MovieDetailEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+
+        return LivePagedListBuilder(localDataSource.getFavMovies(), config).build()
+    }
+
+    override fun updateFavMovies(movie: MovieDetailEntity, isSus: Boolean) {
+        appExecutors.diskIO().execute {
+            localDataSource.updateFavMovies(movie, isSus)
+        }
+    }
+
     override fun getAllTvShow(listId: String): LiveData<Resource<PagedList<TvShowListEntity>>> {
         return object :
             NetworkBoundResource<PagedList<TvShowListEntity>, ArrayList<TvShowListResponse>>(
@@ -237,6 +253,22 @@ class Repository private constructor(
                 localDataSource.insertTvShowDetails(tvShow)
             }
         }.asLiveData()
+    }
+
+    override fun getFavoriteTvShow(): LiveData<PagedList<TvShowDetailEntity>> {
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(4)
+            .setPageSize(4)
+            .build()
+
+        return LivePagedListBuilder(localDataSource.getFavTvShow(), config).build()
+    }
+
+    override fun updateFavTvShow(tvShow: TvShowDetailEntity, isSus: Boolean) {
+        appExecutors.diskIO().execute {
+            localDataSource.updateFavTvShow(tvShow, isSus)
+        }
     }
 
     companion object {

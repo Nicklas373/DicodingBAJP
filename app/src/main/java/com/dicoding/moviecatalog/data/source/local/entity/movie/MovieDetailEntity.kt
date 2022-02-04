@@ -1,6 +1,7 @@
 package com.dicoding.moviecatalog.data.source.local.entity.movie
 
 import androidx.annotation.NonNull
+import androidx.annotation.Nullable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -62,5 +63,8 @@ data class MovieDetailEntity(
     val compOrigin_1: String,
 
     @ColumnInfo(name = "production_companies_origin_2")
-    val compOrigin_2: String
+    val compOrigin_2: String,
+
+    @ColumnInfo(name = "is_sus")
+    var isSus: Boolean = false
 )

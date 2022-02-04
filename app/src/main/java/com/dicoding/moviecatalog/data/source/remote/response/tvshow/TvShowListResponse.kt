@@ -1,5 +1,6 @@
 package com.dicoding.moviecatalog.data.source.remote.response.tvshow
 
+import androidx.annotation.Nullable
 import com.google.gson.annotations.SerializedName
 
 data class TvShowListResponse(
@@ -38,6 +39,10 @@ data class TvShowListResponse(
     val tvShowGenres: List<TvShowGenreListResponse>,
 
     @field:SerializedName("production_companies")
-    val tvShowProductionCompanies: List<TvShowProductionCompaniesListResponse>
+    val tvShowProductionCompanies: List<TvShowProductionCompaniesListResponse>,
+
+    @Nullable
+    @field:SerializedName("isSus")
+    val isSus: Boolean = false
 )
 

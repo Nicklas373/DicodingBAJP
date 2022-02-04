@@ -1,6 +1,7 @@
 package com.dicoding.moviecatalog.data.source.local.entity.tvshow
 
 import androidx.annotation.NonNull
+import androidx.annotation.Nullable
 import androidx.room.*
 
 @Entity(tableName = "tvShow_list_entity")

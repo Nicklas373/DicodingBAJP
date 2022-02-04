@@ -7,7 +7,7 @@ import com.dicoding.moviecatalog.data.source.Repository
 import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieDetailEntity
 import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowDetailEntity
 import com.dicoding.moviecatalog.utils.CatalogDatabase
-import com.dicoding.moviecatalog.viewmodel.DetailMovieViewModel
+import com.dicoding.moviecatalog.viewmodel.DetailViewModel
 import com.dicoding.moviecatalog.vo.Resource
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -21,9 +21,9 @@ import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class DetailMovieViewModelTest {
+class DetailViewModelTest {
 
-    private lateinit var viewModel: DetailMovieViewModel
+    private lateinit var viewModel: DetailViewModel
     private val dummyMovie = CatalogDatabase.generateSelectedMovieLocal()
     private val dummyTvShow = CatalogDatabase.generateSelectedTvShowLocal()
     private val movieId = dummyMovie.movieId
@@ -43,7 +43,7 @@ class DetailMovieViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = DetailMovieViewModel(movieRepository)
+        viewModel = DetailViewModel(movieRepository)
         viewModel.nSetSelectedMovie(movieId)
         viewModel.nSetSelectedTvShow(tvShowId)
     }
@@ -55,7 +55,7 @@ class DetailMovieViewModelTest {
         movie.value = dummyDetailMovie
 
         `when`(movieRepository.getSelectedMovies(movieId)).thenReturn(movie)
-        val movieEntity = viewModel.nGetSelectedMovie(movieId).value?.data
+        val movieEntity = viewModel.nGetMirroredSelectedMovie(movieId).value?.data
         verify(movieRepository).getSelectedMovies(movieId)
 
         assertNotNull(movieEntity)
@@ -75,7 +75,11 @@ class DetailMovieViewModelTest {
         assertEquals(dummyMovie.compLogo_1, movieEntity?.compLogo_1)
         assertEquals(dummyMovie.compLogo_2, movieEntity?.compLogo_2)
 
-        viewModel.nGetSelectedMovie(movieId).observeForever(movieObserver)
+        viewModel.nGetMirroredSelectedMovie(movieId).observeForever(movieObserver)
+        verify(movieObserver).onChanged(dummyDetailMovie)
+
+        viewModel.nGetSelectedMovie(movieId)
+        viewModel.nGetSusMovie().observeForever(movieObserver)
         verify(movieObserver).onChanged(dummyDetailMovie)
     }
 
@@ -86,7 +90,7 @@ class DetailMovieViewModelTest {
         tvShow.value = dummyDetailTvShow
 
         `when`(movieRepository.getSelectedTvShow(tvShowId)).thenReturn(tvShow)
-        val tvShowEntity = viewModel.nGetSelectedTvShow(tvShowId).value?.data
+        val tvShowEntity = viewModel.nGetMirroredSelectedTvShow(tvShowId).value?.data
         verify(movieRepository).getSelectedTvShow(tvShowId)
 
         assertNotNull(tvShowEntity)
@@ -106,7 +110,11 @@ class DetailMovieViewModelTest {
         assertEquals(dummyTvShow.compLogo_1, tvShowEntity?.compLogo_1)
         assertEquals(dummyTvShow.compLogo_2, tvShowEntity?.compLogo_2)
 
-        viewModel.nGetSelectedTvShow(tvShowId).observeForever(tvShowObserver)
+        viewModel.nGetMirroredSelectedTvShow(tvShowId).observeForever(tvShowObserver)
+        verify(tvShowObserver).onChanged(dummyDetailTvShow)
+
+        viewModel.nGetSelectedTvShow(tvShowId)
+        viewModel.nGetSusTvShow().observeForever(tvShowObserver)
         verify(tvShowObserver).onChanged(dummyDetailTvShow)
     }
 }

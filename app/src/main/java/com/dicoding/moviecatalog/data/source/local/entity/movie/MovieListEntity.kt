@@ -26,5 +26,5 @@ data class MovieListEntity(
 
     @Nullable
     @ColumnInfo(name = "vote_average")
-    val voteAverage: Double,
+    val voteAverage: Double
 )

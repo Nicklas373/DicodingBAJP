@@ -2,10 +2,7 @@ package com.dicoding.moviecatalog.data.source.local.room
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieDetailEntity
 import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieListEntity
 import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowDetailEntity
@@ -25,6 +22,12 @@ interface CatalogDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMoviesDetails(movies: MovieDetailEntity)
 
+    @Query("SELECT * FROM movie_detail_entity WHERE is_sus = 1")
+    fun getFavMovies(): DataSource.Factory<Int, MovieDetailEntity>
+
+    @Update
+    fun updateFavMovies(movies: MovieDetailEntity)
+
     @Query("SELECT * FROM tvShow_list_entity")
     fun getTvShow(): DataSource.Factory<Int, TvShowListEntity>
 
@@ -36,4 +39,10 @@ interface CatalogDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTvShowDetails(tvShow: TvShowDetailEntity)
+
+    @Query("SELECT * FROM tvShow_detail_entity WHERE is_sus = 1")
+    fun getFavTvShow(): DataSource.Factory<Int, TvShowDetailEntity>
+
+    @Update
+    fun updateFavTvShow(tvShow: TvShowDetailEntity)
 }

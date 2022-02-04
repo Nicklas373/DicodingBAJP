@@ -26,6 +26,13 @@ class LocalDataSource private constructor(private val mCatalogDao: CatalogDao) {
 
     fun insertMoviesDetails(movie: MovieDetailEntity) = mCatalogDao.insertMoviesDetails(movie)
 
+    fun getFavMovies(): DataSource.Factory<Int, MovieDetailEntity> = mCatalogDao.getFavMovies()
+
+    fun updateFavMovies(movie: MovieDetailEntity, isSus: Boolean) {
+        movie.isSus = isSus
+        mCatalogDao.updateFavMovies(movie)
+    }
+
     fun getAllTvShow(): DataSource.Factory<Int, TvShowListEntity> = mCatalogDao.getTvShow()
 
     fun getSelectedTvShow(tvShowId: Int): LiveData<TvShowDetailEntity> =
@@ -34,4 +41,11 @@ class LocalDataSource private constructor(private val mCatalogDao: CatalogDao) {
     fun insertTvShow(tvShow: List<TvShowListEntity>) = mCatalogDao.insertTvShowList(tvShow)
 
     fun insertTvShowDetails(tvShow: TvShowDetailEntity) = mCatalogDao.insertTvShowDetails(tvShow)
+
+    fun getFavTvShow(): DataSource.Factory<Int, TvShowDetailEntity> = mCatalogDao.getFavTvShow()
+
+    fun updateFavTvShow(tvShow: TvShowDetailEntity, isSus: Boolean) {
+        tvShow.isSus = isSus
+        mCatalogDao.updateFavTvShow(tvShow)
+    }
 }

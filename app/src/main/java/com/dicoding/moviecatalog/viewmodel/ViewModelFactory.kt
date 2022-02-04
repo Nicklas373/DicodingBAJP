@@ -30,8 +30,8 @@ class ViewModelFactory private constructor(private val mMovieRepository: Reposit
             modelClass.isAssignableFrom(TvShowViewModel::class.java) -> {
                 TvShowViewModel(mMovieRepository) as T
             }
-            modelClass.isAssignableFrom(DetailMovieViewModel::class.java) -> {
-                DetailMovieViewModel(mMovieRepository) as T
+            modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
+                DetailViewModel(mMovieRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

@@ -1,5 +1,6 @@
 package com.dicoding.moviecatalog.data.source.remote.response.movie
 
+import androidx.annotation.Nullable
 import com.google.gson.annotations.SerializedName
 
 data class MovieListResponse(
@@ -37,5 +38,9 @@ data class MovieListResponse(
     val posterPath: String,
 
     @field:SerializedName("production_companies")
-    val productionCompanies: List<MovieProductionCompaniesListResponse>
+    val productionCompanies: List<MovieProductionCompaniesListResponse>,
+
+    @Nullable
+    @field:SerializedName("isSus")
+    val isSus: Boolean = false
 )

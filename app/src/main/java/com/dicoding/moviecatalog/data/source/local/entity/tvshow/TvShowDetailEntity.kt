@@ -1,6 +1,7 @@
 package com.dicoding.moviecatalog.data.source.local.entity.tvshow
 
 import androidx.annotation.NonNull
+import androidx.annotation.Nullable
 import androidx.room.*
 
 @Entity(tableName = "tvShow_detail_entity")
@@ -60,5 +61,8 @@ data class TvShowDetailEntity(
     val compOrigin_1: String,
 
     @ColumnInfo(name = "production_companies_origin_2")
-    val compOrigin_2: String
+    val compOrigin_2: String,
+
+    @ColumnInfo(name = "is_sus")
+    var isSus: Boolean = false
 )

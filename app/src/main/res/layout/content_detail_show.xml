@@ -283,8 +283,8 @@
         android:id="@+id/img_share"
         android:layout_width="wrap_content"
         android:layout_height="24dp"
-        android:layout_marginStart="10dp"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/share_title"
         app:layout_constraintEnd_toEndOf="@id/view"
         app:layout_constraintTop_toTopOf="@id/movie_release_date"
         app:srcCompat="@drawable/ic_share_blue"
@@ -460,5 +460,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/menu_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/dark_red"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_baseline_menu_24"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/sus_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:contentDescription="@string/add_to_favorite"
+        android:src="@drawable/ic_baseline_favorite_border_24"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toTopOf="@+id/menu_fab"
+        app:layout_constraintEnd_toEndOf="@+id/menu_fab"
+        app:layout_constraintStart_toStartOf="@+id/menu_fab" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

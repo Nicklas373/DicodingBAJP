@@ -27,4 +27,7 @@
     <string name="image_content">Image</string>
     <string name="on_failure">Fail!</string>
     <string name="movieDb_static_image">https://image.tmdb.org/t/p/original/</string>
+    <string name="add_to_favorite">Add to favorite</string>
+    <string name="remove_from_favorite">Remove from favorite</string>
+    <string name="error">Whoops Error!</string>
 </resources>

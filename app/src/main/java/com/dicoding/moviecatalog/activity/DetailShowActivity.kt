@@ -17,7 +17,7 @@ import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowDetailEnt
 import com.dicoding.moviecatalog.databinding.ActivityDetailShowBinding
 import com.dicoding.moviecatalog.databinding.ContentDetailShowBinding
 import com.dicoding.moviecatalog.utils.InlineVariable
-import com.dicoding.moviecatalog.viewmodel.DetailMovieViewModel
+import com.dicoding.moviecatalog.viewmodel.DetailViewModel
 import com.dicoding.moviecatalog.viewmodel.ViewModelFactory
 import com.dicoding.moviecatalog.vo.Status
 
@@ -25,6 +25,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
     private lateinit var movieDetailBinding: ContentDetailShowBinding
     private var inlineVariable = InlineVariable()
+    private lateinit var detailViewModel: DetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +42,11 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         val factory = ViewModelFactory.getInstance(this)
         val viewModel = ViewModelProvider(
             this, factory
-        )[DetailMovieViewModel::class.java]
+        )[DetailViewModel::class.java]
+
+        val factoryDetail = ViewModelFactory.getInstance(this)
+        this.detailViewModel = ViewModelProvider(this, factoryDetail)[DetailViewModel::class.java]
+
         val extras = intent.extras
         if (extras != null) {
             val showId = extras.getString(SHOW_ID)
@@ -52,7 +57,9 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
                 if (movieId.toString().isNotBlank()) {
                     movieDetailBinding.progressBar.visibility = View.VISIBLE
                     viewModel.nSetSelectedMovie(movieId)
-                    viewModel.nGetSelectedMovie(movieId).observe(this) { movieWithDetails ->
+                    viewModel.nGetSelectedMovie(movieId)
+                    setSusFavMovie()
+                    viewModel.nGetSusMovie().observe(this) { movieWithDetails ->
                         if (movieWithDetails != null) {
                             when (movieWithDetails.status) {
                                 Status.LOADING -> movieDetailBinding.progressBar.visibility =
@@ -61,12 +68,13 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
                                     movieDetailBinding.progressBar.visibility = View.GONE
                                     showStaticUIMovie()
                                     setMovieData(movieWithDetails.data)
+                                    setFavoriteState(movieWithDetails.data.isSus)
                                 }
                                 Status.ERROR -> {
                                     movieDetailBinding.progressBar.visibility = View.GONE
                                     Toast.makeText(
                                         applicationContext,
-                                        "Terjadi kesalahan",
+                                        resources.getString(R.string.error),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
@@ -77,9 +85,11 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             } else if (showId.equals("TvShow")) {
                 hideStaticUI()
                 if (tvShowId.toString().isNotBlank()) {
-                    movieDetailBinding.progressBar.visibility = View.VISIBLE
                     viewModel.nSetSelectedTvShow(tvShowId)
-                    viewModel.nGetSelectedTvShow(tvShowId).observe(this) { tvShowWithDetails ->
+                    viewModel.nGetSelectedTvShow(tvShowId)
+                    setSusFavTvShow()
+                    movieDetailBinding.progressBar.visibility = View.VISIBLE
+                    viewModel.nGetSusTvShow().observe(this) { tvShowWithDetails ->
                         if (tvShowWithDetails != null) {
                             when (tvShowWithDetails.status) {
                                 Status.LOADING -> movieDetailBinding.progressBar.visibility =
@@ -88,12 +98,13 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
                                     movieDetailBinding.progressBar.visibility = View.GONE
                                     showStaticUITvShow()
                                     setTvShowData(tvShowWithDetails.data)
+                                    setFavoriteState(tvShowWithDetails.data.isSus)
                                 }
                                 Status.ERROR -> {
                                     movieDetailBinding.progressBar.visibility = View.GONE
                                     Toast.makeText(
                                         applicationContext,
-                                        "Terjadi kesalahan",
+                                        resources.getString(R.string.error),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
@@ -110,6 +121,104 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
         viewModel.isLoading.observe(this) {
             showLoading(it)
+        }
+
+        movieDetailBinding.menuFab.setOnClickListener {
+            if (movieDetailBinding.susFab.visibility == View.VISIBLE) {
+                movieDetailBinding.susFab.visibility = View.GONE
+            } else {
+                movieDetailBinding.susFab.visibility = View.VISIBLE
+
+                movieDetailBinding.susFab.setOnClickListener {
+                    if (extras != null) {
+                        val showId = extras.getString(SHOW_ID)
+                        if (showId.equals("Movie")) {
+                            detailViewModel.nUpdateFavMovie()
+                        } else if (showId.equals("TvShow")) {
+                            detailViewModel.nUpdateFavTvShow()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setSusFavMovie() {
+        detailViewModel.nGetSusMovie().observe(this) { susMovie ->
+            when (susMovie.status) {
+                Status.LOADING -> showLoading(true)
+                Status.SUCCESS -> {
+                    if (susMovie.data != null) {
+                        showLoading(false)
+                        val newSus = susMovie.data.isSus
+                        if (newSus) {
+                            showToast(
+                                true,
+                                resources.getString(R.string.add_to_favorite)
+                            )
+                        } else {
+                            showToast(
+                                true,
+                                resources.getString(R.string.add_to_favorite)
+                            )
+                        }
+                        setFavoriteState(newSus)
+                    }
+                }
+                Status.ERROR -> {
+                    showLoading(false)
+                    Toast.makeText(
+                        applicationContext,
+                        resources.getString(R.string.error),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }
+        }
+    }
+
+    private fun setSusFavTvShow() {
+        detailViewModel.nGetSusTvShow().observe(this) { susTvShow ->
+            when (susTvShow.status) {
+                Status.LOADING -> showLoading(true)
+                Status.SUCCESS -> {
+                    if (susTvShow.data != null) {
+                        showLoading(false)
+                        val newSus = susTvShow.data.isSus
+                        if (newSus) {
+                            showToast(
+                                true,
+                                resources.getString(R.string.add_to_favorite)
+                            )
+                        } else {
+                            showToast(
+                                true,
+                                resources.getString(R.string.remove_from_favorite)
+                            )
+                        }
+                        setFavoriteState(newSus)
+                    }
+                }
+                Status.ERROR -> {
+                    showLoading(false)
+                    Toast.makeText(
+                        applicationContext,
+                        resources.getString(R.string.error),
+                        Toast.LENGTH_SHORT
+                    )
+                        .show()
+                }
+            }
+        }
+    }
+
+    private fun setFavoriteState(state: Boolean) {
+        val fab = movieDetailBinding.susFab
+        if (state) {
+            fab.setImageResource(R.drawable.ic_baseline_favorite_fill)
+        } else {
+            fab.setImageResource(R.drawable.ic_baseline_favorite_border_24)
         }
     }
 
@@ -145,12 +254,9 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             movieDetailBinding.nameCompaniesTxt1.text = movieId.compName_1
         }
 
-        if (movieId.compName_2.equals(null)) {
-            movieDetailBinding.nameCompaniesTxt2.text = "-"
-        } else if (movieId.compName_2 == "null") {
-            movieDetailBinding.cvItemCompanies2.visibility = View.GONE
-        } else {
-            movieDetailBinding.nameCompaniesTxt2.text = movieId.compName_2
+        when (movieId.compName_2) {
+            "null" -> movieDetailBinding.cvItemCompanies2.visibility = View.GONE
+            else -> movieDetailBinding.nameCompaniesTxt2.text = movieId.compName_2
         }
 
         if (movieId.compOrigin_1.equals(null)) {
@@ -159,12 +265,9 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             movieDetailBinding.originTxt1.text = movieId.compOrigin_1
         }
 
-        if (movieId.compOrigin_2.equals(null)) {
-            movieDetailBinding.originTxt2.text = "-"
-        } else if (movieId.compName_2 == "null") {
-            movieDetailBinding.cvItemCompanies2.visibility = View.GONE
-        } else {
-            movieDetailBinding.originTxt2.text = movieId.compOrigin_2
+        when (movieId.compOrigin_2) {
+            "null" -> movieDetailBinding.cvItemCompanies2.visibility = View.GONE
+            else -> movieDetailBinding.originTxt2.text = movieId.compOrigin_2
         }
 
         val movieImage = getString(R.string.movieDb_static_image) + movieId.posterPath
@@ -258,12 +361,10 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         if (movieId.genres_2.isBlank()) {
             movieDetailBinding.movieGenreText2.text = "-"
         } else {
-            if (movieId.genres_2 == science) {
-                movieDetailBinding.movieGenreText2.text = sciFi
-            } else if (movieId.genres_2 == "null") {
-                movieDetailBinding.cvGenre2.visibility = View.GONE
-            } else {
-                movieDetailBinding.movieGenreText2.text = movieId.genres_2
+            when (movieId.genres_2) {
+                science -> movieDetailBinding.movieGenreText2.text = sciFi
+                "null" -> movieDetailBinding.cvGenre2.visibility = View.GONE
+                else -> movieDetailBinding.movieGenreText2.text = movieId.genres_2
             }
             genreColoringApi2(movieId.genres_2)
         }
@@ -328,12 +429,10 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         if (tvShowId.tvShowGenres_2.isBlank()) {
             movieDetailBinding.movieGenreText2.text = "-"
         } else {
-            if (tvShowId.tvShowGenres_2 == science) {
-                movieDetailBinding.movieGenreText2.text = sciFi
-            } else if (tvShowId.tvShowGenres_2 == "null") {
-                movieDetailBinding.cvGenre2.visibility = View.GONE
-            } else {
-                movieDetailBinding.movieGenreText2.text = tvShowId.tvShowGenres_2
+            when (tvShowId.tvShowGenres_2) {
+                science -> movieDetailBinding.movieGenreText2.text = sciFi
+                "null" -> movieDetailBinding.cvGenre2.visibility = View.GONE
+                else -> movieDetailBinding.movieGenreText2.text = tvShowId.tvShowGenres_2
             }
             genreColoringApi2(tvShowId.tvShowGenres_2)
         }
@@ -344,12 +443,9 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             movieDetailBinding.nameCompaniesTxt1.text = tvShowId.compName_1
         }
 
-        if (tvShowId.compName_2.equals(null)) {
-            movieDetailBinding.nameCompaniesTxt2.text = "-"
-        } else if (tvShowId.compName_2 == "null") {
-            movieDetailBinding.cvItemCompanies2.visibility = View.GONE
-        } else {
-            movieDetailBinding.nameCompaniesTxt2.text = tvShowId.compName_2
+        when (tvShowId.compName_2) {
+            "null" -> movieDetailBinding.cvItemCompanies2.visibility = View.GONE
+            else -> movieDetailBinding.nameCompaniesTxt2.text = tvShowId.compName_2
         }
 
         if (tvShowId.compOrigin_1.equals(null)) {
@@ -358,12 +454,9 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             movieDetailBinding.originTxt1.text = tvShowId.compOrigin_1
         }
 
-        if (tvShowId.compOrigin_2.equals(null)) {
-            movieDetailBinding.originTxt2.text = "-"
-        } else if (tvShowId.compOrigin_2 == "null") {
-            movieDetailBinding.cvItemCompanies2.visibility = View.GONE
-        } else {
-            movieDetailBinding.originTxt2.text = tvShowId.compOrigin_2
+        when (tvShowId.compOrigin_2) {
+            "null" -> movieDetailBinding.cvItemCompanies2.visibility = View.GONE
+            else -> movieDetailBinding.originTxt2.text = tvShowId.compOrigin_2
         }
 
         val movieImage = getString(R.string.movieDb_static_image) + tvShowId.tvShowPoster
@@ -447,8 +540,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
     override fun onShareClickMovie() {
         val mimeType = "text/plain"
-        ShareCompat.IntentBuilder
-            .from(this)
+        ShareCompat.IntentBuilder(this)
             .setType(mimeType)
             .setChooserTitle("Share this Movie")
             .setText(
@@ -461,8 +553,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
     override fun onShareClickTvShow() {
         val mimeType = "text/plain"
-        ShareCompat.IntentBuilder
-            .from(this)
+        ShareCompat.IntentBuilder(this)
             .setType(mimeType)
             .setChooserTitle("Share this TV Show")
             .setText(
@@ -488,6 +579,8 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
     private fun hideStaticUI() {
         movieDetailBinding.apply {
             imagePoster.visibility = View.GONE
+            menuFab.visibility = View.GONE
+            susFab.visibility = View.GONE
             view.visibility = View.GONE
             imgShare.visibility = View.GONE
             movieTitleText.visibility = View.GONE
@@ -519,6 +612,8 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         movieDetailBinding.apply {
             imagePoster.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
+            menuFab.visibility = View.VISIBLE
+            susFab.visibility = View.GONE
             imgShare.visibility = View.VISIBLE
             movieReleaseDate.visibility = View.VISIBLE
             movieTitleText.visibility = View.VISIBLE
@@ -549,6 +644,8 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         movieDetailBinding.apply {
             imagePoster.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
+            menuFab.visibility = View.VISIBLE
+            susFab.visibility = View.GONE
             imgShare.visibility = View.VISIBLE
             movieReleaseDate.visibility = View.VISIBLE
             movieTitleText.visibility = View.VISIBLE
