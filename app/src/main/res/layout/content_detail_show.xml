@@ -279,17 +279,6 @@
         app:layout_constraintTop_toTopOf="@id/tvShow_language_img"
         tools:text="@string/language" />
 
-    <ImageButton
-        android:id="@+id/img_share"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/share_title"
-        app:layout_constraintEnd_toEndOf="@id/view"
-        app:layout_constraintTop_toTopOf="@id/movie_release_date"
-        app:srcCompat="@drawable/ic_share_blue"
-        tools:ignore="ContentDescription" />
-
     <TextView
         android:id="@+id/desc_title"
         android:layout_width="wrap_content"
@@ -461,30 +450,54 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/menu_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:background="@color/dark_red"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_baseline_menu_24"
+        app:backgroundTint="@color/dark_red"
         app:fabSize="normal"
+        app:icon="@drawable/ic_baseline_menu_24"
+        app:iconGravity="start"
+        app:iconTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/sus_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:contentDescription="@string/add_to_favorite"
-        android:src="@drawable/ic_baseline_favorite_border_24"
+        android:text="@string/add_to_favorite"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/dark_red"
         app:fabSize="normal"
+        app:icon="@drawable/ic_baseline_favorite_fill"
+        app:iconGravity="start"
+        app:iconTint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/menu_fab"
-        app:layout_constraintEnd_toEndOf="@+id/menu_fab"
-        app:layout_constraintStart_toStartOf="@+id/menu_fab" />
+        app:layout_constraintEnd_toEndOf="@id/cv_item_companies_1" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/share_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:contentDescription="@string/share_title"
+        android:text="@string/share"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/dark_red"
+        app:fabSize="normal"
+        app:icon="@drawable/ic_share_blue"
+        app:iconGravity="start"
+        app:iconTint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/sus_fab"
+        app:layout_constraintEnd_toEndOf="@id/cv_item_companies_1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

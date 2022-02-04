@@ -4,28 +4,30 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.adapter.SectionPagerAdapter
-import com.dicoding.moviecatalog.databinding.ActivityMainBinding
-import com.dicoding.moviecatalog.fragment.MovieFragment
-import com.dicoding.moviecatalog.fragment.TvShowFragment
+import com.dicoding.moviecatalog.databinding.ActivitySusBinding
+import com.dicoding.moviecatalog.fragment.MovieFavFragment
+import com.dicoding.moviecatalog.fragment.TvShowFavFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MainActivity : AppCompatActivity() {
+class SusActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_sus)
 
-        val activityHomeBinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(activityHomeBinding.root)
-        val fragmentList = listOf(MovieFragment(), TvShowFragment())
+        val activitySusBinding = ActivitySusBinding.inflate(layoutInflater)
+        setContentView(activitySusBinding.root)
+        setTitle(R.string.list_favorite)
+
+        val fragmentList = listOf(MovieFavFragment(), TvShowFavFragment())
         val tabTitle =
             listOf(resources.getString(R.string.movie), resources.getString(R.string.tv_show))
 
-        activityHomeBinding.viewpager.adapter =
+        activitySusBinding.viewpager.adapter =
             SectionPagerAdapter(fragmentList, this.supportFragmentManager, lifecycle)
 
         TabLayoutMediator(
-            activityHomeBinding.tabs,
-            activityHomeBinding.viewpager
+            activitySusBinding.tabs,
+            activitySusBinding.viewpager
         ) { tab, position ->
             tab.text = tabTitle[position]
         }.attach()

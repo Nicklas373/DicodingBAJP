@@ -7,9 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.callback.ShareCallback
 import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieDetailEntity
@@ -20,6 +17,7 @@ import com.dicoding.moviecatalog.utils.InlineVariable
 import com.dicoding.moviecatalog.viewmodel.DetailViewModel
 import com.dicoding.moviecatalog.viewmodel.ViewModelFactory
 import com.dicoding.moviecatalog.vo.Status
+import com.squareup.picasso.Picasso
 
 class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
@@ -124,20 +122,43 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         }
 
         movieDetailBinding.menuFab.setOnClickListener {
-            if (movieDetailBinding.susFab.visibility == View.VISIBLE) {
-                movieDetailBinding.susFab.visibility = View.GONE
-            } else {
-                movieDetailBinding.susFab.visibility = View.VISIBLE
+            when {
+                movieDetailBinding.susFab.visibility == View.VISIBLE -> {
+                    movieDetailBinding.menuFab.setIconResource(R.drawable.ic_baseline_menu_24)
+                    movieDetailBinding.susFab.visibility = View.GONE
+                    movieDetailBinding.shareFab.visibility = View.GONE
+                }
+                movieDetailBinding.shareFab.visibility == View.VISIBLE -> {
+                    movieDetailBinding.menuFab.setIconResource(R.drawable.ic_baseline_menu_24)
+                    movieDetailBinding.susFab.visibility = View.GONE
+                    movieDetailBinding.shareFab.visibility = View.GONE
+                }
+                movieDetailBinding.menuFab.visibility == View.VISIBLE -> {
+                    movieDetailBinding.menuFab.setIconResource(R.drawable.ic_baseline_menu_open_24)
+                    movieDetailBinding.susFab.visibility = View.VISIBLE
+                    movieDetailBinding.shareFab.visibility = View.VISIBLE
+                }
+            }
+        }
 
-                movieDetailBinding.susFab.setOnClickListener {
-                    if (extras != null) {
-                        val showId = extras.getString(SHOW_ID)
-                        if (showId.equals("Movie")) {
-                            detailViewModel.nUpdateFavMovie()
-                        } else if (showId.equals("TvShow")) {
-                            detailViewModel.nUpdateFavTvShow()
-                        }
-                    }
+        movieDetailBinding.susFab.setOnClickListener {
+            if (extras != null) {
+                val showId = extras.getString(SHOW_ID)
+                if (showId.equals("Movie")) {
+                    detailViewModel.nUpdateFavMovie()
+                } else if (showId.equals("TvShow")) {
+                    detailViewModel.nUpdateFavTvShow()
+                }
+            }
+        }
+
+        movieDetailBinding.shareFab.setOnClickListener {
+            if (extras != null) {
+                val showId = extras.getString(SHOW_ID)
+                if (showId.equals("Movie")) {
+                    onShareClickMovie()
+                } else if (showId.equals("TvShow")) {
+                    onShareClickTvShow()
                 }
             }
         }
@@ -215,11 +236,14 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
     private fun setFavoriteState(state: Boolean) {
         val fab = movieDetailBinding.susFab
-        if (state) {
-            fab.setImageResource(R.drawable.ic_baseline_favorite_fill)
+        if (!state) {
+            fab.setIconResource(R.drawable.ic_baseline_favorite_fill)
+            fab.text = resources.getString(R.string.add_to_favorite)
         } else {
-            fab.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            fab.setIconResource(R.drawable.ic_baseline_favorite_border_24)
+            fab.text = resources.getString(R.string.remove_from_favorite)
         }
+        movieDetailBinding.menuFab.setIconResource(R.drawable.ic_baseline_menu_24)
     }
 
     private fun setMovieData(movieId: MovieDetailEntity) {
@@ -275,62 +299,44 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         val compImage2 = getString(R.string.movieDb_static_image) + movieId.compLogo_2
 
         if (movieId.posterPath.isBlank()) {
-            Glide.with(this)
-                .load("-")
-                .transform(RoundedCorners(20))
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
+            Picasso.get()
+                .load(R.drawable.ic_error)
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_error)
                 .into(movieDetailBinding.imagePoster)
         } else {
-            Glide.with(this)
+            Picasso.get()
                 .load(movieImage)
-                .transform(RoundedCorners(20))
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_error)
                 .into(movieDetailBinding.imagePoster)
         }
 
         if (movieId.compLogo_1.isBlank()) {
-            Glide.with(this)
-                .load("-")
-                .transform(RoundedCorners(20))
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
-                .into(movieDetailBinding.imagePoster)
+            Picasso.get()
+                .load(R.drawable.ic_error)
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_error)
+                .into(movieDetailBinding.imgCompanies1)
         } else {
-            Glide.with(this)
+            Picasso.get()
                 .load(compImage1)
-                .transform(RoundedCorners(20))
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_error)
                 .into(movieDetailBinding.imgCompanies1)
         }
 
         if (movieId.compLogo_2.isBlank()) {
-            Glide.with(this)
-                .load("-")
-                .transform(RoundedCorners(20))
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
-                .into(movieDetailBinding.imagePoster)
+            Picasso.get()
+                .load(R.drawable.ic_error)
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_error)
+                .into(movieDetailBinding.imgCompanies2)
         } else {
-            Glide.with(this)
+            Picasso.get()
                 .load(compImage2)
-                .transform(RoundedCorners(20))
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_error)
                 .into(movieDetailBinding.imgCompanies2)
         }
 
@@ -372,9 +378,6 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         movieDetailBinding.imagePoster.contentDescription = movieId.posterPath
         movieDetailBinding.imgCompanies1.contentDescription = movieId.compLogo_1
         movieDetailBinding.imgCompanies2.contentDescription = movieId.compLogo_2
-        movieDetailBinding.imgShare.setOnClickListener {
-            onShareClickMovie()
-        }
     }
 
     private fun setTvShowData(tvShowId: TvShowDetailEntity) {
@@ -464,62 +467,44 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         val compImage2 = getString(R.string.movieDb_static_image) + tvShowId.compLogo_2
 
         if (tvShowId.tvShowPoster.isBlank()) {
-            Glide.with(this)
-                .load("-")
-                .transform(RoundedCorners(20))
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
+            Picasso.get()
+                .load(R.drawable.ic_error)
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_error)
                 .into(movieDetailBinding.imagePoster)
         } else {
-            Glide.with(this)
+            Picasso.get()
                 .load(movieImage)
-                .transform(RoundedCorners(20))
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_error)
                 .into(movieDetailBinding.imagePoster)
         }
 
         if (tvShowId.compLogo_1.isBlank()) {
-            Glide.with(this)
-                .load("-")
-                .transform(RoundedCorners(20))
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
-                .into(movieDetailBinding.imagePoster)
+            Picasso.get()
+                .load(R.drawable.ic_error)
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_error)
+                .into(movieDetailBinding.imgCompanies1)
         } else {
-            Glide.with(this)
+            Picasso.get()
                 .load(compImage1)
-                .transform(RoundedCorners(20))
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_error)
                 .into(movieDetailBinding.imgCompanies1)
         }
 
         if (tvShowId.compLogo_2.isBlank()) {
-            Glide.with(this)
-                .load("-")
-                .transform(RoundedCorners(20))
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
-                .into(movieDetailBinding.imagePoster)
+            Picasso.get()
+                .load(R.drawable.ic_error)
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_error)
+                .into(movieDetailBinding.imgCompanies2)
         } else {
-            Glide.with(this)
+            Picasso.get()
                 .load(compImage2)
-                .transform(RoundedCorners(20))
-                .apply(
-                    RequestOptions.placeholderOf(R.drawable.ic_loading)
-                        .error(R.drawable.ic_error)
-                )
+                .placeholder(R.drawable.ic_loading)
+                .error(R.drawable.ic_error)
                 .into(movieDetailBinding.imgCompanies2)
         }
 
@@ -532,10 +517,6 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
         movieDetailBinding.imagePoster.contentDescription = tvShowId.tvShowPoster
         movieDetailBinding.imgCompanies1.contentDescription = tvShowId.compLogo_1
         movieDetailBinding.imgCompanies2.contentDescription = tvShowId.compLogo_2
-
-        movieDetailBinding.imgShare.setOnClickListener {
-            onShareClickTvShow()
-        }
     }
 
     override fun onShareClickMovie() {
@@ -582,7 +563,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             menuFab.visibility = View.GONE
             susFab.visibility = View.GONE
             view.visibility = View.GONE
-            imgShare.visibility = View.GONE
+            shareFab.visibility = View.GONE
             movieTitleText.visibility = View.GONE
             descText.visibility = View.GONE
             movieReleaseDate.visibility = View.GONE
@@ -614,7 +595,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             view.visibility = View.VISIBLE
             menuFab.visibility = View.VISIBLE
             susFab.visibility = View.GONE
-            imgShare.visibility = View.VISIBLE
+            shareFab.visibility = View.GONE
             movieReleaseDate.visibility = View.VISIBLE
             movieTitleText.visibility = View.VISIBLE
             descText.visibility = View.VISIBLE
@@ -646,7 +627,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             view.visibility = View.VISIBLE
             menuFab.visibility = View.VISIBLE
             susFab.visibility = View.GONE
-            imgShare.visibility = View.VISIBLE
+            shareFab.visibility = View.GONE
             movieReleaseDate.visibility = View.VISIBLE
             movieTitleText.visibility = View.VISIBLE
             descText.visibility = View.VISIBLE

@@ -1,5 +1,6 @@
 package com.dicoding.moviecatalog.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.moviecatalog.R
+import com.dicoding.moviecatalog.activity.SusActivity
 import com.dicoding.moviecatalog.adapter.TvShowAdapter
 import com.dicoding.moviecatalog.databinding.FragmentTvShowBinding
 import com.dicoding.moviecatalog.viewmodel.TvShowViewModel
@@ -48,7 +51,11 @@ class TvShowFragment : Fragment() {
                             }
                             Status.ERROR -> {
                                 binding.progressBar.visibility = View.GONE
-                                Toast.makeText(context, "Terjadi kesalahan", Toast.LENGTH_SHORT)
+                                Toast.makeText(
+                                    context,
+                                    resources.getString(R.string.error),
+                                    Toast.LENGTH_SHORT
+                                )
                                     .show()
                             }
                         }
@@ -68,6 +75,10 @@ class TvShowFragment : Fragment() {
                     }
                 }
             }
+        }
+        binding.susListFab.setOnClickListener {
+            val intent = Intent(context, SusActivity::class.java)
+            context?.startActivity(intent)
         }
     }
 
