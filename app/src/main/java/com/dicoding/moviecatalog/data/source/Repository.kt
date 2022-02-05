@@ -30,8 +30,8 @@ class Repository private constructor(
             public override fun loadFromDB(): LiveData<PagedList<MovieListEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(4)
-                    .setPageSize(4)
+                    .setInitialLoadSizeHint(5)
+                    .setPageSize(5)
                     .build()
                 return LivePagedListBuilder(localDataSource.getAllMovies(sort), config).build()
             }
@@ -133,8 +133,8 @@ class Repository private constructor(
     override fun getFavoriteMovies(sort: String): LiveData<PagedList<MovieDetailEntity>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(4)
-            .setPageSize(4)
+            .setInitialLoadSizeHint(5)
+            .setPageSize(5)
             .build()
 
         return LivePagedListBuilder(localDataSource.getFavMovies(sort), config).build()
@@ -154,8 +154,8 @@ class Repository private constructor(
             public override fun loadFromDB(): LiveData<PagedList<TvShowListEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(4)
-                    .setPageSize(4)
+                    .setInitialLoadSizeHint(5)
+                    .setPageSize(5)
                     .build()
                 return LivePagedListBuilder(localDataSource.getAllTvShow(sort), config).build()
             }
@@ -258,8 +258,8 @@ class Repository private constructor(
     override fun getFavoriteTvShow(sort: String): LiveData<PagedList<TvShowDetailEntity>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(4)
-            .setPageSize(4)
+            .setInitialLoadSizeHint(5)
+            .setPageSize(5)
             .build()
 
         return LivePagedListBuilder(localDataSource.getFavTvShow(sort), config).build()

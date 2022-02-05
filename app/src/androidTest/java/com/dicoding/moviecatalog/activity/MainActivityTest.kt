@@ -134,30 +134,12 @@ class MainActivityTest {
         onView(withId(R.id.sus_fab)).perform(click())
         Espresso.pressBackUnconditionally()
         inlineVariable.delayTwoSecond()
-        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
-        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
-        onView(withId(R.id.sus_list_fab)).perform(click())
-        onView(withText("MOVIE")).perform(click())
-        onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_movie)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                dummySelectedFavMovie.size
-            )
-        )
-    }
-
-    @Test
-    fun load_E_removeFavMovies() {
-        inlineVariable.delayTwoSecond()
-        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
-        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
-        onView(withId(R.id.sus_list_fab)).perform(click())
-        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_movie)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                0, click()
+                1,
+                click()
             )
         )
         inlineVariable.delayTwoSecond()
@@ -169,12 +151,111 @@ class MainActivityTest {
         onView(withId(R.id.sus_fab)).perform(click())
         Espresso.pressBackUnconditionally()
         inlineVariable.delayTwoSecond()
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_fav_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_fav_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_fav_fab)).perform(click())
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_movie)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
+                dummySelectedFavMovie.size
+            )
+        )
     }
 
     @Test
-    fun load_F_TvShow() {
+    fun load_F_sortFavMoviesAsc() {
+        inlineVariable.delayTwoSecond()
+        onView(withText("MOVIE")).perform(click())
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_fav_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_fav_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_fav_fab)).perform(click())
+        inlineVariable.delayTwoSecond()
+        onView(withText("MOVIE")).perform(click())
+        onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_order_asc)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_order_asc)).check(matches(isClickable()))
+        onView(withId(R.id.sus_order_asc)).perform(click())
+        inlineVariable.delayTwoSecond()
+        Espresso.pressBackUnconditionally()
+    }
+
+    @Test
+    fun load_E_sortFavMoviesDesc() {
+        inlineVariable.delayTwoSecond()
+        onView(withText("MOVIE")).perform(click())
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_fav_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_fav_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_fav_fab)).perform(click())
+        inlineVariable.delayTwoSecond()
+        onView(withText("MOVIE")).perform(click())
+        onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_order_desc)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_order_desc)).check(matches(isClickable()))
+        onView(withId(R.id.sus_order_desc)).perform(click())
+        inlineVariable.delayTwoSecond()
+        Espresso.pressBackUnconditionally()
+    }
+
+    @Test
+    fun load_G_removeFavMovies() {
+        inlineVariable.delayTwoSecond()
+        onView(withText("MOVIE")).perform(click())
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_fav_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_fav_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_fav_fab)).perform(click())
+        inlineVariable.delayTwoSecond()
+        onView(withText("MOVIE")).perform(click())
+        onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_movie)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0, click()
+            )
+        )
+        onView(withId(R.id.menu_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.menu_fab)).check(matches(isClickable()))
+        onView(withId(R.id.menu_fab)).perform(click())
+        onView(withId(R.id.sus_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_fab)).perform(click())
+        Espresso.pressBackUnconditionally()
+        inlineVariable.delayTwoSecond()
+        onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_movie)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0, click()
+            )
+        )
+        onView(withId(R.id.menu_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.menu_fab)).check(matches(isClickable()))
+        onView(withId(R.id.menu_fab)).perform(click())
+        onView(withId(R.id.sus_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_fab)).perform(click())
+        inlineVariable.delayTwoSecond()
+        Espresso.pressBackUnconditionally()
+    }
+
+    @Test
+    fun load_H_TvShow() {
         inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
@@ -186,7 +267,7 @@ class MainActivityTest {
     }
 
     @Test
-    fun load_G_DetailTvShow() {
+    fun load_I_DetailTvShow() {
         inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
@@ -248,7 +329,7 @@ class MainActivityTest {
     }
 
     @Test
-    fun load_H_ShareTvShow() {
+    fun load_J_ShareTvShow() {
         inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
@@ -268,7 +349,7 @@ class MainActivityTest {
     }
 
     @Test
-    fun load_I_addFavTvShow() {
+    fun load_K_addFavTvShow() {
         inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
@@ -287,30 +368,12 @@ class MainActivityTest {
         onView(withId(R.id.sus_fab)).perform(click())
         Espresso.pressBackUnconditionally()
         inlineVariable.delayTwoSecond()
-        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
-        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
-        onView(withId(R.id.sus_list_fab)).perform(click())
-        onView(withText("TV SHOW")).perform(click())
-        onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
-        onView(withId(R.id.rv_tvshow)).perform(
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
-                dummySelectedFavTvShow.size
-            )
-        )
-    }
-
-    @Test
-    fun load_J_removeFavTvShow() {
-        inlineVariable.delayTwoSecond()
-        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
-        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
-        onView(withId(R.id.sus_list_fab)).perform(click())
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_tvshow)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                0, click()
+                1,
+                click()
             )
         )
         inlineVariable.delayTwoSecond()
@@ -322,7 +385,157 @@ class MainActivityTest {
         onView(withId(R.id.sus_fab)).perform(click())
         Espresso.pressBackUnconditionally()
         inlineVariable.delayTwoSecond()
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_fav_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_fav_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_fav_fab)).perform(click())
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_tvshow)).perform(
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(
+                dummySelectedFavTvShow.size
+            )
+        )
+    }
+
+    @Test
+    fun load_M_sortFavTvShowAsc() {
+        inlineVariable.delayTwoSecond()
+        onView(withText("TV SHOW")).perform(click())
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_fav_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_fav_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_fav_fab)).perform(click())
+        inlineVariable.delayTwoSecond()
+        onView(withText("TV SHOW")).perform(click())
+        onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_order_asc)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_order_asc)).check(matches(isClickable()))
+        onView(withId(R.id.sus_order_asc)).perform(click())
+        inlineVariable.delayTwoSecond()
+        Espresso.pressBackUnconditionally()
+    }
+
+    @Test
+    fun load_L_sortFavTvShowDesc() {
+        inlineVariable.delayTwoSecond()
+        onView(withText("TV SHOW")).perform(click())
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_fav_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_fav_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_fav_fab)).perform(click())
+        inlineVariable.delayTwoSecond()
+        onView(withText("TV SHOW")).perform(click())
+        onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_order_desc)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_order_desc)).check(matches(isClickable()))
+        onView(withId(R.id.sus_order_desc)).perform(click())
+        inlineVariable.delayTwoSecond()
+        Espresso.pressBackUnconditionally()
+    }
+
+    @Test
+    fun load_N_removeFavTvShow() {
+        inlineVariable.delayTwoSecond()
+        onView(withText("TV SHOW")).perform(click())
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_fav_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_fav_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_fav_fab)).perform(click())
+        inlineVariable.delayTwoSecond()
+        onView(withText("TV SHOW")).perform(click())
+        onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_tvshow)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0, click()
+            )
+        )
+        onView(withId(R.id.menu_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.menu_fab)).check(matches(isClickable()))
+        onView(withId(R.id.menu_fab)).perform(click())
+        onView(withId(R.id.sus_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_fab)).perform(click())
+        Espresso.pressBackUnconditionally()
+        inlineVariable.delayTwoSecond()
+        onView(withText("TV SHOW")).perform(click())
+        onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_tvshow)).perform(
+            RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                0, click()
+            )
+        )
+        onView(withId(R.id.menu_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.menu_fab)).check(matches(isClickable()))
+        onView(withId(R.id.menu_fab)).perform(click())
+        onView(withId(R.id.sus_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_fab)).perform(click())
+        Espresso.pressBackUnconditionally()
+        inlineVariable.delayTwoSecond()
+        onView(withText("TV SHOW")).perform(click())
+        Espresso.pressBackUnconditionally()
+    }
+
+    @Test
+    fun load_P_sortMovieAsc() {
+        inlineVariable.delayTwoSecond()
+        onView(withText("MOVIE")).perform(click())
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_order_asc)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_order_asc)).check(matches(isClickable()))
+        onView(withId(R.id.sus_order_asc)).perform(click())
+    }
+
+    @Test
+    fun load_O_sortMovieDesc() {
+        inlineVariable.delayTwoSecond()
+        onView(withText("MOVIE")).perform(click())
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_order_desc)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_order_desc)).check(matches(isClickable()))
+        onView(withId(R.id.sus_order_desc)).perform(click())
+    }
+
+    @Test
+    fun load_R_sortTvShowAsc() {
+        inlineVariable.delayTwoSecond()
+        onView(withText("TV SHOW")).perform(click())
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_order_asc)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_order_asc)).check(matches(isClickable()))
+        onView(withId(R.id.sus_order_asc)).perform(click())
+    }
+
+    @Test
+    fun load_Q_sortTvShowDesc() {
+        inlineVariable.delayTwoSecond()
+        onView(withText("TV SHOW")).perform(click())
+        onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
+        onView(withId(R.id.sus_list_fab)).perform(click())
+        onView(withId(R.id.sus_order_desc)).check(matches(isDisplayed()))
+        onView(withId(R.id.sus_order_desc)).check(matches(isClickable()))
+        onView(withId(R.id.sus_order_desc)).perform(click())
     }
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import com.dicoding.moviecatalog.data.source.Repository
 import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowListEntity
+import com.dicoding.moviecatalog.utils.SortUtils.NEWEST
 import com.dicoding.moviecatalog.viewmodel.TvShowViewModel
 import com.dicoding.moviecatalog.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
@@ -47,13 +48,13 @@ class TvShowViewModelTest {
         val tvShow = MutableLiveData<Resource<PagedList<TvShowListEntity>>>()
         tvShow.value = tvShowDatabase
 
-        Mockito.`when`(tvShowRepository.getAllTvShow(listId)).thenReturn(tvShow)
-        val tvShowEntities = viewModel.getTvShow().value?.data
-        Mockito.verify(tvShowRepository).getAllTvShow(listId)
+        Mockito.`when`(tvShowRepository.getAllTvShow(listId, NEWEST)).thenReturn(tvShow)
+        val tvShowEntities = viewModel.getTvShow(NEWEST).value?.data
+        Mockito.verify(tvShowRepository).getAllTvShow(listId, NEWEST)
         Assert.assertNotNull(tvShowEntities)
         Assert.assertEquals(5, tvShowEntities?.size)
 
-        viewModel.getTvShow().observeForever(observer)
+        viewModel.getTvShow(NEWEST).observeForever(observer)
         verify(observer).onChanged(tvShowDatabase)
     }
 

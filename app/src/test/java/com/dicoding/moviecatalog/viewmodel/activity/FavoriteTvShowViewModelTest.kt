@@ -7,6 +7,7 @@ import androidx.paging.PagedList
 import com.dicoding.moviecatalog.data.source.Repository
 import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowDetailEntity
 import com.dicoding.moviecatalog.utils.CatalogDatabase
+import com.dicoding.moviecatalog.utils.SortUtils.NEWEST
 import com.dicoding.moviecatalog.viewmodel.TvShowFavViewModel
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.junit.Assert
@@ -46,13 +47,13 @@ class FavoriteTvShowViewModelTest {
         val favTvShow = MutableLiveData<PagedList<TvShowDetailEntity>>()
         favTvShow.value = dummyFavTvShow
 
-        Mockito.`when`(movieRepository.getFavoriteTvShow()).thenReturn(favTvShow)
-        val favTvShows = viewModel.getFavTvShow().value
-        Mockito.verify(movieRepository).getFavoriteTvShow()
+        Mockito.`when`(movieRepository.getFavoriteTvShow(NEWEST)).thenReturn(favTvShow)
+        val favTvShows = viewModel.getFavTvShow(NEWEST).value
+        Mockito.verify(movieRepository).getFavoriteTvShow(NEWEST)
         Assert.assertNotNull(favTvShows)
         Assert.assertEquals(1, favTvShows?.size)
 
-        viewModel.getFavTvShow().observeForever(observer)
+        viewModel.getFavTvShow(NEWEST).observeForever(observer)
         Mockito.verify(observer).onChanged(dummyFavTvShow)
     }
 

@@ -205,48 +205,48 @@ object CatalogDatabase {
     fun generateSelectedMovieLocal(): MovieDetailEntity {
 
         return MovieDetailEntity(
-            "As Hiccup fulfills his dream of creating a peaceful dragon utopia, Toothless’ discovery of an untamed, elusive mate draws the Night Fury away. When danger mounts at home and Hiccup’s reign as village chief is tested, both dragon and rider must make impossible decisions to save their kind.",
+            "Seasoned musician Jackson Maine discovers — and falls in love with — struggling artist Ally. She has just about given up on her dream to make it big as a singer — until Jack coaxes her into the spotlight. But even as Ally's career takes off, the personal side of their relationship is breaking down, as Jack fights an ongoing battle with his own internal demons.",
             "en",
-            "How to Train Your Dragon: The Hidden World",
-            "Animation",
-            "Family",
-            517526875,
-            "2019-01-03",
-            85.586,
-            7.8,
-            166428,
-            "How to Train Your Dragon: The Hidden World",
-            "/xvx4Yhf0DVH8G4LzNISpMfFBDy2.jpg",
-            "DreamWorks Animation",
-            "Mad Hatter Entertainment",
-            "/kP7t6RwGz2AvvTkvnI1uteEwHet.png",
+            "A Star Is Born",
+            "Drama",
+            "Romance",
+            433888866,
+            "2018-10-03",
+            48.76,
+            7.5,
+            332562,
+            "A Star Is Born",
+            "/wrFpXMNBRj2PBiN4Z5kix51XaIZ.jpg",
+            "Thunder Road",
+            "22 & Green",
+            "/cCzCClIzIh81Fa79hpW5nXoUsHK.png",
             "null",
             "US",
-            "US"
+            "US",
         )
     }
 
     fun generateSelectedTvShowLocal(): TvShowDetailEntity {
 
         return TvShowDetailEntity(
-            "1990-09-20",
-            236,
-            "The Flash",
-            22,
-            1,
+            "2012-10-10",
+            1412,
+            "Arrow",
+            170,
+            8,
             "en",
-            "When a bolt of lightening crashes through a police crime lab, a mix of electrically charged substances bathes chemist Barry Allen, transforming him into the fastest man alive--The Flash.",
-            "/fi1GEdCbyWRDHpyJcB25YYK7fh4.jpg",
-            7.5,
-            "58.38",
-            "Action & Adventure",
+            "Spoiled billionaire playboy Oliver Queen is missing and presumed dead when his yacht is lost at sea. He returns five years later a changed man, determined to clean up the city as a hooded vigilante armed with a bow.",
+            "/gKG5QGz5Ngf8fgWpBsWtlg5L2SF.jpg",
+            6.7,
+            "321.082",
             "Crime",
-            "Warner Bros. Television",
-            "Pet Fly Productions",
-            "/3T19XSr6yqaLNK8uJWFImPgRax0.png",
-            "null",
+            "Drama",
+            "Berlanti Productions",
+            "DC Entertainment",
+            "/3e294jszfE6cE8TOogmj0zNd6pL.png",
+            "/2Tc1P3Ac8M479naPp1kYT3izLS5.png",
             "US",
-            ""
+            "US",
         )
     }
 
@@ -255,24 +255,24 @@ object CatalogDatabase {
 
         movie.add(
             MovieDetailEntity(
-                "As Hiccup fulfills his dream of creating a peaceful dragon utopia, Toothless’ discovery of an untamed, elusive mate draws the Night Fury away. When danger mounts at home and Hiccup’s reign as village chief is tested, both dragon and rider must make impossible decisions to save their kind.",
+                "Seasoned musician Jackson Maine discovers — and falls in love with — struggling artist Ally. She has just about given up on her dream to make it big as a singer — until Jack coaxes her into the spotlight. But even as Ally's career takes off, the personal side of their relationship is breaking down, as Jack fights an ongoing battle with his own internal demons.",
                 "en",
-                "How to Train Your Dragon: The Hidden World",
-                "Animation",
-                "Family",
-                517526875,
-                "2019-01-03",
-                85.586,
-                7.8,
-                166428,
-                "How to Train Your Dragon: The Hidden World",
-                "/xvx4Yhf0DVH8G4LzNISpMfFBDy2.jpg",
-                "DreamWorks Animation",
-                "Mad Hatter Entertainment",
-                "/kP7t6RwGz2AvvTkvnI1uteEwHet.png",
+                "A Star Is Born",
+                "Drama",
+                "Romance",
+                433888866,
+                "2018-10-03",
+                48.76,
+                7.5,
+                332562,
+                "A Star Is Born",
+                "/wrFpXMNBRj2PBiN4Z5kix51XaIZ.jpg",
+                "Thunder Road",
+                "22 & Green",
+                "/cCzCClIzIh81Fa79hpW5nXoUsHK.png",
                 "null",
                 "US",
-                "US"
+                "US",
             )
         )
 
@@ -284,24 +284,24 @@ object CatalogDatabase {
 
         tvShow.add(
             TvShowDetailEntity(
-                "1990-09-20",
-                236,
-                "The Flash",
-                22,
-                1,
+                "2012-10-10",
+                1412,
+                "Arrow",
+                170,
+                8,
                 "en",
-                "When a bolt of lightening crashes through a police crime lab, a mix of electrically charged substances bathes chemist Barry Allen, transforming him into the fastest man alive--The Flash.",
-                "/fi1GEdCbyWRDHpyJcB25YYK7fh4.jpg",
-                7.5,
-                "58.38",
-                "Action & Adventure",
+                "Spoiled billionaire playboy Oliver Queen is missing and presumed dead when his yacht is lost at sea. He returns five years later a changed man, determined to clean up the city as a hooded vigilante armed with a bow.",
+                "/gKG5QGz5Ngf8fgWpBsWtlg5L2SF.jpg",
+                6.7,
+                "321.082",
                 "Crime",
-                "Warner Bros. Television",
-                "Pet Fly Productions",
-                "/3T19XSr6yqaLNK8uJWFImPgRax0.png",
-                "null",
+                "Drama",
+                "Berlanti Productions",
+                "DC Entertainment",
+                "/3e294jszfE6cE8TOogmj0zNd6pL.png",
+                "/2Tc1P3Ac8M479naPp1kYT3izLS5.png",
                 "US",
-                ""
+                "US",
             )
         )
 

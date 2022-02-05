@@ -24,7 +24,10 @@ class FakeRepositoryTest(
 ) :
     DataSource {
 
-    override fun getAllMovies(listId: String): LiveData<Resource<PagedList<MovieListEntity>>> {
+    override fun getAllMovies(
+        listId: String,
+        sort: String
+    ): LiveData<Resource<PagedList<MovieListEntity>>> {
         return object :
             NetworkBoundResource<PagedList<MovieListEntity>, ArrayList<MovieListResponse>>(
                 appExecutors
@@ -32,10 +35,10 @@ class FakeRepositoryTest(
             public override fun loadFromDB(): LiveData<PagedList<MovieListEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(4)
-                    .setPageSize(4)
+                    .setInitialLoadSizeHint(5)
+                    .setPageSize(5)
                     .build()
-                return LivePagedListBuilder(localDataSource.getAllMovies(), config).build()
+                return LivePagedListBuilder(localDataSource.getAllMovies(sort), config).build()
             }
 
             override fun shouldFetch(data: PagedList<MovieListEntity>?): Boolean =
@@ -132,14 +135,14 @@ class FakeRepositoryTest(
         }.asLiveData()
     }
 
-    override fun getFavoriteMovies(): LiveData<PagedList<MovieDetailEntity>> {
+    override fun getFavoriteMovies(sort: String): LiveData<PagedList<MovieDetailEntity>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(4)
-            .setPageSize(4)
+            .setInitialLoadSizeHint(5)
+            .setPageSize(5)
             .build()
 
-        return LivePagedListBuilder(localDataSource.getFavMovies(), config).build()
+        return LivePagedListBuilder(localDataSource.getFavMovies(sort), config).build()
     }
 
     override fun updateFavMovies(movie: MovieDetailEntity, isSus: Boolean) {
@@ -148,7 +151,10 @@ class FakeRepositoryTest(
         }
     }
 
-    override fun getAllTvShow(listId: String): LiveData<Resource<PagedList<TvShowListEntity>>> {
+    override fun getAllTvShow(
+        listId: String,
+        sort: String
+    ): LiveData<Resource<PagedList<TvShowListEntity>>> {
         return object :
             NetworkBoundResource<PagedList<TvShowListEntity>, ArrayList<TvShowListResponse>>(
                 appExecutors
@@ -156,10 +162,10 @@ class FakeRepositoryTest(
             public override fun loadFromDB(): LiveData<PagedList<TvShowListEntity>> {
                 val config = PagedList.Config.Builder()
                     .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(4)
-                    .setPageSize(4)
+                    .setInitialLoadSizeHint(5)
+                    .setPageSize(5)
                     .build()
-                return LivePagedListBuilder(localDataSource.getAllTvShow(), config).build()
+                return LivePagedListBuilder(localDataSource.getAllTvShow(sort), config).build()
             }
 
             override fun shouldFetch(data: PagedList<TvShowListEntity>?): Boolean =
@@ -257,14 +263,14 @@ class FakeRepositoryTest(
         }.asLiveData()
     }
 
-    override fun getFavoriteTvShow(): LiveData<PagedList<TvShowDetailEntity>> {
+    override fun getFavoriteTvShow(sort: String): LiveData<PagedList<TvShowDetailEntity>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(4)
-            .setPageSize(4)
+            .setInitialLoadSizeHint(5)
+            .setPageSize(5)
             .build()
 
-        return LivePagedListBuilder(localDataSource.getFavTvShow(), config).build()
+        return LivePagedListBuilder(localDataSource.getFavTvShow(sort), config).build()
     }
 
     override fun updateFavTvShow(tvShow: TvShowDetailEntity, isSus: Boolean) {

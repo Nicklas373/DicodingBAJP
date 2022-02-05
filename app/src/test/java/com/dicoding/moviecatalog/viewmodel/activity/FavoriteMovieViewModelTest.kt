@@ -7,6 +7,7 @@ import androidx.paging.PagedList
 import com.dicoding.moviecatalog.data.source.Repository
 import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieDetailEntity
 import com.dicoding.moviecatalog.utils.CatalogDatabase
+import com.dicoding.moviecatalog.utils.SortUtils.NEWEST
 import com.dicoding.moviecatalog.viewmodel.MovieFavViewModel
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.junit.Assert.assertEquals
@@ -48,13 +49,13 @@ class FavoriteMovieViewModelTest {
         val favMovies = MutableLiveData<PagedList<MovieDetailEntity>>()
         favMovies.value = dummyFavMovie
 
-        `when`(movieRepository.getFavoriteMovies()).thenReturn(favMovies)
-        val favMovie = viewModel.getFavMovies().value
-        verify(movieRepository).getFavoriteMovies()
+        `when`(movieRepository.getFavoriteMovies(NEWEST)).thenReturn(favMovies)
+        val favMovie = viewModel.getFavMovies(NEWEST).value
+        verify(movieRepository).getFavoriteMovies(NEWEST)
         assertNotNull(favMovie)
         assertEquals(1, favMovie?.size)
 
-        viewModel.getFavMovies().observeForever(observer)
+        viewModel.getFavMovies(NEWEST).observeForever(observer)
         verify(observer).onChanged(dummyFavMovie)
     }
 

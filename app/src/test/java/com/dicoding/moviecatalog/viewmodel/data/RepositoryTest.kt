@@ -8,6 +8,7 @@ import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowListEntit
 import com.dicoding.moviecatalog.data.source.remote.RemoteDataSource
 import com.dicoding.moviecatalog.utils.AppExecutors
 import com.dicoding.moviecatalog.utils.CatalogDatabase
+import com.dicoding.moviecatalog.utils.SortUtils.NEWEST
 import com.dicoding.moviecatalog.viewmodel.utils.PagedListUtil
 import com.dicoding.moviecatalog.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
@@ -41,11 +42,11 @@ class RepositoryTest {
     fun getAllMovies() {
         val dataSourceFactory =
             mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieListEntity>
-        `when`(local.getAllMovies()).thenReturn(dataSourceFactory)
-        fakeRepository.getAllMovies(movieListId)
+        `when`(local.getAllMovies(NEWEST)).thenReturn(dataSourceFactory)
+        fakeRepository.getAllMovies(movieListId, NEWEST)
         val movieEntities =
             Resource.success(PagedListUtil.mockPagedList(CatalogDatabase.generateMovieLocal()))
-        verify(local).getAllMovies()
+        verify(local).getAllMovies(NEWEST)
         assertNotNull(movieEntities.data)
         assertEquals(movieResponses.size.toLong(), movieEntities.data?.size?.toLong())
     }
@@ -54,11 +55,11 @@ class RepositoryTest {
     fun getAllTvShow() {
         val dataSourceFactory =
             mock(DataSource.Factory::class.java) as DataSource.Factory<Int, TvShowListEntity>
-        `when`(local.getAllTvShow()).thenReturn(dataSourceFactory)
-        fakeRepository.getAllTvShow(tvShowListId)
+        `when`(local.getAllTvShow(NEWEST)).thenReturn(dataSourceFactory)
+        fakeRepository.getAllTvShow(tvShowListId, NEWEST)
         val tvShowEntities =
             Resource.success(PagedListUtil.mockPagedList(CatalogDatabase.generateTvShowLocal()))
-        verify(local).getAllTvShow()
+        verify(local).getAllTvShow(NEWEST)
         assertNotNull(tvShowEntities.data)
         assertEquals(tvShowResponses.size.toLong(), tvShowEntities.data?.size?.toLong())
     }
