@@ -6,13 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.adapter.MovieFavAdapter
+import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieDetailEntity
 import com.dicoding.moviecatalog.databinding.FragmentMovieFavBinding
+import com.dicoding.moviecatalog.utils.SortUtils
+import com.dicoding.moviecatalog.utils.SortUtils.NEWEST
 import com.dicoding.moviecatalog.viewmodel.MovieFavViewModel
 import com.dicoding.moviecatalog.viewmodel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -38,19 +43,14 @@ class MovieFavFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(binding.rvMovie)
 
         if (activity != null) {
+            hideStaticUI()
             val factory = ViewModelFactory.getInstance(requireActivity())
             viewModel = ViewModelProvider(
                 this, factory
             )[MovieFavViewModel::class.java]
             susAdapter = MovieFavAdapter()
 
-            viewModel.getFavMovies().observe(viewLifecycleOwner) { susMovies ->
-                if (susMovies != null) {
-                    binding.progressBar.visibility = View.GONE
-                    susAdapter.setMovies(susMovies)
-                    susAdapter.submitList(susMovies)
-                }
-            }
+            viewModel.getFavMovies(NEWEST).observe(viewLifecycleOwner, movieFavObserver)
             viewModel.isLoading.observe(viewLifecycleOwner) {
                 showLoading(it)
             }
@@ -64,6 +64,30 @@ class MovieFavFragment : Fragment() {
                     adapter = susAdapter
                 }
             }
+            binding.susListFab.setOnClickListener {
+                if (binding.susOrderAsc.visibility == View.GONE) {
+                    showStaticUI()
+                } else {
+                    hideStaticUI()
+                }
+            }
+            binding.susOrderAsc.setOnClickListener {
+                viewModel.getFavMovies(NEWEST).observe(viewLifecycleOwner, movieFavObserver)
+                hideStaticUI()
+            }
+            binding.susOrderDesc.setOnClickListener {
+                viewModel.getFavMovies(SortUtils.OLDEST)
+                    .observe(viewLifecycleOwner, movieFavObserver)
+                hideStaticUI()
+            }
+        }
+    }
+
+    private val movieFavObserver = Observer<PagedList<MovieDetailEntity>> { susMovies ->
+        if (susMovies != null) {
+            binding.progressBar.visibility = View.GONE
+            susAdapter.setMovies(susMovies)
+            susAdapter.submitList(susMovies)
         }
     }
 
@@ -102,6 +126,16 @@ class MovieFavFragment : Fragment() {
         if (!isToast) {
             Toast.makeText(context, toastReason, Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun hideStaticUI() {
+        binding.susOrderAsc.visibility = View.GONE
+        binding.susOrderDesc.visibility = View.GONE
+    }
+
+    private fun showStaticUI() {
+        binding.susOrderAsc.visibility = View.VISIBLE
+        binding.susOrderDesc.visibility = View.VISIBLE
     }
 
     override fun onDestroyView() {

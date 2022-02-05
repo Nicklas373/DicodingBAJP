@@ -15,7 +15,7 @@ data class TvShowDetailEntity(
     @ColumnInfo(name = "tvShowId")
     val tvShowId: Int,
 
-    @ColumnInfo(name = "name")
+    @ColumnInfo(name = "title")
     val tvShowName: String,
 
     @ColumnInfo(name = "number_of_episodes")

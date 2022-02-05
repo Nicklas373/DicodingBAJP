@@ -10,19 +10,19 @@ import com.dicoding.moviecatalog.vo.Resource
 
 interface DataSource {
 
-    fun getAllMovies(listId: String): LiveData<Resource<PagedList<MovieListEntity>>>
+    fun getAllMovies(listId: String, sort: String): LiveData<Resource<PagedList<MovieListEntity>>>
 
     fun getSelectedMovies(movieId: Int): LiveData<Resource<MovieDetailEntity>>
 
-    fun getFavoriteMovies(): LiveData<PagedList<MovieDetailEntity>>
+    fun getFavoriteMovies(sort: String): LiveData<PagedList<MovieDetailEntity>>
 
     fun updateFavMovies(movie: MovieDetailEntity, isSus: Boolean)
 
-    fun getAllTvShow(listId: String): LiveData<Resource<PagedList<TvShowListEntity>>>
+    fun getAllTvShow(listId: String, sort: String): LiveData<Resource<PagedList<TvShowListEntity>>>
 
     fun getSelectedTvShow(tvShowId: Int): LiveData<Resource<TvShowDetailEntity>>
 
-    fun getFavoriteTvShow(): LiveData<PagedList<TvShowDetailEntity>>
+    fun getFavoriteTvShow(sort: String): LiveData<PagedList<TvShowDetailEntity>>
 
     fun updateFavTvShow(tvShow: TvShowDetailEntity, isSus: Boolean)
 }

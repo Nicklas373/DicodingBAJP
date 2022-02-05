@@ -19,8 +19,8 @@ class MovieViewModel(private val repository: Repository) : ViewModel() {
     private val _toastReason = MutableLiveData<String>()
     val toastReason: LiveData<String> = _toastReason
 
-    fun getMovie(): LiveData<Resource<PagedList<MovieListEntity>>> =
-        repository.getAllMovies(listId)
+    fun getMovie(sort: String): LiveData<Resource<PagedList<MovieListEntity>>> =
+        repository.getAllMovies(listId, sort)
 
     companion object {
         private const val listId = "8174952"

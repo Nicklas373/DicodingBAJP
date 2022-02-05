@@ -15,7 +15,7 @@ data class TvShowListEntity(
     @ColumnInfo(name = "tvShowId")
     val tvShowId: Int,
 
-    @ColumnInfo(name = "name")
+    @ColumnInfo(name = "title")
     val tvShowName: String,
 
     @ColumnInfo(name = "poster_path")

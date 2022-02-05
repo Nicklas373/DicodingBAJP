@@ -6,13 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.moviecatalog.R
 import com.dicoding.moviecatalog.adapter.TvShowFavAdapter
+import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowDetailEntity
 import com.dicoding.moviecatalog.databinding.FragmentTvShowFavBinding
+import com.dicoding.moviecatalog.utils.SortUtils
+import com.dicoding.moviecatalog.utils.SortUtils.NEWEST
 import com.dicoding.moviecatalog.viewmodel.TvShowFavViewModel
 import com.dicoding.moviecatalog.viewmodel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -38,19 +43,14 @@ class TvShowFavFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(binding.rvTvshow)
 
         if (activity != null) {
+            hideStaticUI()
             val factory = ViewModelFactory.getInstance(requireActivity())
             viewModel = ViewModelProvider(
                 this, factory
             )[TvShowFavViewModel::class.java]
             susAdapter = TvShowFavAdapter()
 
-            viewModel.getFavTvShow().observe(viewLifecycleOwner) { susTvShow ->
-                if (susTvShow != null) {
-                    binding.progressBar.visibility = View.GONE
-                    susAdapter.setTvShow(susTvShow)
-                    susAdapter.submitList(susTvShow)
-                }
-            }
+            viewModel.getFavTvShow(NEWEST).observe(viewLifecycleOwner, tvShowFavObserver)
             viewModel.isLoading.observe(viewLifecycleOwner) {
                 showLoading(it)
             }
@@ -64,6 +64,30 @@ class TvShowFavFragment : Fragment() {
                     adapter = susAdapter
                 }
             }
+            binding.susListFab.setOnClickListener {
+                if (binding.susOrderAsc.visibility == View.GONE) {
+                    showStaticUI()
+                } else {
+                    hideStaticUI()
+                }
+            }
+            binding.susOrderAsc.setOnClickListener {
+                viewModel.getFavTvShow(NEWEST).observe(viewLifecycleOwner, tvShowFavObserver)
+                hideStaticUI()
+            }
+            binding.susOrderDesc.setOnClickListener {
+                viewModel.getFavTvShow(SortUtils.OLDEST)
+                    .observe(viewLifecycleOwner, tvShowFavObserver)
+                hideStaticUI()
+            }
+        }
+    }
+
+    private val tvShowFavObserver = Observer<PagedList<TvShowDetailEntity>> { susTvShow ->
+        if (susTvShow != null) {
+            binding.progressBar.visibility = View.GONE
+            susAdapter.setTvShow(susTvShow)
+            susAdapter.submitList(susTvShow)
         }
     }
 
@@ -102,6 +126,16 @@ class TvShowFavFragment : Fragment() {
         if (!isToast) {
             Toast.makeText(context, toastReason, Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun hideStaticUI() {
+        binding.susOrderAsc.visibility = View.GONE
+        binding.susOrderDesc.visibility = View.GONE
+    }
+
+    private fun showStaticUI() {
+        binding.susOrderAsc.visibility = View.VISIBLE
+        binding.susOrderDesc.visibility = View.VISIBLE
     }
 
     override fun onDestroyView() {

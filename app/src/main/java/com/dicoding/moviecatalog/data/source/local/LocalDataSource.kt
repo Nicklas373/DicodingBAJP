@@ -7,6 +7,11 @@ import com.dicoding.moviecatalog.data.source.local.entity.movie.MovieListEntity
 import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowDetailEntity
 import com.dicoding.moviecatalog.data.source.local.entity.tvshow.TvShowListEntity
 import com.dicoding.moviecatalog.data.source.local.room.CatalogDao
+import com.dicoding.moviecatalog.utils.SortUtils
+import com.dicoding.moviecatalog.utils.SortUtils.MOVIE_ENTITIES
+import com.dicoding.moviecatalog.utils.SortUtils.MOVIE_FAV_ENTITIES
+import com.dicoding.moviecatalog.utils.SortUtils.TVSHOW_ENTITIES
+import com.dicoding.moviecatalog.utils.SortUtils.TVSHOW_FAV_ENTITIES
 
 class LocalDataSource private constructor(private val mCatalogDao: CatalogDao) {
 
@@ -17,7 +22,7 @@ class LocalDataSource private constructor(private val mCatalogDao: CatalogDao) {
             INSTANCE ?: LocalDataSource(catalogDao)
     }
 
-    fun getAllMovies(): DataSource.Factory<Int, MovieListEntity> = mCatalogDao.getMovies()
+    fun getAllMovies(sort: String): DataSource.Factory<Int, MovieListEntity> = mCatalogDao.getMovies(SortUtils.getSortedQuery(sort, MOVIE_ENTITIES))
 
     fun getSelectedMovies(movieId: Int): LiveData<MovieDetailEntity> =
         mCatalogDao.getSelectedMovies(movieId)
@@ -26,14 +31,14 @@ class LocalDataSource private constructor(private val mCatalogDao: CatalogDao) {
 
     fun insertMoviesDetails(movie: MovieDetailEntity) = mCatalogDao.insertMoviesDetails(movie)
 
-    fun getFavMovies(): DataSource.Factory<Int, MovieDetailEntity> = mCatalogDao.getFavMovies()
+    fun getFavMovies(sort: String): DataSource.Factory<Int, MovieDetailEntity> = mCatalogDao.getFavMovies(SortUtils.getSortedQueryFav(sort, MOVIE_FAV_ENTITIES))
 
     fun updateFavMovies(movie: MovieDetailEntity, isSus: Boolean) {
         movie.isSus = isSus
         mCatalogDao.updateFavMovies(movie)
     }
 
-    fun getAllTvShow(): DataSource.Factory<Int, TvShowListEntity> = mCatalogDao.getTvShow()
+    fun getAllTvShow(sort: String): DataSource.Factory<Int, TvShowListEntity> = mCatalogDao.getTvShow(SortUtils.getSortedQuery(sort, TVSHOW_ENTITIES))
 
     fun getSelectedTvShow(tvShowId: Int): LiveData<TvShowDetailEntity> =
         mCatalogDao.getSelectedTvShow(tvShowId)
@@ -42,7 +47,7 @@ class LocalDataSource private constructor(private val mCatalogDao: CatalogDao) {
 
     fun insertTvShowDetails(tvShow: TvShowDetailEntity) = mCatalogDao.insertTvShowDetails(tvShow)
 
-    fun getFavTvShow(): DataSource.Factory<Int, TvShowDetailEntity> = mCatalogDao.getFavTvShow()
+    fun getFavTvShow(sort: String): DataSource.Factory<Int, TvShowDetailEntity> = mCatalogDao.getFavTvShow(SortUtils.getSortedQueryFav(sort, TVSHOW_FAV_ENTITIES))
 
     fun updateFavTvShow(tvShow: TvShowDetailEntity, isSus: Boolean) {
         tvShow.isSus = isSus

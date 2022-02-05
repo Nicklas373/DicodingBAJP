@@ -19,8 +19,8 @@ class TvShowViewModel(private val repository: Repository) : ViewModel() {
     private val _toastReason = MutableLiveData<String>()
     val toastReason: LiveData<String> = _toastReason
 
-    fun getTvShow(): LiveData<Resource<PagedList<TvShowListEntity>>> =
-        repository.getAllTvShow(listId)
+    fun getTvShow(sort: String): LiveData<Resource<PagedList<TvShowListEntity>>> =
+        repository.getAllTvShow(listId, sort)
 
     companion object {
         private const val listId = "8174957"

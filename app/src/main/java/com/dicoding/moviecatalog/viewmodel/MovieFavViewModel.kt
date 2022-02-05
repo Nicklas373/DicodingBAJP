@@ -16,7 +16,7 @@ class MovieFavViewModel(private val repository: Repository) : ViewModel() {
     private val _toastReason = MutableLiveData<String>()
     val toastReason: LiveData<String> = _toastReason
 
-    fun getFavMovies() = repository.getFavoriteMovies()
+    fun getFavMovies(sort: String) = repository.getFavoriteMovies(sort)
 
     fun updateFavMovies(movieDetailEntity: MovieDetailEntity) {
         val newSus = !movieDetailEntity.isSus

@@ -33,4 +33,6 @@
     <string name="error">Whoops Error!</string>
     <string name="removed">Removed !</string>
     <string name="undo">Undo ?</string>
+    <string name="sort_asc">Sort by Name (A -> Z)</string>
+    <string name="sort_desc">Sort by Name (Z -> A)</string>
 </resources>

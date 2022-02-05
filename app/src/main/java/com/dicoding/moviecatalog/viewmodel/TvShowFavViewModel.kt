@@ -16,7 +16,7 @@ class TvShowFavViewModel(private val repository: Repository) : ViewModel() {
     private val _toastReason = MutableLiveData<String>()
     val toastReason: LiveData<String> = _toastReason
 
-    fun getFavTvShow() = repository.getFavoriteTvShow()
+    fun getFavTvShow(sort: String) = repository.getFavoriteTvShow(sort)
 
     fun updateFavTvShow(tvShowDetailEntity: TvShowDetailEntity) {
         val newSus = !tvShowDetailEntity.isSus
