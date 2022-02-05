@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso
 class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
     private lateinit var movieDetailBinding: ContentDetailShowBinding
+    private lateinit var activityDetailBinding: ActivityDetailShowBinding
     private var inlineVariable = InlineVariable()
     private lateinit var detailViewModel: DetailViewModel
 
@@ -31,6 +32,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
 
         val activityMovieDetailBinding = ActivityDetailShowBinding.inflate(layoutInflater)
         movieDetailBinding = activityMovieDetailBinding.detailContent
+        activityDetailBinding = activityMovieDetailBinding
 
         setContentView(activityMovieDetailBinding.root)
 
@@ -121,27 +123,27 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             showLoading(it)
         }
 
-        movieDetailBinding.menuFab.setOnClickListener {
+        activityDetailBinding.menuFab.setOnClickListener {
             when {
-                movieDetailBinding.susFab.visibility == View.VISIBLE -> {
-                    movieDetailBinding.menuFab.setIconResource(R.drawable.ic_baseline_menu_24)
-                    movieDetailBinding.susFab.visibility = View.GONE
-                    movieDetailBinding.shareFab.visibility = View.GONE
+                activityDetailBinding.susFab.visibility == View.VISIBLE -> {
+                    activityDetailBinding.menuFab.setIconResource(R.drawable.ic_baseline_menu_24)
+                    activityDetailBinding.susFab.visibility = View.GONE
+                    activityDetailBinding.shareFab.visibility = View.GONE
                 }
-                movieDetailBinding.shareFab.visibility == View.VISIBLE -> {
-                    movieDetailBinding.menuFab.setIconResource(R.drawable.ic_baseline_menu_24)
-                    movieDetailBinding.susFab.visibility = View.GONE
-                    movieDetailBinding.shareFab.visibility = View.GONE
+                activityDetailBinding.shareFab.visibility == View.VISIBLE -> {
+                    activityDetailBinding.menuFab.setIconResource(R.drawable.ic_baseline_menu_24)
+                    activityDetailBinding.susFab.visibility = View.GONE
+                    activityDetailBinding.shareFab.visibility = View.GONE
                 }
-                movieDetailBinding.menuFab.visibility == View.VISIBLE -> {
-                    movieDetailBinding.menuFab.setIconResource(R.drawable.ic_baseline_menu_open_24)
-                    movieDetailBinding.susFab.visibility = View.VISIBLE
-                    movieDetailBinding.shareFab.visibility = View.VISIBLE
+                activityDetailBinding.menuFab.visibility == View.VISIBLE -> {
+                    activityDetailBinding.menuFab.setIconResource(R.drawable.ic_baseline_menu_open_24)
+                    activityDetailBinding.susFab.visibility = View.VISIBLE
+                    activityDetailBinding.shareFab.visibility = View.VISIBLE
                 }
             }
         }
 
-        movieDetailBinding.susFab.setOnClickListener {
+        activityDetailBinding.susFab.setOnClickListener {
             if (extras != null) {
                 val showId = extras.getString(SHOW_ID)
                 if (showId.equals("Movie")) {
@@ -152,7 +154,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             }
         }
 
-        movieDetailBinding.shareFab.setOnClickListener {
+        activityDetailBinding.shareFab.setOnClickListener {
             if (extras != null) {
                 val showId = extras.getString(SHOW_ID)
                 if (showId.equals("Movie")) {
@@ -235,7 +237,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
     }
 
     private fun setFavoriteState(state: Boolean) {
-        val fab = movieDetailBinding.susFab
+        val fab = activityDetailBinding.susFab
         if (!state) {
             fab.setIconResource(R.drawable.ic_baseline_favorite_fill)
             fab.text = resources.getString(R.string.add_to_favorite)
@@ -243,7 +245,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             fab.setIconResource(R.drawable.ic_baseline_favorite_border_24)
             fab.text = resources.getString(R.string.remove_from_favorite)
         }
-        movieDetailBinding.menuFab.setIconResource(R.drawable.ic_baseline_menu_24)
+        activityDetailBinding.menuFab.setIconResource(R.drawable.ic_baseline_menu_24)
     }
 
     private fun setMovieData(movieId: MovieDetailEntity) {
@@ -560,10 +562,7 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
     private fun hideStaticUI() {
         movieDetailBinding.apply {
             imagePoster.visibility = View.GONE
-            menuFab.visibility = View.GONE
-            susFab.visibility = View.GONE
             view.visibility = View.GONE
-            shareFab.visibility = View.GONE
             movieTitleText.visibility = View.GONE
             descText.visibility = View.GONE
             movieReleaseDate.visibility = View.GONE
@@ -587,15 +586,17 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             tvShowLanguageImg.visibility = View.GONE
             tvShowLanguageText.visibility = View.GONE
         }
+        activityDetailBinding.apply {
+            menuFab.visibility = View.GONE
+            susFab.visibility = View.GONE
+            shareFab.visibility = View.GONE
+        }
     }
 
     private fun showStaticUIMovie() {
         movieDetailBinding.apply {
             imagePoster.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
-            menuFab.visibility = View.VISIBLE
-            susFab.visibility = View.GONE
-            shareFab.visibility = View.GONE
             movieReleaseDate.visibility = View.VISIBLE
             movieTitleText.visibility = View.VISIBLE
             descText.visibility = View.VISIBLE
@@ -619,15 +620,17 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             tvShowLanguageImg.visibility = View.INVISIBLE
             tvShowLanguageText.visibility = View.INVISIBLE
         }
+        activityDetailBinding.apply {
+            menuFab.visibility = View.VISIBLE
+            susFab.visibility = View.GONE
+            shareFab.visibility = View.GONE
+        }
     }
 
     private fun showStaticUITvShow() {
         movieDetailBinding.apply {
             imagePoster.visibility = View.VISIBLE
             view.visibility = View.VISIBLE
-            menuFab.visibility = View.VISIBLE
-            susFab.visibility = View.GONE
-            shareFab.visibility = View.GONE
             movieReleaseDate.visibility = View.VISIBLE
             movieTitleText.visibility = View.VISIBLE
             descText.visibility = View.VISIBLE
@@ -650,6 +653,11 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             moviePopularityImg.visibility = View.INVISIBLE
             tvShowLanguageImg.visibility = View.VISIBLE
             tvShowLanguageText.visibility = View.VISIBLE
+        }
+        activityDetailBinding.apply {
+            menuFab.visibility = View.VISIBLE
+            susFab.visibility = View.GONE
+            shareFab.visibility = View.GONE
         }
     }
 
