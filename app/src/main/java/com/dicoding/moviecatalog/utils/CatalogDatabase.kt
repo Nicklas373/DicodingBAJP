@@ -249,4 +249,62 @@ object CatalogDatabase {
             ""
         )
     }
+
+    fun generateSelectedFavMovie(): List<MovieDetailEntity> {
+        val movie = ArrayList<MovieDetailEntity>()
+
+        movie.add(
+            MovieDetailEntity(
+                "As Hiccup fulfills his dream of creating a peaceful dragon utopia, Toothless’ discovery of an untamed, elusive mate draws the Night Fury away. When danger mounts at home and Hiccup’s reign as village chief is tested, both dragon and rider must make impossible decisions to save their kind.",
+                "en",
+                "How to Train Your Dragon: The Hidden World",
+                "Animation",
+                "Family",
+                517526875,
+                "2019-01-03",
+                85.586,
+                7.8,
+                166428,
+                "How to Train Your Dragon: The Hidden World",
+                "/xvx4Yhf0DVH8G4LzNISpMfFBDy2.jpg",
+                "DreamWorks Animation",
+                "Mad Hatter Entertainment",
+                "/kP7t6RwGz2AvvTkvnI1uteEwHet.png",
+                "null",
+                "US",
+                "US"
+            )
+        )
+
+        return movie
+    }
+
+    fun generateSelectedFavTvShow(): List<TvShowDetailEntity> {
+        val tvShow = ArrayList<TvShowDetailEntity>()
+
+        tvShow.add(
+            TvShowDetailEntity(
+                "1990-09-20",
+                236,
+                "The Flash",
+                22,
+                1,
+                "en",
+                "When a bolt of lightening crashes through a police crime lab, a mix of electrically charged substances bathes chemist Barry Allen, transforming him into the fastest man alive--The Flash.",
+                "/fi1GEdCbyWRDHpyJcB25YYK7fh4.jpg",
+                7.5,
+                "58.38",
+                "Action & Adventure",
+                "Crime",
+                "Warner Bros. Television",
+                "Pet Fly Productions",
+                "/3T19XSr6yqaLNK8uJWFImPgRax0.png",
+                "null",
+                "US",
+                ""
+            )
+        )
+
+        return tvShow
+    }
 }

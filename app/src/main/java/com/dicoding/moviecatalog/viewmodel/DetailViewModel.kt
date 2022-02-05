@@ -22,21 +22,11 @@ class DetailViewModel(private val Repository: Repository) : ViewModel() {
     private lateinit var isSusMovie: LiveData<Resource<MovieDetailEntity>>
     private lateinit var isSusTvShow: LiveData<Resource<TvShowDetailEntity>>
 
-    private val nMovieId = MutableLiveData<Int>()
-    private val nTvShowId = MutableLiveData<Int>()
-
     fun nGetSusMovie() = isSusMovie
-
-    fun nSetSelectedMovie(movieId: Int) {
-        this.nMovieId.value = movieId
-    }
 
     fun nGetSelectedMovie(movieId: Int) {
         isSusMovie = Repository.getSelectedMovies(movieId)
     }
-
-    fun nGetMirroredSelectedMovie(movieId: Int): LiveData<Resource<MovieDetailEntity>> =
-        Repository.getSelectedMovies(movieId)
 
     fun nUpdateFavMovie() {
         val isSus = isSusMovie.value
@@ -48,16 +38,9 @@ class DetailViewModel(private val Repository: Repository) : ViewModel() {
 
     fun nGetSusTvShow() = isSusTvShow
 
-    fun nSetSelectedTvShow(tvShowId: Int) {
-        this.nTvShowId.value = tvShowId
-    }
-
     fun nGetSelectedTvShow(tvShowId: Int) {
         isSusTvShow = Repository.getSelectedTvShow(tvShowId)
     }
-
-    fun nGetMirroredSelectedTvShow(tvShowId: Int): LiveData<Resource<TvShowDetailEntity>> =
-        Repository.getSelectedTvShow(tvShowId)
 
     fun nUpdateFavTvShow() {
         val isSus = isSusTvShow.value

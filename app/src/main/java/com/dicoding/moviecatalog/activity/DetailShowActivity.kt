@@ -56,7 +56,6 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
                 hideStaticUI()
                 if (movieId.toString().isNotBlank()) {
                     movieDetailBinding.progressBar.visibility = View.VISIBLE
-                    viewModel.nSetSelectedMovie(movieId)
                     viewModel.nGetSelectedMovie(movieId)
                     setSusFavMovie()
                     viewModel.nGetSusMovie().observe(this) { movieWithDetails ->
@@ -85,7 +84,6 @@ class DetailShowActivity : AppCompatActivity(), ShareCallback {
             } else if (showId.equals("TvShow")) {
                 hideStaticUI()
                 if (tvShowId.toString().isNotBlank()) {
-                    viewModel.nSetSelectedTvShow(tvShowId)
                     viewModel.nGetSelectedTvShow(tvShowId)
                     setSusFavTvShow()
                     movieDetailBinding.progressBar.visibility = View.VISIBLE
