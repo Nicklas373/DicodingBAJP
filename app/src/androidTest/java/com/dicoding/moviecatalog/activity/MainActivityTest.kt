@@ -43,7 +43,6 @@ class MainActivityTest {
 
     @Test
     fun load_A_Movie() {
-        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_movie)).perform(
@@ -55,7 +54,6 @@ class MainActivityTest {
 
     @Test
     fun load_B_DetailMovie() {
-        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_movie)).perform(
@@ -64,7 +62,6 @@ class MainActivityTest {
                 click()
             )
         )
-        inlineVariable.delayTwoSecond()
         onView(withId(R.id.movie_title_text)).check(matches(isDisplayed()))
         onView(withId(R.id.movie_title_text)).check(matches(withText(dummySelectedMovie.title)))
         onView(withId(R.id.movie_release_date)).check(matches(isDisplayed()))
@@ -79,7 +76,6 @@ class MainActivityTest {
         onView(withId(R.id.movie_revenue_text)).check(matches(withText(revenue)))
         onView(withId(R.id.desc_text)).check(matches(isDisplayed()))
         onView(withId(R.id.desc_text)).check(matches(withText(dummySelectedMovie.overview)))
-        inlineVariable.delayTwoSecond()
         onView(withId(R.id.cv_genre_1)).check(matches(isDisplayed()))
         onView(withId(R.id.movie_genre_text_1)).check(matches(withText(dummySelectedMovie.genres_1)))
         onView(withId(R.id.cv_genre_2)).check(matches(isDisplayed()))
@@ -96,7 +92,6 @@ class MainActivityTest {
 
     @Test
     fun load_C_ShareMovie() {
-        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_movie)).perform(
@@ -105,7 +100,6 @@ class MainActivityTest {
                 click()
             )
         )
-        inlineVariable.delayTwoSecond()
         onView(withId(R.id.menu_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.menu_fab)).check(matches(isClickable()))
         onView(withId(R.id.menu_fab)).perform(click())
@@ -116,7 +110,6 @@ class MainActivityTest {
 
     @Test
     fun load_D_addFavMovies() {
-        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_movie)).perform(
@@ -125,7 +118,6 @@ class MainActivityTest {
                 click()
             )
         )
-        inlineVariable.delayTwoSecond()
         onView(withId(R.id.menu_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.menu_fab)).check(matches(isClickable()))
         onView(withId(R.id.menu_fab)).perform(click())
@@ -133,7 +125,6 @@ class MainActivityTest {
         onView(withId(R.id.sus_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_fab)).perform(click())
         Espresso.pressBackUnconditionally()
-        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_movie)).perform(
@@ -142,7 +133,6 @@ class MainActivityTest {
                 click()
             )
         )
-        inlineVariable.delayTwoSecond()
         onView(withId(R.id.menu_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.menu_fab)).check(matches(isClickable()))
         onView(withId(R.id.menu_fab)).perform(click())
@@ -150,7 +140,6 @@ class MainActivityTest {
         onView(withId(R.id.sus_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_fab)).perform(click())
         Espresso.pressBackUnconditionally()
-        inlineVariable.delayTwoSecond()
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_list_fab)).perform(click())
@@ -168,7 +157,6 @@ class MainActivityTest {
 
     @Test
     fun load_F_sortFavMoviesAsc() {
-        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
@@ -176,7 +164,6 @@ class MainActivityTest {
         onView(withId(R.id.sus_fav_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_fav_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_fav_fab)).perform(click())
-        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
@@ -185,13 +172,11 @@ class MainActivityTest {
         onView(withId(R.id.sus_order_asc)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_order_asc)).check(matches(isClickable()))
         onView(withId(R.id.sus_order_asc)).perform(click())
-        inlineVariable.delayTwoSecond()
         Espresso.pressBackUnconditionally()
     }
 
     @Test
     fun load_E_sortFavMoviesDesc() {
-        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
@@ -199,7 +184,6 @@ class MainActivityTest {
         onView(withId(R.id.sus_fav_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_fav_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_fav_fab)).perform(click())
-        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
@@ -208,13 +192,11 @@ class MainActivityTest {
         onView(withId(R.id.sus_order_desc)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_order_desc)).check(matches(isClickable()))
         onView(withId(R.id.sus_order_desc)).perform(click())
-        inlineVariable.delayTwoSecond()
         Espresso.pressBackUnconditionally()
     }
 
     @Test
     fun load_G_removeFavMovies() {
-        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
@@ -222,7 +204,6 @@ class MainActivityTest {
         onView(withId(R.id.sus_fav_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_fav_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_fav_fab)).perform(click())
-        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_movie)).perform(
@@ -237,7 +218,6 @@ class MainActivityTest {
         onView(withId(R.id.sus_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_fab)).perform(click())
         Espresso.pressBackUnconditionally()
-        inlineVariable.delayTwoSecond()
         onView(withId(R.id.rv_movie)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_movie)).perform(
             RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
@@ -250,13 +230,11 @@ class MainActivityTest {
         onView(withId(R.id.sus_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_fab)).perform(click())
-        inlineVariable.delayTwoSecond()
         Espresso.pressBackUnconditionally()
     }
 
     @Test
     fun load_H_TvShow() {
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_tvshow)).perform(
@@ -268,7 +246,6 @@ class MainActivityTest {
 
     @Test
     fun load_I_DetailTvShow() {
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_tvshow)).perform(
@@ -277,7 +254,6 @@ class MainActivityTest {
                 click()
             )
         )
-        inlineVariable.delayTwoSecond()
         onView(withId(R.id.movie_title_text)).check(matches(isDisplayed()))
         onView(withId(R.id.movie_title_text)).check(matches(withText(dummySelectedTvShow.tvShowName)))
         onView(withId(R.id.movie_release_date)).check(matches(isDisplayed()))
@@ -301,7 +277,6 @@ class MainActivityTest {
         onView(withId(R.id.tvShow_language_text)).check(matches(withText(dummySelectedTvShow.tvShowLanguage)))
         onView(withId(R.id.desc_text)).check(matches(isDisplayed()))
         onView(withId(R.id.desc_text)).check(matches(withText(dummySelectedTvShow.tvShowOverview)))
-        inlineVariable.delayTwoSecond()
         onView(withId(R.id.cv_genre_1)).check(matches(isDisplayed()))
         onView(withId(R.id.movie_genre_text_1)).check(matches(withText(dummySelectedTvShow.tvShowGenres_1)))
         onView(withId(R.id.cv_genre_2)).check(matches(isDisplayed()))
@@ -330,7 +305,6 @@ class MainActivityTest {
 
     @Test
     fun load_J_ShareTvShow() {
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_tvshow)).perform(
@@ -339,7 +313,6 @@ class MainActivityTest {
                 click()
             )
         )
-        inlineVariable.delayTwoSecond()
         onView(withId(R.id.menu_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.menu_fab)).check(matches(isClickable()))
         onView(withId(R.id.menu_fab)).perform(click())
@@ -350,7 +323,6 @@ class MainActivityTest {
 
     @Test
     fun load_K_addFavTvShow() {
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_tvshow)).perform(
@@ -359,7 +331,6 @@ class MainActivityTest {
                 click()
             )
         )
-        inlineVariable.delayTwoSecond()
         onView(withId(R.id.menu_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.menu_fab)).check(matches(isClickable()))
         onView(withId(R.id.menu_fab)).perform(click())
@@ -367,7 +338,6 @@ class MainActivityTest {
         onView(withId(R.id.sus_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_fab)).perform(click())
         Espresso.pressBackUnconditionally()
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_tvshow)).perform(
@@ -376,7 +346,6 @@ class MainActivityTest {
                 click()
             )
         )
-        inlineVariable.delayTwoSecond()
         onView(withId(R.id.menu_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.menu_fab)).check(matches(isClickable()))
         onView(withId(R.id.menu_fab)).perform(click())
@@ -384,7 +353,6 @@ class MainActivityTest {
         onView(withId(R.id.sus_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_fab)).perform(click())
         Espresso.pressBackUnconditionally()
-        inlineVariable.delayTwoSecond()
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_list_fab)).perform(click())
@@ -402,7 +370,6 @@ class MainActivityTest {
 
     @Test
     fun load_M_sortFavTvShowAsc() {
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
@@ -410,7 +377,6 @@ class MainActivityTest {
         onView(withId(R.id.sus_fav_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_fav_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_fav_fab)).perform(click())
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
@@ -419,13 +385,11 @@ class MainActivityTest {
         onView(withId(R.id.sus_order_asc)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_order_asc)).check(matches(isClickable()))
         onView(withId(R.id.sus_order_asc)).perform(click())
-        inlineVariable.delayTwoSecond()
         Espresso.pressBackUnconditionally()
     }
 
     @Test
     fun load_L_sortFavTvShowDesc() {
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
@@ -433,7 +397,6 @@ class MainActivityTest {
         onView(withId(R.id.sus_fav_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_fav_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_fav_fab)).perform(click())
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
@@ -442,13 +405,11 @@ class MainActivityTest {
         onView(withId(R.id.sus_order_desc)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_order_desc)).check(matches(isClickable()))
         onView(withId(R.id.sus_order_desc)).perform(click())
-        inlineVariable.delayTwoSecond()
         Espresso.pressBackUnconditionally()
     }
 
     @Test
     fun load_N_removeFavTvShow() {
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
@@ -456,7 +417,6 @@ class MainActivityTest {
         onView(withId(R.id.sus_fav_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_fav_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_fav_fab)).perform(click())
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_tvshow)).perform(
@@ -471,7 +431,6 @@ class MainActivityTest {
         onView(withId(R.id.sus_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_fab)).perform(click())
         Espresso.pressBackUnconditionally()
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.rv_tvshow)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_tvshow)).perform(
@@ -486,14 +445,12 @@ class MainActivityTest {
         onView(withId(R.id.sus_fab)).check(matches(isClickable()))
         onView(withId(R.id.sus_fab)).perform(click())
         Espresso.pressBackUnconditionally()
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         Espresso.pressBackUnconditionally()
     }
 
     @Test
     fun load_P_sortMovieAsc() {
-        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
@@ -505,7 +462,6 @@ class MainActivityTest {
 
     @Test
     fun load_O_sortMovieDesc() {
-        inlineVariable.delayTwoSecond()
         onView(withText("MOVIE")).perform(click())
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
@@ -517,7 +473,6 @@ class MainActivityTest {
 
     @Test
     fun load_R_sortTvShowAsc() {
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
@@ -529,7 +484,6 @@ class MainActivityTest {
 
     @Test
     fun load_Q_sortTvShowDesc() {
-        inlineVariable.delayTwoSecond()
         onView(withText("TV SHOW")).perform(click())
         onView(withId(R.id.sus_list_fab)).check(matches(isDisplayed()))
         onView(withId(R.id.sus_list_fab)).check(matches(isClickable()))
