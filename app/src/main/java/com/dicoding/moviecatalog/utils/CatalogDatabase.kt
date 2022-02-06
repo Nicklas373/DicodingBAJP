@@ -307,4 +307,64 @@ object CatalogDatabase {
 
         return tvShow
     }
+
+    fun generateSusMovieLocal(): List<MovieDetailEntity> {
+
+        val susMovie = ArrayList<MovieDetailEntity>()
+
+        susMovie.add(
+            MovieDetailEntity(
+                "Seasoned musician Jackson Maine discovers — and falls in love with — struggling artist Ally. She has just about given up on her dream to make it big as a singer — until Jack coaxes her into the spotlight. But even as Ally's career takes off, the personal side of their relationship is breaking down, as Jack fights an ongoing battle with his own internal demons.",
+                "en",
+                "A Star Is Born",
+                "Drama",
+                "Romance",
+                433888866,
+                "2018-10-03",
+                48.76,
+                7.5,
+                332562,
+                "A Star Is Born",
+                "/wrFpXMNBRj2PBiN4Z5kix51XaIZ.jpg",
+                "Thunder Road",
+                "22 & Green",
+                "/cCzCClIzIh81Fa79hpW5nXoUsHK.png",
+                "null",
+                "US",
+                "US",
+            )
+        )
+
+        return susMovie
+    }
+
+    fun generateSusTvShowLocal(): List<TvShowDetailEntity> {
+
+        val susTvShow = ArrayList<TvShowDetailEntity>()
+
+        susTvShow.add(
+            TvShowDetailEntity(
+                "2012-10-10",
+                1412,
+                "Arrow",
+                170,
+                8,
+                "en",
+                "Spoiled billionaire playboy Oliver Queen is missing and presumed dead when his yacht is lost at sea. He returns five years later a changed man, determined to clean up the city as a hooded vigilante armed with a bow.",
+                "/gKG5QGz5Ngf8fgWpBsWtlg5L2SF.jpg",
+                6.7,
+                "321.082",
+                "Crime",
+                "Drama",
+                "Berlanti Productions",
+                "DC Entertainment",
+                "/3e294jszfE6cE8TOogmj0zNd6pL.png",
+                "/2Tc1P3Ac8M479naPp1kYT3izLS5.png",
+                "US",
+                "US",
+            )
+        )
+
+        return susTvShow
+    }
 }

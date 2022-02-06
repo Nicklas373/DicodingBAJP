@@ -146,9 +146,7 @@ class FakeRepositoryTest(
     }
 
     override fun updateFavMovies(movie: MovieDetailEntity, isSus: Boolean) {
-        appExecutors.diskIO().execute {
-            localDataSource.updateFavMovies(movie, isSus)
-        }
+        localDataSource.updateFavMovies(movie, isSus)
     }
 
     override fun getAllTvShow(
@@ -274,8 +272,6 @@ class FakeRepositoryTest(
     }
 
     override fun updateFavTvShow(tvShow: TvShowDetailEntity, isSus: Boolean) {
-        appExecutors.diskIO().execute {
             localDataSource.updateFavTvShow(tvShow, isSus)
-        }
     }
 }
