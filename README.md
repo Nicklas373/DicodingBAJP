@@ -1,5 +1,4 @@
 # Dicoding Academy - Belajar Android Jetpack Pro
-
 Pengembangan aplikasi "Movie Catalog" berdasarkan modul "Dicoding Academy - Belajar Android Jetpack Pro".
 
 ## Disclaimer
@@ -37,7 +36,7 @@ Pada submission 2 membuat aplikasi "Movie Catalog" dengan beberapa kriteria seba
 
 NOTE: Data yang diambil merupakan data yang di generate dari TheMovieDB REST API
 
-## Submission 3
+## Submission 3 [Kelola Data]
 
 Pada submission 3 membuat aplikasi "Movie Catalog" dengan beberapa kriteria sebagai berikut:
 
@@ -77,12 +76,15 @@ Berikut adalah beberapa metode yang digunakan dalam pembuatan aplikasi ini;
 - Unit Testing & Instrumentation Testing (Espresso & Mockito)
 - ViewModel
 
-## Screenshoot:
+## Application Screenshoot:
 <p align="center">
 <img width="240" height="500" src="https://raw.githubusercontent.com/Nicklas373/DicodingBAJP/master/Screenshoot/photo_2022-02-07_11-40-42.jpg">&nbsp;&nbsp;&nbsp;
 <img width="240" height="500" src="https://raw.githubusercontent.com/Nicklas373/DicodingBAJP/master/Screenshoot/photo_2022-02-07_11-40-40.jpg">&nbsp;&nbsp;&nbsp;
 <img width="240" height="500" src="https://raw.githubusercontent.com/Nicklas373/DicodingBAJP/master/Screenshoot/photo_2022-02-07_11-40-43.jpg">
 </p>
+
+## Application Demo:
+https://user-images.githubusercontent.com/15063955/152726628-bedfea68-7508-4677-a292-fc96a1281f68.mp4
 
 
 # HANA-CI Build Project || 2016-2022
