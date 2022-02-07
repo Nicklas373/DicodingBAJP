@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.0'
+        classpath 'com.android.tools.build:gradle:7.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -27,7 +27,7 @@ ext {
     recyclerViewVersion = '1.2.1'
     picassoVersion = '2.71828'
     androidXTestVersion = '1.2.0'
-    mockitoVersion = '3.6.0'
+    mockitoVersion = '4.2.0'
     mockitoKotlinVersion = '2.2.0'
     archLifecycleVersion = '2.2.0'
     idleResourceVersion = '3.4.0'
