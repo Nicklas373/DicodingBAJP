@@ -61,8 +61,6 @@ Aplikasi ini memiliki beberapa fitur sebagai berikut:
   yang dipilih untuk dilihat informasinya)
 - Fitur Favorit Movies dan Tv Show
   Menampilkan daftar Movies dan Tv Show yang difavoritkan dan menyimpan data Movies dan TvShow kedalam database dengan memanfaatkan DAO Room, PagedList dan Sort
-- Fitur Settings
-  Menampilkan pengaturan berupa pengubah tema (Dark mode / Light mode) dan pengaturan untuk fitur splashscreen aplikasi
   
 ## Application Method
 Berikut adalah beberapa metode yang digunakan dalam pembuatan aplikasi ini;
