@@ -1,7 +1,5 @@
 package com.dicoding.moviecatalog.data.source.remote
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,46 +15,25 @@ import retrofit2.Response
 
 class RemoteDataSource private constructor() {
 
-    private val handler = Handler(Looper.getMainLooper())
-
-    companion object {
-        private const val SERVICE_LATENCY_IN_MILLIS: Long = 2000
-
-        @Volatile
-        private var instance: RemoteDataSource? = null
-
-        fun getInstance(): RemoteDataSource =
-            instance ?: synchronized(this) {
-                instance ?: RemoteDataSource(
-                ).apply { instance = this }
-            }
-    }
-
     fun getAllMovies(listId: String): LiveData<ApiResponse<ArrayList<MovieListResponse>>> {
         val resultMovies = MutableLiveData<ApiResponse<ArrayList<MovieListResponse>>>()
         val client = ApiConfig.getApiService().getMovieList(listId)
         EspressoIdlingResource.increment()
-        handler.postDelayed(
-            {
-                client.enqueue(object : Callback<MovieResponse> {
-                    override fun onResponse(
-                        call: Call<MovieResponse>,
-                        response: Response<MovieResponse>
-                    ) {
-                        resultMovies.value =
-                            ApiResponse.success(response.body()?.items as ArrayList<MovieListResponse>)
-                        EspressoIdlingResource.decrement()
-                    }
+        client.enqueue(object : Callback<MovieResponse> {
+            override fun onResponse(
+                call: Call<MovieResponse>,
+                response: Response<MovieResponse>
+            ) {
+                resultMovies.value =
+                    ApiResponse.success(response.body()?.items as ArrayList<MovieListResponse>)
+                EspressoIdlingResource.decrement()
+            }
 
-                    override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                        Log.e("RemoteDataSource", "getAllMovies onFailure : ${t.message}")
-                        EspressoIdlingResource.decrement()
-                    }
-                })
-
-            },
-            SERVICE_LATENCY_IN_MILLIS
-        )
+            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                Log.e("RemoteDataSource", "getAllMovies onFailure : ${t.message}")
+                EspressoIdlingResource.decrement()
+            }
+        })
         return resultMovies
     }
 
@@ -65,26 +42,22 @@ class RemoteDataSource private constructor() {
         val client = ApiConfig.getApiService().getSelectedMovie(movieId)
 
         EspressoIdlingResource.increment()
-        handler.postDelayed(
-            {
-                client.enqueue(object : Callback<MovieListResponse> {
-                    override fun onResponse(
-                        call: Call<MovieListResponse>,
-                        response: Response<MovieListResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            resultMovies.value = ApiResponse.success(response.body()!!)
-                            EspressoIdlingResource.decrement()
-                        }
-                    }
+        client.enqueue(object : Callback<MovieListResponse> {
+            override fun onResponse(
+                call: Call<MovieListResponse>,
+                response: Response<MovieListResponse>
+            ) {
+                if (response.isSuccessful) {
+                    resultMovies.value = ApiResponse.success(response.body()!!)
+                    EspressoIdlingResource.decrement()
+                }
+            }
 
-                    override fun onFailure(call: Call<MovieListResponse>, t: Throwable) {
-                        Log.e("RemoteDataSource", "getSelectedMovies onFailure : ${t.message}")
-                        EspressoIdlingResource.decrement()
-                    }
-                })
-            }, SERVICE_LATENCY_IN_MILLIS
-        )
+            override fun onFailure(call: Call<MovieListResponse>, t: Throwable) {
+                Log.e("RemoteDataSource", "getSelectedMovies onFailure : ${t.message}")
+                EspressoIdlingResource.decrement()
+            }
+        })
         return resultMovies
     }
 
@@ -93,25 +66,21 @@ class RemoteDataSource private constructor() {
         val client = ApiConfig.getApiService().getTvShowList(listId)
 
         EspressoIdlingResource.increment()
-        handler.postDelayed(
-            {
-                client.enqueue(object : Callback<TvShowResponse> {
-                    override fun onResponse(
-                        call: Call<TvShowResponse>,
-                        response: Response<TvShowResponse>
-                    ) {
-                        resultTvShow.value =
-                            ApiResponse.success(response.body()?.items as ArrayList<TvShowListResponse>)
-                        EspressoIdlingResource.decrement()
-                    }
+        client.enqueue(object : Callback<TvShowResponse> {
+            override fun onResponse(
+                call: Call<TvShowResponse>,
+                response: Response<TvShowResponse>
+            ) {
+                resultTvShow.value =
+                    ApiResponse.success(response.body()?.items as ArrayList<TvShowListResponse>)
+                EspressoIdlingResource.decrement()
+            }
 
-                    override fun onFailure(call: Call<TvShowResponse>, t: Throwable) {
-                        Log.e("RemoteDataSource", "getTvShow onFailure : ${t.message}")
-                        EspressoIdlingResource.decrement()
-                    }
-                })
-            }, SERVICE_LATENCY_IN_MILLIS
-        )
+            override fun onFailure(call: Call<TvShowResponse>, t: Throwable) {
+                Log.e("RemoteDataSource", "getTvShow onFailure : ${t.message}")
+                EspressoIdlingResource.decrement()
+            }
+        })
         return resultTvShow
     }
 
@@ -120,26 +89,33 @@ class RemoteDataSource private constructor() {
         val client = ApiConfig.getApiService().getSelectedTvShow(tvShowId)
 
         EspressoIdlingResource.increment()
-        handler.postDelayed(
-            {
-                client.enqueue(object : Callback<TvShowListResponse> {
-                    override fun onResponse(
-                        call: Call<TvShowListResponse>,
-                        response: Response<TvShowListResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            resultTvShow.value = ApiResponse.success(response.body()!!)
-                            EspressoIdlingResource.decrement()
-                        }
-                    }
+        client.enqueue(object : Callback<TvShowListResponse> {
+            override fun onResponse(
+                call: Call<TvShowListResponse>,
+                response: Response<TvShowListResponse>
+            ) {
+                if (response.isSuccessful) {
+                    resultTvShow.value = ApiResponse.success(response.body()!!)
+                    EspressoIdlingResource.decrement()
+                }
+            }
 
-                    override fun onFailure(call: Call<TvShowListResponse>, t: Throwable) {
-                        Log.e("RemoteDataSource", "getSelectedTvShow onFailure : ${t.message}")
-                        EspressoIdlingResource.decrement()
-                    }
-                })
-            }, SERVICE_LATENCY_IN_MILLIS
-        )
+            override fun onFailure(call: Call<TvShowListResponse>, t: Throwable) {
+                Log.e("RemoteDataSource", "getSelectedTvShow onFailure : ${t.message}")
+                EspressoIdlingResource.decrement()
+            }
+        })
         return resultTvShow
+    }
+
+    companion object {
+        @Volatile
+        private var instance: RemoteDataSource? = null
+
+        fun getInstance(): RemoteDataSource =
+            instance ?: synchronized(this) {
+                instance ?: RemoteDataSource(
+                ).apply { instance = this }
+            }
     }
 }
