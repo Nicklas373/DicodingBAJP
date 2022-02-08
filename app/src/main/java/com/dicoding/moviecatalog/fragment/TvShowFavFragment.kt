@@ -24,8 +24,8 @@ import com.google.android.material.snackbar.Snackbar
 
 class TvShowFavFragment : Fragment() {
 
-    private var _binding: FragmentTvShowFavBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var _binding: FragmentTvShowFavBinding
+    private val binding get() = _binding
     private lateinit var viewModel: TvShowFavViewModel
     private lateinit var susAdapter: TvShowFavAdapter
 
@@ -57,12 +57,10 @@ class TvShowFavFragment : Fragment() {
             viewModel.isToast.observe(viewLifecycleOwner) { isToast ->
                 showToast(isToast, viewModel.toastReason.value.toString())
             }
-            _binding?.let {
-                with(it.rvTvshow) {
-                    layoutManager = LinearLayoutManager(context)
-                    setHasFixedSize(true)
-                    adapter = susAdapter
-                }
+            with(_binding.rvTvshow) {
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                adapter = susAdapter
             }
             binding.susListFab.setOnClickListener {
                 if (binding.susOrderAsc.visibility == View.GONE) {
@@ -136,10 +134,5 @@ class TvShowFavFragment : Fragment() {
     private fun showStaticUI() {
         binding.susOrderAsc.visibility = View.VISIBLE
         binding.susOrderDesc.visibility = View.VISIBLE
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

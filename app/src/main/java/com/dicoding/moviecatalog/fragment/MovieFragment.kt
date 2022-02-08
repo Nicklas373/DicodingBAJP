@@ -25,8 +25,8 @@ import com.dicoding.moviecatalog.vo.Status
 
 class MovieFragment : Fragment() {
 
-    private var _binding: FragmentMovieBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var _binding: FragmentMovieBinding
+    private val binding get() = _binding
     private lateinit var movieAdapter: MovieAdapter
 
     override fun onCreateView(
@@ -54,12 +54,10 @@ class MovieFragment : Fragment() {
             viewModel.isToast.observe(viewLifecycleOwner) { isToast ->
                 showToast(isToast, viewModel.toastReason.value.toString())
             }
-            _binding?.let {
-                with(it.rvMovie) {
-                    layoutManager = LinearLayoutManager(context)
-                    setHasFixedSize(true)
-                    adapter = movieAdapter
-                }
+            with(_binding.rvMovie) {
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                adapter = movieAdapter
             }
             binding.susListFab.setOnClickListener {
                 if (binding.susFavFab.visibility == View.GONE) {
@@ -124,10 +122,5 @@ class MovieFragment : Fragment() {
         binding.susFavFab.visibility = View.VISIBLE
         binding.susOrderAsc.visibility = View.VISIBLE
         binding.susOrderDesc.visibility = View.VISIBLE
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

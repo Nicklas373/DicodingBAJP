@@ -24,8 +24,8 @@ import com.google.android.material.snackbar.Snackbar
 
 class MovieFavFragment : Fragment() {
 
-    private var _binding: FragmentMovieFavBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var _binding: FragmentMovieFavBinding
+    private val binding get() = _binding
     private lateinit var viewModel: MovieFavViewModel
     private lateinit var susAdapter: MovieFavAdapter
 
@@ -57,12 +57,10 @@ class MovieFavFragment : Fragment() {
             viewModel.isToast.observe(viewLifecycleOwner) { isToast ->
                 showToast(isToast, viewModel.toastReason.value.toString())
             }
-            _binding?.let {
-                with(it.rvMovie) {
-                    layoutManager = LinearLayoutManager(context)
-                    setHasFixedSize(true)
-                    adapter = susAdapter
-                }
+            with(_binding.rvMovie) {
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                adapter = susAdapter
             }
             binding.susListFab.setOnClickListener {
                 if (binding.susOrderAsc.visibility == View.GONE) {
@@ -136,10 +134,5 @@ class MovieFavFragment : Fragment() {
     private fun showStaticUI() {
         binding.susOrderAsc.visibility = View.VISIBLE
         binding.susOrderDesc.visibility = View.VISIBLE
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

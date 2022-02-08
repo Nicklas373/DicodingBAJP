@@ -25,8 +25,8 @@ import com.dicoding.moviecatalog.vo.Status
 
 class TvShowFragment : Fragment() {
 
-    private var _binding: FragmentTvShowBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var _binding: FragmentTvShowBinding
+    private val binding get() = _binding
     private lateinit var tvShowAdapter: TvShowAdapter
 
     override fun onCreateView(
@@ -53,12 +53,10 @@ class TvShowFragment : Fragment() {
             viewModel.isToast.observe(viewLifecycleOwner) { isToast ->
                 showToast(isToast, viewModel.toastReason.value.toString())
             }
-            _binding?.let {
-                with(it.rvTvshow) {
-                    layoutManager = LinearLayoutManager(context)
-                    setHasFixedSize(true)
-                    adapter = tvShowAdapter
-                }
+            with(_binding.rvTvshow) {
+                layoutManager = LinearLayoutManager(context)
+                setHasFixedSize(true)
+                adapter = tvShowAdapter
             }
             binding.susListFab.setOnClickListener {
                 if (binding.susFavFab.visibility == View.GONE) {
