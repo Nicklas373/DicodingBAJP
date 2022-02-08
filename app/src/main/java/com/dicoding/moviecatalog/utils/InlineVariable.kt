@@ -11,9 +11,9 @@ class InlineVariable {
     fun setReleaseDate(releaseDate: String): String {
         val outputFormat: DateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
         val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val date: Date = inputFormat.parse(releaseDate)
+        val date: Date? = inputFormat.parse(releaseDate)
 
-        return outputFormat.format(date)
+        return outputFormat.format(date!!)
     }
 
     fun setRevenue(revenue: String): String {
@@ -21,13 +21,5 @@ class InlineVariable {
         val myNumber: Int = revenue.toInt()
 
         return formatter.format(myNumber)
-    }
-
-    fun delayTwoSecond() {
-        try {
-            Thread.sleep(2000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
     }
 }
